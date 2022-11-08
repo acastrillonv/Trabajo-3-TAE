@@ -1,0 +1,18 @@
+---
+title: "Análisis de incidentes viales en la ciudad de Medellín"
+author: "Valentina Vanegas Castaño <br> Edwar Jose Londoño Correa <br> Andres Castrillón Velasquez <br> Diego Andres Chavarria Riaño <br> Sebastian Rendon Arteaga"
+format: html
+editor: visual
+---
+
+```{r}
+#Carga del dataset
+data <- read.csv("incidentes_viales.csv", encoding = "UTF-8", header = TRUE, sep = ";")
+head(data)
+```
+
+```{r}
+#Seleccion de variables
+
+data <- subset(data, select = -c(DIRECCION, DIRECCION ENCASILLADA, EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
+```

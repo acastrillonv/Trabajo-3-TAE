@@ -14,5 +14,5 @@ head(data)
 ```{r}
 #Seleccion de variables
 
-data <- subset(data, select = -c(DIRECCION, DIRECCION ENCASILLADA, EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
+data <- subset(data, select = -c(DIRECCION, "DIRECCION ENCASILLADA", EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
 ```

@@ -23,7 +23,7 @@ tabla_CLASE_ACCIDENTE <- datos %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n
 tabla_CLASE_ACCIDENTE
 
 datos <- datos %>% mutate(CLASE_ACCIDENTE = ifelse(str_detect(datos$CLASE_ACCIDENTE, "^Ca(i|í|Ã)"),
-                                                   "Caída Ocupante",CLASE_ACCIDENTE), 
+                                                   "Caida Ocupante",CLASE_ACCIDENTE), 
                           CLASE_ACCIDENTE = ifelse(CLASE_ACCIDENTE == "", "Otro", CLASE_ACCIDENTE),
                           CLASE_ACCIDENTE = ifelse(CLASE_ACCIDENTE == "Incendio", "Otro", CLASE_ACCIDENTE))
 

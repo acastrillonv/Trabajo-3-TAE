@@ -15,7 +15,7 @@ names(datos)
 names(datos)[6] <- "DESING"
 
 datos <- select(datos, CLASE_ACCIDENTE, DESING, FECHA_ACCIDENTES,
-                GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y)       
+                GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y..)       
 
 # CLASE_ACCIDENTE
 
@@ -34,8 +34,6 @@ datos %>% group_by(DESING) %>% summarise(n = n()) %>% arrange(-n)
 datos <- datos %>% mutate(DESING = ifelse(DESING ==  "" , "Otro", DESING),
                           DESING = ifelse(DESING %in% c("Pont\\xF3n","Pontón") , "Ponton", DESING))
 datos %>% group_by(DESING) %>% summarise(n = n())
-
-View(datos)
 
 summary(datos$FECHA_ACCIDENTE)
 
@@ -58,6 +56,32 @@ DAY_YEAR <- yday(FECHA_ACCIDENTE)
 datos <- datos %>% mutate(FECHA_ACCIDENTE, HOUR, DAY, WEEK_YEAR, MONTH, YEAR, DAY_MONTH, DAY_YEAR)
 
 datos <- select(datos, FECHA_ACCIDENTE, HOUR, DAY, WEEK_YEAR, MONTH, YEAR, DAY_MONTH, DAY_YEAR, CLASE_ACCIDENTE, DESING, 
-                GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y)       
+                GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y..)       
 
-View(datos)
+# GRAVEDAD_ACCIDENTE 
+
+datos %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n)
+datos <- datos %>% mutate(GRAVEDAD_ACCIDENTE = ifelse(GRAVEDAD_ACCIDENTE=="Solo da\\xF1os","Solo daños",GRAVEDAD_ACCIDENTE),
+                          GRAVEDAD_ACCIDENTE = ifelse(GRAVEDAD_ACCIDENTE ==  "" , "Otro", GRAVEDAD_ACCIDENTE))
+datos %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n())
+
+
+# NUMCOMUNA
+
+datos %>% group_by(NUMCOMUNA) %>% summarise(n = n())  %>% arrange(-n)
+datos <- datos %>% mutate(NUMCOMUNA = ifelse(NUMCOMUNA == "01", 1, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "02", 2, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "03", 3, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "04", 4, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "05", 5, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "06", 6, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "07", 7, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "08", 8, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == "09", 9, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == 50, 5, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == 60, 6, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == 70, 7, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == 80, 8, NUMCOMUNA),
+                          NUMCOMUNA = ifelse(NUMCOMUNA == 90, 9, NUMCOMUNA))
+(View(datos %>% group_by(NUMCOMUNA) %>% summarise(n = n())))%>% arrange(-n)
+

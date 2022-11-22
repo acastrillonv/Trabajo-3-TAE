@@ -41,14 +41,12 @@ kable(analisis_de_variables,caption = "Tipo de variable") %>%
 
 <br>
 
-Para el procesamiento de los datos, vamos analizar principalmente la variable "AÑO". Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece "2019\\r". Otro error que se puede observar es que hay error de almacenamiento en esta misma variable.
+Para el procesamiento de los datos, vamos analizar principalmente la variable "AÑO". Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece "2019\\r". Otro error que se puede observar es que hay error de almacenamiento en esta misma variable. Por último, como regla del proyecto, no se va a trabajar con registros del año 2017.
 
 ```{r}
 #Frecuencia de la variable ano
-tabla_frecuencia_ano <- data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n)
 
-
-kable(head(tabla_frecuencia_ano,10),caption = "Valores únicos de la variable AÑO") %>% 
+kable(head(data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),10),caption = "AÑO") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```
@@ -94,32 +92,173 @@ for(fila in 1:nrow(Y_union)){
 }
 names(Y_union) <- c("Y..")
 
-data_corregida_1 <- data.frame(Correcion_ano,X_union,Y_union)
+data_cor_union <- data.frame(Correcion_ano,X_union,Y_union)
 
-data_corregida <- rbind(data,data_corregida_1)
+data_corregida <- rbind(data,data_cor_union)
+
+# Se vuelve a corregir la variable año 2019
+
+data_corregida <- data_corregida %>% mutate(AÑO = ifelse(AÑO ==  "2019\\r" , "2019", AÑO))
+
+#Se eliminan los registros del año 2017
+
+data_corregida <- data_corregida[data_corregida$AÑO != "2017", ]
+
+#Se corrige el index del dataframe final
+rownames(data_corregida) <- 1:nrow(data_corregida)
 ```
 
 Una vez corregido lo anterior, En la tabla 3 podemos visualizar las nuevas frecuencias de los datos únicos de la variable "AÑO"
 
 ```{r}
 #Frecuencia de la variable ano corregida
-tabla_frecuencia_ano_corregida <- data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n)
 
-
-kable(tabla_frecuencia_ano_corregida,caption = "Valores únicos de la variable AÑO") %>% 
+kable(data_corregida %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),caption = "AÑO Corregido") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```
 
-<center>**Tabla 3.** Valores únicos de la variable "AÑO"</center>
+<center>**Tabla 3.** Valores únicos de la variable "AÑO" corregidos</center>
 
 <br>
 
-Ahora
+Ahora, relizamos el análisis de la variable "CLASE_ACCIDENTE". En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente "Caída de Ocupante", la cual se corregirá con este estandar. También se corregirán los valores que se muestran como "" por "Otro".
 
 ```{r}
-#tabla_CLASE_ACCIDENTE <- data %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n)
-#tabla_CLASE_ACCIDENTE
+
+kable(data_corregida %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n),caption = "Clase de Accidentes") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 4.** Valores únicos de la variable "CLASE_ACCIDENTE"</center>
+
+<br>
+
+```{r}
+#Correcion de la variable clase accidente
+
+data_corregida[data_corregida$CLASE_ACCIDENTE == "Caida de Ocupante",3] <- "Caída de Ocupante"
+data_corregida[data_corregida$CLASE_ACCIDENTE == "Caida Ocupante",3] <- "Caída de Ocupante"
+data_corregida[data_corregida$CLASE_ACCIDENTE == "Caída Ocupante",3] <- "Caída de Ocupante"
+
+```
+
+Realizando las modificaciones de los errores anteriores, se puede observar en la Tabla 5 los valores únicos corregidos.
+
+```{r}
+
+kable(data_corregida %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n),caption = "Clase de Accidentes corregidos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 5.** Valores únicos de la variable "CLASE_ACCIDENTE" corregidos</center>
+
+<br>
+
+Realizando de manera similar el análisis en la variable "DISEÑO", en la Tabla 6 se pueden observar los valores únicos para esta variable, y se observa que existen errores de escritura.
+
+```{r}
+
+kable(head(data_corregida %>% group_by(DISEÑO) %>% summarise(n = n()) %>% arrange(-n),17),caption = "Diseño") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 6.** Valores únicos de la variable "DISEÑO"</center>
+
+<br>
+
+```{r}
+#Correción de la variable Diseño
+
+##Error 1
+data_corregida[data_corregida$DISEÑO == "Pont\\xF3n",6] <- "Pontón"
+
+##Error 2
+
+##Se separa en dataframe aux los registros con error 2
+dataAux <- subset(data_corregida, data_corregida$DISEÑO!= "Tramo de via" & data_corregida$DISEÑO!= "Interseccion" & data_corregida$DISEÑO!= "Lote o Predio" & data_corregida$DISEÑO!= "Glorieta" & data_corregida$DISEÑO!= "Paso Elevado" & data_corregida$DISEÑO!= "Puente" & data_corregida$DISEÑO!= "Ciclo Ruta" & data_corregida$DISEÑO!= "Paso Inferior" & data_corregida$DISEÑO!= "Paso a Nivel" & data_corregida$DISEÑO!= "Tunel" & data_corregida$DISEÑO!= "Via peatonal" & data_corregida$DISEÑO!= "Pontón" & data_corregida$DISEÑO!= '""')
+
+dataAux2 <- subset(dataAux, select = c(AÑO,CBML, CLASE_ACCIDENTE, DIRECCION))
+
+dataAux<- subset(dataAux, select = -c(AÑO,CBML, CLASE_ACCIDENTE, DIRECCION))
+
+##Se eliminan del dataset original los registros con error 2
+Filtro <- is.element(data_corregida$DIRECCION.ENCASILLADA, dataAux$DIRECCION.ENCASILLADA)
+data_corregida <- data_corregida[! Filtro,]
+
+##Se corrige la variable ano
+Correcion_de <- strsplit(dataAux$DIRECCION.ENCASILLADA, ";")
+Correcion_de <- as.data.frame(Correcion_de)
+Correcion_de <- t(Correcion_de)
+rownames(Correcion_de) <- 1:nrow(Correcion_de)
+Correcion_de <- as.data.frame(Correcion_de)
+names(Correcion_de) <- c("DIRECCION.ENCASILLADA","DISEÑO","EXPEDIENTE","FECHA_ACCIDENTE","FECHA_ACCIDENTES","GRAVEDAD_ACCIDENTE","MES","NRO_RADICADO", "NUMCOMUNA", "BARRIO","COMUNA","LOCATION")
+
+##Se corrige la variable x
+X_union <- as.data.frame(dataAux$DISEÑO)
+names(X_union) <- c("X")
+
+##Se corrige la variable Y
+Y_union <- as.data.frame(dataAux$EXPEDIENTE)
+names(Y_union) <- c("Y..")
+
+data_cor_union <- data.frame(dataAux2,Correcion_de,X_union,Y_union)
+
+data_corregida <- rbind(data_corregida,data_cor_union)
+
+#Se corrige el index del dataframe final
+rownames(data_corregida) <- 1:nrow(data_corregida)
+```
+
+Una vez corregido los errores anteriormente mencionados, en la Tabla 7 se puede observar los valores únicos de la variable diseño corregidos.
+
+```{r}
+kable(data_corregida %>% group_by(DISEÑO) %>% summarise(n = n()) %>% arrange(-n),caption = "Diseño corregidos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 7.** Valores únicos de la variable "DISEÑO" corregidos</center>
+
+<br>
+
+Continuando con la variable "GRAVEDAD_ACCIDENTE", se procede a realizar el mismo análisis que en las variables anteriores.
+
+```{r}
+
+kable(data_corregida %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n),caption = "Gravedad Accidente") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 8.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE" </center>
+
+<br>
+
+En la Tabla 8, podemos observar que existe un error de escritura y que este es corregido como se puede observar en la Tabla 9.
+
+```{r}
+#Correcion de GRAVEDAD_ACCIDENTE
+data_corregida[data_corregida$GRAVEDAD_ACCIDENTE == "Solo da\\xF1os",10] <- "Solo daños"
+```
+
+```{r}
+kable(data_corregida %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n),caption = "Gravedad Accidente corregidos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 9.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE" corregidos </center>
+
+<br>
+
+```{r}
+kable(data_corregida %>% group_by(MES) %>% summarise(n = n()) %>% arrange(-n),caption = "Gravedad Accidente corregidos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
 ```
 
 ```{r}
@@ -132,9 +271,12 @@ Ahora
 ```
 
 ```{r}
-kable(apply(is.na(data),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
-  kable_styling(full_width = F,position = "center") %>% 
-  kable_minimal()
+
+apply(is.na(data_corregida),2,sum)
+
+#kable(apply(is.na(data_corregida),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
+  #kable_styling(full_width = F,position = "center") %>% 
+  #kable_minimal()
 ```
 
 <center>**Tabla 2.** Cantidad de datos perdidos (NA) por cada columna del dataframe "Data"</center>

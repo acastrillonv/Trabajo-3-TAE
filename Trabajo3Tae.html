@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.36">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 </style>
 
 
@@ -134,12 +139,12 @@ ul.task-list{list-style: none;}
 <strong>Tabla 1.</strong> Tipo de variable de cada columna del dataset “Data”
 </center>
 <p><br></p>
-<p>Para el procesamiento de los datos, vamos analizar principalmente la variable “AÑO”. Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece “2019\r”. Otro error que se puede observar es que hay error de almacenamiento en esta misma variable.</p>
+<p>Para el procesamiento de los datos, vamos analizar principalmente la variable “AÑO”. Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece “2019\r”. Otro error que se puede observar es que hay error de almacenamiento en esta misma variable. Por último, como regla del proyecto, no se va a trabajar con registros del año 2017.</p>
 <div class="cell">
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Valores únicos de la variable AÑO</caption>
+<caption>AÑO</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> AÑO </th>
@@ -204,7 +209,7 @@ ul.task-list{list-style: none;}
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Valores únicos de la variable AÑO</caption>
+<caption>AÑO Corregido</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> AÑO </th>
@@ -214,31 +219,27 @@ ul.task-list{list-style: none;}
 <tbody>
   <tr>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> 43293 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> 42489 </td>
+   <td style="text-align:right;"> 47103 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2015 </td>
-   <td style="text-align:right;"> 42431 </td>
+   <td style="text-align:right;"> 46172 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> 42422 </td>
+   <td style="text-align:right;"> 45795 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 40005 </td>
+   <td style="text-align:right;"> 43358 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2014 </td>
-   <td style="text-align:right;"> 20624 </td>
+   <td style="text-align:right;"> 22415 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2020 </td>
-   <td style="text-align:right;"> 19474 </td>
+   <td style="text-align:right;"> 19717 </td>
   </tr>
 </tbody>
 </table>
@@ -246,16 +247,330 @@ ul.task-list{list-style: none;}
 </div>
 </div>
 <center>
-<strong>Tabla 3.</strong> Valores únicos de la variable “AÑO”
+<strong>Tabla 3.</strong> Valores únicos de la variable “AÑO” corregidos
 </center>
 <p><br></p>
-<p>Ahora</p>
+<p>Ahora, relizamos el análisis de la variable “CLASE_ACCIDENTE”. En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente “Caída de Ocupante”, la cual se corregirá con este estandar. También se corregirán los valores que se muestran como “” por “Otro”.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Clase de Accidentes</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> CLASE_ACCIDENTE </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:right;"> 149303 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otro </td>
+   <td style="text-align:right;"> 24717 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Atropello </td>
+   <td style="text-align:right;"> 21703 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caida Ocupante </td>
+   <td style="text-align:right;"> 13750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Volcamiento </td>
+   <td style="text-align:right;"> 8533 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caída de Ocupante </td>
+   <td style="text-align:right;"> 6509 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Incendio </td>
+   <td style="text-align:right;"> 31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caída Ocupante </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caida de Ocupante </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 4.</strong> Valores únicos de la variable “CLASE_ACCIDENTE”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
+<p>Realizando las modificaciones de los errores anteriores, se puede observar en la Tabla 5 los valores únicos corregidos.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Clase de Accidentes corregidos</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> CLASE_ACCIDENTE </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:right;"> 149303 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otro </td>
+   <td style="text-align:right;"> 24717 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Atropello </td>
+   <td style="text-align:right;"> 21703 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caída de Ocupante </td>
+   <td style="text-align:right;"> 20267 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Volcamiento </td>
+   <td style="text-align:right;"> 8533 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Incendio </td>
+   <td style="text-align:right;"> 31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 5.</strong> Valores únicos de la variable “CLASE_ACCIDENTE” corregidos
+</center>
+<p><br></p>
+<p>Realizando de manera similar el análisis en la variable “DISEÑO”, en la Tabla 6 se pueden observar los valores únicos para esta variable, y se observa que existen errores de escritura.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Diseño</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> DISEÑO </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tramo de via </td>
+   <td style="text-align:right;"> 157764 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Interseccion </td>
+   <td style="text-align:right;"> 35329 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lote o Predio </td>
+   <td style="text-align:right;"> 21737 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Glorieta </td>
+   <td style="text-align:right;"> 5303 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso Elevado </td>
+   <td style="text-align:right;"> 1064 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 866 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Puente </td>
+   <td style="text-align:right;"> 842 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ciclo Ruta </td>
+   <td style="text-align:right;"> 839 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso Inferior </td>
+   <td style="text-align:right;"> 523 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso a Nivel </td>
+   <td style="text-align:right;"> 101 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tunel </td>
+   <td style="text-align:right;"> 88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Via peatonal </td>
+   <td style="text-align:right;"> 50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pontón </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pont\xF3n </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 826690.2 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 826675.44 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 829982.25 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 6.</strong> Valores únicos de la variable “DISEÑO”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
+<p>Una vez corregido los errores anteriormente mencionados, en la Tabla 7 se puede observar los valores únicos de la variable diseño corregidos.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Diseño corregidos</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> DISEÑO </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tramo de via </td>
+   <td style="text-align:right;"> 157764 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Interseccion </td>
+   <td style="text-align:right;"> 35329 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lote o Predio </td>
+   <td style="text-align:right;"> 21737 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Glorieta </td>
+   <td style="text-align:right;"> 5303 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso Elevado </td>
+   <td style="text-align:right;"> 1064 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 899 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Puente </td>
+   <td style="text-align:right;"> 842 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ciclo Ruta </td>
+   <td style="text-align:right;"> 839 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso Inferior </td>
+   <td style="text-align:right;"> 523 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Paso a Nivel </td>
+   <td style="text-align:right;"> 101 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tunel </td>
+   <td style="text-align:right;"> 88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Via peatonal </td>
+   <td style="text-align:right;"> 50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pontón </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 7.</strong> Valores únicos de la variable “DISEÑO” corregidos
+</center>
+<p><br></p>
+<p>Continuando con la variable “GRAVEDAD_ACCIDENTE”, se procede a realizar el mismo análisis que en las variables anteriores.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Gravedad Accidente</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> GRAVEDAD_ACCIDENTE </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Con heridos </td>
+   <td style="text-align:right;"> 124887 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Solo daños </td>
+   <td style="text-align:right;"> 77873 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Solo da\xF1os </td>
+   <td style="text-align:right;"> 20560 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Con muertos </td>
+   <td style="text-align:right;"> 1240 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 8.</strong> Valores únicos de la variable “GRAVEDAD_ACCIDENTE”
+</center>
+<p><br></p>
+<p>En la Tabla 8, podemos observar que existe un error de escritura y que este es corregido como se puede observar en la Tabla 9.</p>
 <div class="cell">
 
 </div>
@@ -263,89 +578,120 @@ ul.task-list{list-style: none;}
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Cantidad de datos perdidos (NA) por cada variable</caption>
+<caption>Gravedad Accidente corregidos</caption>
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> x </th>
+   <th style="text-align:left;"> GRAVEDAD_ACCIDENTE </th>
+   <th style="text-align:right;"> n </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> AÑO </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> Con heridos </td>
+   <td style="text-align:right;"> 124887 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> CBML </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> Solo daños </td>
+   <td style="text-align:right;"> 98433 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> CLASE_ACCIDENTE </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> DIRECCION </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> DIRECCION.ENCASILLADA </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> DISEÑO </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> EXPEDIENTE </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> FECHA_ACCIDENTE </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> FECHA_ACCIDENTES </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> GRAVEDAD_ACCIDENTE </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> MES </td>
-   <td style="text-align:right;"> 53 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> NRO_RADICADO </td>
-   <td style="text-align:right;"> 53 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> NUMCOMUNA </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> BARRIO </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> COMUNA </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> LOCATION </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> X </td>
-   <td style="text-align:right;"> 53 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Y.. </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> Con muertos </td>
+   <td style="text-align:right;"> 1240 </td>
   </tr>
 </tbody>
 </table>
 
+</div>
+</div>
+<center>
+<strong>Tabla 9.</strong> Valores únicos de la variable “GRAVEDAD_ACCIDENTE” corregidos
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Gravedad Accidente corregidos</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> MES </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 8 </td>
+   <td style="text-align:right;"> 22838 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 7 </td>
+   <td style="text-align:right;"> 21172 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 9 </td>
+   <td style="text-align:right;"> 20128 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 10 </td>
+   <td style="text-align:right;"> 20101 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12 </td>
+   <td style="text-align:right;"> 19514 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11 </td>
+   <td style="text-align:right;"> 18659 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:right;"> 18378 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:right;"> 17610 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:right;"> 17224 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:right;"> 16648 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 6 </td>
+   <td style="text-align:right;"> 16621 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:right;"> 15667 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                  AÑO                  CBML       CLASE_ACCIDENTE 
+                    0                     0                     0 
+            DIRECCION DIRECCION.ENCASILLADA                DISEÑO 
+                    0                     0                     0 
+           EXPEDIENTE       FECHA_ACCIDENTE      FECHA_ACCIDENTES 
+                    0                     0                     0 
+   GRAVEDAD_ACCIDENTE                   MES          NRO_RADICADO 
+                    0                     0                     0 
+            NUMCOMUNA                BARRIO                COMUNA 
+                    0                     0                     0 
+             LOCATION                     X                   Y.. 
+                    0                     0                     0 </code></pre>
 </div>
 </div>
 <center>
@@ -428,7 +774,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

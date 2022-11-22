@@ -5,14 +5,144 @@ format: html
 editor: visual
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message = F,warning = F)
+```
+
+```{r}
+library(kableExtra)
+library(dplyr)
+library(stringr)
+```
+
+# 1- Contexto del problema
+
+sskks
+
 ```{r}
 #Carga del dataset
-data <- read.csv("incidentes_viales.csv", encoding = "UTF-8", header = TRUE, sep = ";")
-head(data)
+data <- read.csv("incidentes_viales.csv", encoding = "UTF-8", header = TRUE, sep = ";", dec = ".")
+#head(data)
 ```
+
+# 2- Procesamiento de los datos
+
+la Tabla 1, se puede observar que en su mayoria, casi todas las variables son de tipo "character", exceptuando las variables "MES" y "NRO_RADICADO" que son de tipo "integer" y la variable "Y.." que es de tipo "numeric".
+
+```{r}
+analisis_de_variables<-as.data.frame(lapply(data, class))
+
+kable(analisis_de_variables,caption = "Tipo de variable") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 1.** Tipo de variable de cada columna del dataset "Data"</center>
+
+<br>
+
+Para el procesamiento de los datos, vamos analizar principalmente la variable "AÑO". Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece "2019\\r". Otro error que se puede observar es que hay error de almacenamiento en esta misma variable.
+
+```{r}
+#Frecuencia de la variable ano
+tabla_frecuencia_ano <- data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n)
+
+
+kable(head(tabla_frecuencia_ano,10),caption = "Valores únicos de la variable AÑO") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 2.** Primeros 10 valores únicos de la variable "AÑO"</center>
+
+<br>
+
+```{r}
+#Correcion del año 2019
+
+data <- data %>% mutate(AÑO = ifelse(AÑO ==  "2019\\r" , "2019", AÑO))
+
+
+#Correcion error 2
+
+##Se separa en dataframe aux los registros con error 2
+dataAux <- subset(data, data$AÑO!= "2014" & data$AÑO!= "2015" & data$AÑO!= "2016" & data$AÑO!= "2017" & data$AÑO!= "2018" & data$AÑO!= "2019" & data$AÑO!= "2020")
+
+##Se eliminan del dataset original los registros con error 2
+Filtro <- is.element(data$AÑO,dataAux$AÑO)
+data <- data[! Filtro,]
+
+##Se corrige la variable ano
+Correcion_ano <- strsplit(dataAux$AÑO, ";")
+Correcion_ano <- as.data.frame(Correcion_ano)
+Correcion_ano <- t(Correcion_ano)
+
+rownames(Correcion_ano) <- 1:nrow(Correcion_ano)
+Correcion_ano <- as.data.frame(Correcion_ano)
+names(Correcion_ano) <- c("AÑO", "CBML", "CLASE_ACCIDENTE", "DIRECCION", "DIRECCION.ENCASILLADA","DISEÑO","EXPEDIENTE","FECHA_ACCIDENTE","FECHA_ACCIDENTES","GRAVEDAD_ACCIDENTE","MES",
+"NRO_RADICADO", "NUMCOMUNA", "BARRIO", "COMUNA", "LOCATION")
+
+##Se corrige la variable x
+X_union <- as.data.frame(dataAux$CBML)
+names(X_union) <- c("X")
+
+##Se corrige la variable Y
+Y_union <- as.data.frame(dataAux$CLASE_ACCIDENTE)
+
+for(fila in 1:nrow(Y_union)){
+  Y_union[fila,] <- str_sub(Y_union[1,],1,nchar(Y_union[1,])-1)
+}
+names(Y_union) <- c("Y..")
+
+data_corregida_1 <- data.frame(Correcion_ano,X_union,Y_union)
+
+data_corregida <- rbind(data,data_corregida_1)
+```
+
+Una vez corregido lo anterior, En la tabla 3 podemos visualizar las nuevas frecuencias de los datos únicos de la variable "AÑO"
+
+```{r}
+#Frecuencia de la variable ano corregida
+tabla_frecuencia_ano_corregida <- data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n)
+
+
+kable(tabla_frecuencia_ano_corregida,caption = "Valores únicos de la variable AÑO") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 3.** Valores únicos de la variable "AÑO"</center>
+
+<br>
+
+Ahora
+
+```{r}
+#tabla_CLASE_ACCIDENTE <- data %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n)
+#tabla_CLASE_ACCIDENTE
+```
+
+```{r}
+#dplyr::count(data, AÑO, sort = TRUE)
+```
+
+```{r}
+
+#p<- is.nan(data$AÑO)
+```
+
+```{r}
+kable(apply(is.na(data),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 2.** Cantidad de datos perdidos (NA) por cada columna del dataframe "Data"</center>
+
+<br>
 
 ```{r}
 #Seleccion de variables
 
-data <- subset(data, select = -c(DIRECCION, "DIRECCION ENCASILLADA", EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
+#data <- subset(data, select = -c(DIRECCION, "DIRECCION ENCASILLADA", EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
 ```

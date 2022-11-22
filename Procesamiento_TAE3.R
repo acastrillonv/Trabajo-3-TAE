@@ -17,8 +17,6 @@ names(data)
 names(data)[6] <- "DESING"
 
 
-#data <- select(data, CLASE_ACCIDENTE, DESING, FECHA_ACCIDENTES, DIRECCION, GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y..)       
-
 # CLASE_ACCIDENTE
 
 tabla_CLASE_ACCIDENTE <- data %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n)
@@ -58,9 +56,6 @@ DAY_YEAR <- yday(FECHA_ACCIDENTE)
 data <- data %>% mutate(FECHA_ACCIDENTE, HOUR, DAY, WEEK_YEAR, MONTH, YEAR, DAY_MONTH, DAY_YEAR)
 
 
-
-#data <- select(data, FECHA_ACCIDENTE, HOUR, DAY, WEEK_YEAR, MONTH, YEAR, DAY_MONTH, DAY_YEAR, CLASE_ACCIDENTE, DESING, GRAVEDAD_ACCIDENTE, NUMCOMUNA, BARRIO, COMUNA, LOCATION, X, Y.., DIRECCION)       
-
 # GRAVEDAD_ACCIDENTE 
 
 data %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>% arrange(-n)
@@ -68,7 +63,6 @@ data <- data %>% mutate(GRAVEDAD_ACCIDENTE = ifelse(GRAVEDAD_ACCIDENTE=="Solo da
                           GRAVEDAD_ACCIDENTE = ifelse(GRAVEDAD_ACCIDENTE ==  "" , "Otro", GRAVEDAD_ACCIDENTE))
 data %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n())
 
-#### falta----------------------------------------------------------------------------------------------------------------------------
 
 # NUMCOMUNA
 
@@ -202,11 +196,9 @@ data %>%
 
 # COMUNA
 
-View(data %>% group_by(COMUNA) %>% summarise(n = n()))
-#data <- data %>% mutate(COMUNA = ifelse(str_detect(data$COMUNA, "^Sebast(\xE1|á)"),
-#                                          "Corregimiento de San Sebastián de Palmitas",COMUNA),
-#                          COMUNA = ifelse(str_detect(data$COMUNA, "^Cris(\xF3|ó)"),
-#                                          "Corregimiento de San Cristóbal",COMUNA))
+
+data <- data %>% mutate(COMUNA = ifelse(COMUNA == "Bel\\xE9n", "Belén",COMUNA),
+                       COMUNA = ifelse(COMUNA ==  "La Am\\xE9rica","La América",COMUNA))
 
 
 data <- filter(data, COMUNA != "Corregimiento de Altavista")
@@ -215,21 +207,7 @@ data <- filter(data, COMUNA != "Corregimiento de San Cristóbal")
 data <- filter(data, COMUNA != "Corregimiento de San Sebastián de Palmitas")
 data <- filter(data, COMUNA != "Corregimiento de San Crist\\xF3bal")
 data <- filter(data, COMUNA != "Corregimiento de San Sebasti\\xE1n de Palmitas")
-#data <- filter(data, DIRECCION != "CL 1 CR 3")
-#data <- filter(data, DIRECCION != "CL 62 CR 131") #pertenece al corregimiento de san cristobal
+data <- filter(data, DIRECCION != "CL 1 CR 3")
 
 
 
-
-
-#---------------------------------------------------------------------------------------
-#(View(data %>% group_by(NUMCOMUNA) %>% summarise(n = n())))
-#View(data <- filter(data, NUMCOMUNA == "In"))
-#data <- filter(data, COMUNA != "Corregimiento de San Crist\xF3bal")
-#View(filter(data, COMUNA != "Corregimiento de San Crist\xF3bal"))
-
-#starts_with("Corregimiento")
-
-#data %>% group_by(COMUNA) %>% summarise(n = n())  
-#data <- data %>% mutate(COMUNA = ifelse(COMUNA == select(starts_with("Corregimiento")), "CorregimientO",COMUNA))
-#---------------------------------------------------------------------------------------

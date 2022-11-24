@@ -857,3 +857,10 @@ kable(size,caption = "Tamaño de los datos") %>%
 <center>**Tabla 21.** Tamaño de la base de datos</center>
 
 <br>
+
+```{r}
+#Ejemplo de como agrupar
+#accFechas <- data_corregida %>% 
+#  group_by(FECHA_ACCIDENTE) %>% 
+#  summarise(TOTAL = n())
+```

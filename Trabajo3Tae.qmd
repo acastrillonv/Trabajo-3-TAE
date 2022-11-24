@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = FALSE,message = F,warning = F)
 library(kableExtra)
 library(dplyr)
 library(stringr)
+library(lubridate)
+library(tidyverse)
 ```
 
 # 1- Contexto del problema
@@ -41,12 +43,14 @@ kable(analisis_de_variables,caption = "Tipo de variable") %>%
 
 <br>
 
+## 2.1- Correción del formato de los datos
+
 Para el procesamiento de los datos, vamos analizar principalmente la variable "AÑO". Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece "2019\\r". Otro error que se puede observar es que hay error de almacenamiento en esta misma variable. Por último, como regla del proyecto, no se va a trabajar con registros del año 2017.
 
 ```{r}
 #Frecuencia de la variable ano
 
-kable(head(data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),10),caption = "AÑO") %>% 
+kable(head(data %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),10),caption = "Año") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```
@@ -71,6 +75,7 @@ Filtro <- is.element(data$AÑO,dataAux$AÑO)
 data <- data[! Filtro,]
 
 ##Se corrige la variable ano
+
 Correcion_ano <- strsplit(dataAux$AÑO, ";")
 Correcion_ano <- as.data.frame(Correcion_ano)
 Correcion_ano <- t(Correcion_ano)
@@ -113,7 +118,7 @@ Una vez corregido lo anterior, En la tabla 3 podemos visualizar las nuevas frecu
 ```{r}
 #Frecuencia de la variable ano corregida
 
-kable(data_corregida %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),caption = "AÑO Corregido") %>% 
+kable(data_corregida %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),caption = "Año Corregido") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```
@@ -122,7 +127,7 @@ kable(data_corregida %>% group_by(AÑO) %>% summarise(n = n()) %>% arrange(-n),c
 
 <br>
 
-Ahora, relizamos el análisis de la variable "CLASE_ACCIDENTE". En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente "Caída de Ocupante", la cual se corregirá con este estandar. También se corregirán los valores que se muestran como "" por "Otro".
+Ahora, relizamos el análisis de la variable "CLASE_ACCIDENTE". En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente "Caída de Ocupante", la cual se corregirá con este estandar. También se corregirán los valores que se muestran como "" por NA.
 
 ```{r}
 
@@ -141,7 +146,7 @@ kable(data_corregida %>% group_by(CLASE_ACCIDENTE) %>% summarise(n = n()) %>% ar
 data_corregida[data_corregida$CLASE_ACCIDENTE == "Caida de Ocupante",3] <- "Caída de Ocupante"
 data_corregida[data_corregida$CLASE_ACCIDENTE == "Caida Ocupante",3] <- "Caída de Ocupante"
 data_corregida[data_corregida$CLASE_ACCIDENTE == "Caída Ocupante",3] <- "Caída de Ocupante"
-
+data_corregida[data_corregida$CLASE_ACCIDENTE == '""',3] <- NA
 ```
 
 Realizando las modificaciones de los errores anteriores, se puede observar en la Tabla 5 los valores únicos corregidos.
@@ -211,6 +216,8 @@ data_corregida <- rbind(data_corregida,data_cor_union)
 
 #Se corrige el index del dataframe final
 rownames(data_corregida) <- 1:nrow(data_corregida)
+
+data_corregida[data_corregida$DISEÑO == '""',6] <- NA
 ```
 
 Una vez corregido los errores anteriormente mencionados, en la Tabla 7 se puede observar los valores únicos de la variable diseño corregidos.
@@ -234,7 +241,7 @@ kable(data_corregida %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>%
   kable_minimal()
 ```
 
-<center>**Tabla 8.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE" </center>
+<center>**Tabla 8.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE"</center>
 
 <br>
 
@@ -251,40 +258,602 @@ kable(data_corregida %>% group_by(GRAVEDAD_ACCIDENTE) %>% summarise(n = n()) %>%
   kable_minimal()
 ```
 
-<center>**Tabla 9.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE" corregidos </center>
+<center>**Tabla 9.** Valores únicos de la variable "GRAVEDAD_ACCIDENTE" corregidos</center>
 
 <br>
 
+Al analizar la variable "NUMCOMUNA", podemos observar en la Tabla 10 los errores de escritura que hay en el número de la columna, puesto que existen varias formas para referenciar a la misma información, como lo es el casi de la comuna "2" y "02". También hay valores que no hacen referencia a ningún número de comuna, estos valores se modificaran por valores NA.
+
 ```{r}
-kable(data_corregida %>% group_by(MES) %>% summarise(n = n()) %>% arrange(-n),caption = "Gravedad Accidente corregidos") %>% 
+#data_corregida %>% group_by(NUMCOMUNA) %>% summarise(n = n()) %>% arrange(-n)
+
+kable(data_corregida %>% group_by(NUMCOMUNA) %>% summarise(n = n()) %>% arrange(-n),caption = "Número de comuna") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```
 
-```{r}
-#dplyr::count(data, AÑO, sort = TRUE)
-```
-
-```{r}
-
-#p<- is.nan(data$AÑO)
-```
-
-```{r}
-
-apply(is.na(data_corregida),2,sum)
-
-#kable(apply(is.na(data_corregida),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
-  #kable_styling(full_width = F,position = "center") %>% 
-  #kable_minimal()
-```
-
-<center>**Tabla 2.** Cantidad de datos perdidos (NA) por cada columna del dataframe "Data"</center>
+<center>**Tabla 10.** Valores únicos de la variable "NUMCOMUNA"</center>
 
 <br>
 
 ```{r}
-#Seleccion de variables
+#Correcion de la variable numcomuna
 
-#data <- subset(data, select = -c(DIRECCION, "DIRECCION ENCASILLADA", EXPEDIENTE, NRO_RADICADO, LOCATION, NUMCOMUNA))
+data_corregida[data_corregida$NUMCOMUNA == "01",13] <- "1"
+data_corregida[data_corregida$NUMCOMUNA == "02",13] <- "2"
+data_corregida[data_corregida$NUMCOMUNA == "03",13] <- "3"
+data_corregida[data_corregida$NUMCOMUNA == "04",13] <- "4"
+data_corregida[data_corregida$NUMCOMUNA == "05",13] <- "5"
+data_corregida[data_corregida$NUMCOMUNA == "06",13] <- "6"
+data_corregida[data_corregida$NUMCOMUNA == "07",13] <- "7"
+data_corregida[data_corregida$NUMCOMUNA == "08",13] <- "8"
+data_corregida[data_corregida$NUMCOMUNA == "09",13] <- "9"
+data_corregida[data_corregida$NUMCOMUNA == "Sin Inf",13] <- "0"
+data_corregida[data_corregida$NUMCOMUNA == "In",13] <- "0"
+data_corregida[data_corregida$NUMCOMUNA == "AU",13] <- "0"
+data_corregida[data_corregida$NUMCOMUNA == "SN",13] <- "0"
+
+data_corregida[data_corregida$NUMCOMUNA == "0",13] <- NA
 ```
+
+Corrigiendo lo anterior, se puede observar los números de las comunas corregidos en la Tabla 11.
+
+```{r}
+kable(data_corregida %>% group_by(NUMCOMUNA) %>% summarise(n = n()) %>% arrange(-n),caption = "Número de comuna corregido") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 11.** Valores únicos de la variable "NUMCOMUNA" corregidos</center>
+
+<br>
+
+Continuando con la variable "BARRIO", se observa que también existen errores de escritura como se observa en la Tabla 12. Estos errores se corrigen, dando resultado a lo observado en la Tabla 13.
+
+```{r}
+
+data_corregida$BARRIO <- as.factor(data_corregida$BARRIO)
+
+kable(head(levels(data_corregida$BARRIO),15),caption = "Barrios") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 12.** Valores únicos de la variable "BARRIO"</center>
+
+<br>
+
+```{r}
+data_corregida <- data_corregida %>% 
+  mutate(BARRIO = recode(BARRIO,
+                         "Campo Vald\\xE9s No. 1" = "Campo Valdés No. 1",
+                          "L\\xF3pez de Mesa" = "López de Mesa",
+                         "Doce de Octubre No.2" = "Doce de Octubre No. 2",
+                          "El Coraz\\xF3n" = "El Corazón",
+                          "La Loma De Los Bernal" = "Loma de los Bernal",
+                          "La Loma de Los Bernal" = "Loma de los Bernal",
+                         "Suburbano La Palma-El Patio" = "Suburbano La Palma - El Patio",
+                          "Suburbano Pedregal alto" = "Suburbano Pedregal Alto",
+                          "U.D. Atanasio Girardot" = "Unidad Deportiva Atanasio Girardot",
+                          "Versalles No.1" = "Versalles No. 1",                              
+                          "Versalles No.2" = "Versalles No. 2",
+                         "Catalu\\xF1a" = "Cataluña",                           
+                          "Coraz\\xF3n de Jes\\xFAs" = "Corazón de Jesús",
+                         "Suburbano La Palma-El Patio" = "Suburbano La Palma - El Patio",
+                          "Suburbano Travesias" = "Suburbano Travesías",
+                          "Villa Liliam" = "Villa Lilliam",
+                         "Suburbano Aguas Frias" = "Suburbano Aguas Frías",
+                          "Suburbano Palma Patio" = "Suburbano La Palma - El Patio",
+                          "Diego Echavarr\\xEDa" = "Diego Echavarría",                      
+                          "Doce de Octubre No.1" = "Doce de Octubre No. 1",
+                          "Maria Cano Carambolas" = "María Cano Carambolas",
+                         "Santa Mar\\xEDa de Los \\xC1ngeles" = "Santa María de los Ángeles",
+                          "Santa María de Los Ángeles" = "Santa María de los Ángeles",      
+                          "Santo Domingo Savio No.1" = "Santo Domingo Savio No. 1",
+                         "San Germ\\xE1n" = "San Germán",
+                         "Alejandr\\xEDa" = "Alejandría",
+                          "Alejandro Echavarr\\xEDa" = "Alejandro Echavarría",
+                          "Alfonso L\\xF3pez" = "Alfonso López",
+                          "San Javier No.1" = "San Javier No. 1",
+                         "Santa In\\xE9s" = "Santa Inés",
+                         "La Am\\xE9rica" = "La América",
+                          "La Mansi\\xF3n" = "La Mansión",
+                         "Manrique Central No.1" = "Manrique Central No. 1",
+                          "Manrique Central No.2" = "Manrique Central No. 2",
+                          "La mota" = "La Mota",
+                         "Mosc\\xFA No.2" = "Moscú No. 2",                              
+                          "Moscú No.1" = "Moscú No. 1",
+                          "San Javier No.2" = "San Javier No. 2",
+                         "Area de Expansion Altos de Calasanz" = "Área de expansión Altos de Calasanz",
+                          "Área de Expansión Altos de Calasanz" = "Área de expansión Altos de Calasanz",       
+                          "Area De Expansion Belen Rincon" = "Área de expansión Belén Rincón",
+                          "Área de Expansión Pajarito" = "Área de expansión Pajarito",              
+                          "Área de Expansión San Antonio de Prado" = "Área de expansión San Antonio de Prado",
+                          "San Joaqu\\xEDn" = "San Joaquín",
+                         "Piedras Blancas - Matasano" = "Piedras Blancas",
+                         "Berlin" = "Berlín",                                        
+                          "Bermejal-Los Alamos" = "Bermejal - Los Álamos",
+                          "San Jos\\xE9 de la Monta\\xF1a" = "San José de la Montaña",
+                         "Nueva Villa de la Iguan\\xE1" = "Nueva Villa de la Iguaná",
+                          "Antonio Nari\\xF1o" = "Antonio Nariño",
+                         "Las Lomas No.1" = "Las Lomas No. 1",                             
+                          "Las Lomas No.2" = "Las Lomas No. 2",
+                         "Sim\\xF3n Bol\\xEDvar" = "Simón Bolívar",
+                         "B. Cerro  El Volador" = "Barrio Cerro El Volador",                                          "Bombon\\xE1 No.1" = "Bomboná No. 1",
+                          "Jard\\xEDn Bot\\xE1nico" = "Jardín Botánico",
+                          "SUBURB El Plan" = "Suburbano El Plan",
+                          "Los \\xC1ngeles" = "Los Ángeles",
+                          "Area De Expansion Altavista" = "Área de expansión Altavista",
+                          "Nueva Villa de La Iguaná" = "Nueva Villa de la Iguaná",
+                          "San Jos\\xE9 la Cima No. 1" = "San José de la Cima No. 1",
+                          "San Jos\\xE9 la Cima No.2" = "San José de la Cima No. 2",
+                         "Los Alc\\xE1zares" = "Los Alcázares",
+                         "La Pi\\xF1uela" = "La Piñuela",
+                         "F\\xE1tima" = "Fátima",
+                         "Play\\xF3n de Los Comuneros" = "Playón de los Comuneros",
+                          "San Mart\\xEDn de Porres" = "San Martín de Porres",
+                          "Santa Fé" = "Santa Fe",                               
+                          "Suburbano el Tesoro" = "Suburbano El Tesoro",
+                          "Facultad de Minas U. Nacional" = "Facultad de Minas U. Nacional",
+                          "H\\xE9ctor Abad G\\xF3mez" = "Héctor Abad Gómez",
+                          "Los Balsos No.1" = "Los Balsos No. 1",
+                         "Asomadera No.1" = "Asomadera No. 1",
+                          "Aguas frias" = "Aguas Frías",
+                          "Aguas Frias" = "Aguas Frías",
+                         "Bombon\\xE1 No. 1" = "Bomboná No. 1",
+                         "Mar\\xEDa Cano Carambolas" = "María Cano Carambolas",                                       "Andaluc\\xEDa" = "Andalucía",
+                          "Mosc\\xFA No. 1" = "Moscú No. 1",
+                         "San Jose Del Manzanillo" = "San José del Manzanillo",
+                         "Nueva Villa de la Iguan\\xE1" = "Nueva Villa de la Iguaná",
+                          "Antonio Nari\\xF1o" = "Antonio Nariño",
+                          "Area De Expansion Altavista" = "Área de expansión Altavista",
+                          "Nueva Villa de La Iguaná" = "Nueva Villa de la Iguaná",
+                         "Santa F\\xE9" = "Santa Fe",
+                         "Santa Luc\\xEDa" = "Santa Lucía",
+                          "Santa M\\xF3nica" = "Santa Mónica",                              
+                          "Santa Mar\\xEDa de los \\xC1ngeles" = "Santa María de los Ángeles",
+                          "Play\\xF3n de Los Comuneros" = "Playón de los Comuneros",
+                          "San José la Cima No. 1" = "San José de la Cima No. 1",
+                         "El Corazon El Morro" = "El Corazón - El Morro",
+                          "El Nogal-Los Almendros" = "El Nogal - Los Almendros",
+                          "Bomboná No.1" = "Bomboná No. 1",
+                          "B. Cerro El Volador" = "Barrio Cerro El Volador",
+                          "Barrio Col\\xF3n" = "Barrio Colón",
+                         "Playón de Los Comuneros" = "Playón de los Comuneros",
+                          "Santa Elena" = "Santa Elena Sector Central",
+                         "Hospital San Vicente de Pa\\xFAl" = "Hospital San Vicente de Paúl",
+                          "San José la Cima No.2" = "San José de la Cima No. 2",
+                          "Mosc\\xFA No. 2" = "Moscú No. 2",
+                          "Jes\\xFAs Nazareno" = "Jesús Nazareno",
+                          "Área de Expansión Altavista" = "Área de expansión Altavista",
+                          "Bombon\\xE1 No. 2" = "Bomboná No. 2",
+                          "AUC2" = "Cabecera San Antonio de Prado",
+                         "Moscú No.2" = "Moscú No. 2",
+                          "Nueva Villa de Aburr\\xE1" = "Nueva Villa de Aburrá",
+                         "Boqueron" = "Boquerón",                
+                          "Boyac\\xE1" = "Boyacá",                                     
+                          "C\\xF3rdoba" = "Córdoba",                                  
+                          "Cabecera Urbana San Cristobal" = "Cabecera Urbana San Cristóbal",
+                          "AUC1" = "Cabecera Urbana San Cristóbal",
+                          "Aures No.1" = "Aures No. 1",
+                         "Bel\\xE9n" = "Belén",                                    
+                          "Belalc\\xE1zar" = "Belalcázar",                         
+                          "Berl\\xEDn" = "Berlín",
+                          "Aures No.2" = "Aures No. 2",
+                         "Campo Vald\\xE9s No. 2" = "Campo Valdés No. 2",
+                          "Campo Vald\\xE9s No.2" = "Campo Valdés No. 2",
+                          "Campo Valdés No.2" = "Campo Valdés No. 2",
+                         "Barrio Crist\\xF3bal" = "Barrio Cristóbal",    
+                          "Barrio de Jes\\xFAs" = "Barrio de Jesús",     
+                          "Barrios de Jesús" = "Barrio de Jesús",
+                         "\\xC1rea de Expansi\\xF3n Altos de Calasanz" = "Área de expansión Altos de Calasanz",
+                         "\\xC1rea de Expansi\\xF3n Pajarito" = "Área de expansión Pajarito",
+                         "\\xC1rea de Expansi\\xF3n San Antonio de Prado" = "Área de expansión San Antonio de Prado",
+                          "Batall\\xF3n Girardot" = "Batallón Girardot",
+                          "Los Balsos No.2" = "Los Balsos No. 2",
+                         "El Progreso No.2" = "El Progreso No. 2",                       
+                          "El Rinc\\xF3n" = "El Rincón",                                
+                          "El Vel\\xF3dromo" = "El Velódromo",                             
+                          "Estaci\\xF3n Villa" = "Estación Villa",
+                        
+                          "0205" = "La Francia",                                          
+                          "0208" = "Villa Niza",
+                          "0211" = "La Rosa",                                          
+                          "0301" = "La Salle",
+                          "0302" = "Las Granjas",
+                          "1103" = "Naranjal",                                         
+                          "1105" = "Los Conquistadores",
+                          "1108" = "Laureles",
+                          "0303" = "Campo Valdés No. 2",
+                          "0304" = "Santa Inés",                                          
+                          "0306" = "El Pomar",
+                          "0307" = "Manrique Central No. 2",                                                           "0509" = "Girardot",   
+                          "0309" = "Versalles No. 1",
+                         "0310" = "Versalles No. 2",
+                          "5002" = "La Frisola",
+                          "6001" = "La Loma",                                         
+                          "7001" = "Altavista Sector Central",
+                          "0202" = "Playón de los Comuneros",
+                          "0312" = "Oriente",
+                          "0514" = "Alfonso López",
+                         "0409" = "Manrique Central No. 1",
+                          "0606" = "San Martín de Porres",
+                          "0105" = "Moscú No. 2",
+                          "0402" = "San Isidro",                                         
+                          "0408" = "San Pedro",                  
+                          "0413" = "Aranjuez",
+                         "0711" = "El Diamante",
+                          "0505" = "Boyacá",
+                         "0103" = "Popular",
+                          "0712" = "Aures No. 2",
+                         "0803" = "San Miguel",
+                         "0109" = "Aldea Pablo VI",
+                          "0716" = "Palenque",                                          
+                          "0717" = "Robledo",           
+                          "0809" = "Sucre",
+                          "0811" = "Trece de Noviembre",
+                          "0813" = "Villatina",
+                          "0815" = "Las Estancias",                                         
+                          "0819" = "Villa Lilliam",
+                          "1008" = "Corazón de Jesús",
+                          "1019" = "La Candelaria",                                         
+                          "1020" = "San Diego",
+                          "1101" = "Carlos E. Restrepo",
+                          "1011" = "Calle Nueva",                                         
+                          "1012" = "Perpetuo Socorro",
+                          "0903" = "Bomboná No. 2",                                         
+                          "0906" = "Barrio Caicedo",
+                          "0907" = "Buenos Aires",                                          
+                          "0912" = "El Salvador",
+                          "0914" = "Asomadera No. 1",
+                          "1001" = "Prado",
+                         "0505" = "Boyacá", 
+                          "1015" = "Bomboná No. 1",                                         
+                          "1018" = "Villa Nueva",                        
+                          "1102" = "Suramericana",                   
+                          "1114" = "Los Colores",
+                          "1202" = "Calasanz",
+                         "1003" = "Jesús Nazareno",                                         
+                          "1004" = "El Chagualo",
+                          "1007" = "Guayaquil",
+                          "9086" = "Suburbano El Plan",
+                          "1204" = "La América",
+                          "1205" = "La Floresta",                                         
+                          "1206" = "Santa Lucía",
+                          "1211" = "Simón Bolívar",                                         
+                          "1306" = "La Pradera",
+                          "1408" = "Altos del Poblado",
+                         "7002" = "Aguas Frías",                                         
+                          "9004" = "Santa Elena",
+                          "1603" = "Belén",
+                          "1419" = "Manila",
+                          "1422" = "La Aguacatala",                                         
+                          "1423" = "Santa María de los Ángeles",
+                          "1503" = "Trinidad",                                         
+                          "1504" = "Santa Fe",
+                          "1507" = "Campo Amor",                                         
+                          "1510" = "Guayabal",
+                          "1511" = "La Colina",                                         
+                          "1605" = "San Bernardo",                                         
+                          "1611" = "Loma de los Bernal",
+                          "1612" = "La Gloria",                                         
+                          "1613" = "Altavista",
+                          "1620" = "El Nogal - Los Almendros",
+                         "1423" = "Santa María de los Ángeles"))
+
+data_corregida[data_corregida$BARRIO == "0",14] <- NA
+```
+
+```{r}
+
+kable(head(data_corregida %>% group_by(BARRIO) %>% summarise(n = n()) %>% arrange(-n),5),caption = "Barrios corregidos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 13.** Valores únicos de la variable "BARRIO" corregidos</center>
+
+<br>
+
+Ahora, analizando la variable "COMUNA", podemos observar en la Tabla 14, que existen errores de escritura y también existen valores que no hacen referencia a ninguna comuna, estos serán sustituidos por el valor NA. En la Tabla 15 se pueden ver los valores de la comunas corregidos.
+
+```{r}
+
+kable(head(data_corregida %>% group_by(COMUNA) %>% summarise(n = n()) %>% arrange(-n),10),caption = "Comunas") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 14.** Valores únicos de la variable "COMUNA"</center>
+
+<br>
+
+```{r}
+data_corregida[data_corregida$COMUNA == "Corregimiento de San Sebasti\\xE1n de Palmitas",15] <- "Corregimiento de San Sebastián de Palmitas"
+data_corregida[data_corregida$COMUNA == "La Am\\xE9rica",15] <- "La América"
+data_corregida[data_corregida$COMUNA == "Corregimiento de San Crist\\xF3bal",15] <- "Corregimiento de San Cristóbal"
+data_corregida[data_corregida$COMUNA == "Corregimiento de San Crist\\xF3bal",15] <- "Corregimiento de San Cristóbal"
+data_corregida[data_corregida$COMUNA == "Bel\\xE9n",15] <- "Belén"
+
+data_corregida[data_corregida$COMUNA == '""',15] <- "0"
+data_corregida[data_corregida$COMUNA == "Sin Inf",15] <- "0"
+data_corregida[data_corregida$COMUNA == "SN",15] <- "0"
+data_corregida[data_corregida$COMUNA == "AU",15] <- "0"
+data_corregida[data_corregida$COMUNA == "In",15] <- "0"
+data_corregida[data_corregida$COMUNA == "No Georef",15] <- "0"
+
+data_corregida[data_corregida$COMUNA == "0",15] <- NA
+```
+
+```{r}
+kable(head(data_corregida %>% group_by(COMUNA) %>% summarise(n = n()) %>% arrange(-n),7),caption = "Comunas Corregidas") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 15.** Valores únicos de la variable "COMUNA" corregidos</center>
+
+<br>
+
+Ahora, se analiza la variable "MES"
+
+```{r}
+kable(data_corregida %>% group_by(MES) %>% summarise(n = n()) %>% arrange(-n),caption = "Mes") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 16.** Valores únicos de la variable "MES"</center>
+
+<br>
+
+Se observa en la Tabla 16 que el formato de esta variable esta almacenado como dígito. Esto es cambiado por el nombre del mes como se observa en la Tabla 17.
+
+```{r}
+data_corregida <- data_corregida %>% 
+  mutate(MES = recode(MES,
+                         "1" = "Enero",
+                         "2" = "Febrero",
+                         "3" = "Marzo",
+                         "4" = "Abril",
+                         "5" = "Mayo",
+                         "6" = "Junio",
+                         "7" = "Julio",
+                         "8" = "Agosto",
+                         "9" = "Septiembre",
+                         "10" = "Octubre",
+                         "11" = "Noviembre",
+                         "12" = "Diciembre",
+                         ))
+```
+
+```{r}
+kable(data_corregida %>% group_by(MES) %>% summarise(n = n()) %>% arrange(-n),caption = "Mes corregido") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 17.** Valores únicos de la variable "MES" corregidos</center>
+
+<br>
+
+La variable "LONGITUD" posee la latitud y la longitud del lugar donde ocurrió el accidente. Para facilidad de obtener estos valores, se cambia el formato de esta variable, creando dos variables en donde se almacene cada componente independiente.
+
+```{r}
+ 
+# Se eliminan los corchetes
+data_corregida$LOCATION <- substr(data_corregida$LOCATION,2,
+                                    nchar(data_corregida$LOCATION)-1)
+
+#Se obtiene la lactitud y logitud
+data_corregida[c("LATITUD","LONGITUD")] <- str_split_fixed(data_corregida$LOCATION, ", ", 2)
+```
+
+Por último, la variable "FECHA_ACCIDENTE" como vimos anteriormente, posee un formato "character", este sera cambiado por formato "date" para poder trabajar mejor con la fecha.
+
+```{r}
+
+data_corregida$FECHA_ACCIDENTE <- as.Date(data_corregida$FECHA_ACCIDENTE, format= "%d/%m/%Y %H:%M:%S")
+```
+
+## 2.4- Análisis de duplicados
+
+En la Tabla 18, podemos observar que hicisten 3 registros los cuales son duplicados en nuestra base de datos, estos registros serán eliminados.
+
+```{r}
+kable(data_corregida[duplicated(data_corregida),],caption = "Registros duplicados") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 18.** Registros duplicados en la base de datos</center>
+
+<br>
+
+```{r}
+# Se eliminan los registros iguales
+data_corregida <- unique(data_corregida)
+```
+
+```{r}
+#Se limpia la variable Expediente
+data_corregida[data_corregida$EXPEDIENTE == '""',7] <- "0"
+data_corregida[data_corregida$EXPEDIENTE == "-",7] <- "0"
+data_corregida[data_corregida$EXPEDIENTE == "N/R",7] <- "0"
+data_corregida[data_corregida$EXPEDIENTE == "No se reporto",7] <- "0"
+data_corregida[data_corregida$EXPEDIENTE == "NO REPORTADO",7] <- "0"
+data_corregida[data_corregida$EXPEDIENTE == "0",7] <- NA
+#Se eliminan los registros con NA en la variable registro
+data_corregida <- data_corregida[(!is.na(data_corregida$EXPEDIENTE)),]
+
+```
+
+Por otro lado la variable "EXPEDIENTE", el cual es un valor que asigna UNE que indica el número del registro del accidente ocurrido, el cual es un valor único, posee 348 registros duplicados. Estos registro duplicados poseen la misma información del accidente pero en las demás columnas de la base de datos existen cambios o variaciones en la información, por lo tanto también serán eliminados estos registros.
+
+```{r}
+data_corregida <- data_corregida[!(duplicated(data_corregida$EXPEDIENTE)),]
+```
+
+## 2.3- Análisis de los valores NA
+
+```{r}
+
+kable(apply(is.na(data_corregida),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 19.** Cantidad de datos perdidos (NA) por cada variable</center>
+
+<br>
+
+Se puede observar en la Tabla 19, que las variables "NUMCOMUNA", "COMUNA" y "BARRIO" poseen bastantes valores NA. La cantidad de registros en los que las 3 columnas son NA a la vez son 1018, estos registros serán eliminados ya que no aportan información sobre donde fue el accidente. También serán eliminados los registros donde las variables "CLASE_ACCIDENTE", "DISEÑO" y "FECHA_ACCIDENTE" son NA ya que no son significativos. También se va a eliminar los registros donde las variables "NUMCOMUNA" y "COMUNA" son NA a la vez, ya que tampoco aportan suficiente ubicación de estos registros. Los resultados de lo anterior, se puede observar en la Tabla 20.
+
+```{r}
+#Limpieza 1
+data_corregida <- subset(data_corregida,!( (is.na(data_corregida$NUMCOMUNA)) & (is.na(data_corregida$COMUNA)) & (is.na(data_corregida$BARRIO)) ) )
+
+#Limpieza 2
+data_corregida <- data_corregida[(!is.na(data_corregida$CLASE_ACCIDENTE)),]
+data_corregida <- data_corregida[(!is.na(data_corregida$DISEÑO)),]
+data_corregida <- data_corregida[(!is.na(data_corregida$FECHA_ACCIDENTE)),]
+
+#Limpieza 3
+data_corregida <- subset(data_corregida,!( (is.na(data_corregida$NUMCOMUNA)) & (is.na(data_corregida$COMUNA)) ) )
+
+#NA RESTANTES
+data_corregida <- data_corregida[(!is.na(data_corregida$BARRIO)),]
+data_corregida <- data_corregida[(!is.na(data_corregida$NUMCOMUNA)),]
+```
+
+```{r}
+kable(apply(is.na(data_corregida),2,sum),caption = "Cantidad de datos perdidos (NA) por cada variable") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 20.** Cantidad de datos perdidos (NA) por cada variable</center>
+
+<br>
+
+## 2.4- Transformación y creación de nuevas variables
+
+Para el proyecto, se necesita conocer las variables "Día" y "Semana", ambas serán calculadas mediante la variable "FECHA_ACCIDENTE". También como fechas especiales, se tendrán en cuenta los días que son quincena, las fechas que son festivos en Colombia, y los días que son fines de semana (Domingo, Sábado).
+
+```{r}
+data_corregida$Dia <- day(data_corregida$FECHA_ACCIDENTE)
+data_corregida$Semana <- week(data_corregida$FECHA_ACCIDENTE)
+data_corregida$DiaDeLaSemana <- weekdays(data_corregida$FECHA_ACCIDENTE)
+
+#Dias que son quincenas
+
+iden_quincena <- function(p){
+  
+  if (p==15){
+    valorNuevo <- 1
+  }
+  else if(p==30){
+    valorNuevo <- 1
+  }
+  else if(p==31){
+    valorNuevo <- 1
+  }
+  else{
+    valorNuevo <- 0
+  }
+  return(valorNuevo)
+}
+
+data_corregida$Quincena <- sapply(data_corregida$Dia, iden_quincena)
+
+#fechas que son festivos
+
+festivos_2014 <- c("2014-01-01","2014-01-06","2014-03-24","2014-04-17","2014-04-18","2014-05-01","2014-06-02","2014-06-23","2014-06-30","2014-10-13","2014-11-03","2014-11-17","2014-12-08","2014-12-25")
+
+festivos_2015 <- c("2015-01-01","2015-01-12","2015-03-23","2015-04-02","2015-04-03","2015-05-01","2015-06-08","2015-06-15","2015-06-29","2015-07-20","2015-08-07","2015-08-17","2015-10-12","2015-11-02","2015-12-08","2015-12-25")
+  
+festivos_2016 <- c("2016-01-01","2016-01-11","2016-03-21","2016-03-24","2016-03-25","2016-05-01","2016-05-30","2016-06-06","2016-07-04","2016-10-17","2016-11-07","2016-11-14","2016-12-25")
+
+festivos_2018 <- c("2018-01-01","2018-01-08","2018-03-19","2018-03-30","2018-05-01","2018-05-14","2018-06-04","2018-07-02","2018-08-20","2018-10-15","2018-11-12","2018-12-25","2018-12-08")
+
+festivos_2019 <- c("2019-01-01","2019-01-07","2019-03-25","2019-04-19","2019-04-18","2019-05-01","2019-06-03","2019-06-24","2019-07-20","2019-08-07","2019-08-19","2019-10-14","2019-12-25")
+
+festivos_2020 <- c("2020-01-01","2020-01-06","2020-03-23","2020-04-10","2020-04-09","2020-05-01","2020-06-15","2020-06-22","2020-06-29","2020-07-20","2020-08-07","2020-08-17","2020-10-12","2020-12-25")
+
+fecha_festivas <- as.Date(c(festivos_2014,festivos_2015,festivos_2016,festivos_2018,festivos_2019,festivos_2020))
+
+data_corregida <- mutate(data_corregida, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), 1, 0) )
+
+
+#Fines de semana
+
+iden_weekend <- function(p){
+  
+  if (p=="domingo"){
+    valorNuevo <- 1
+  }
+  else if(p=="sábado"){
+    valorNuevo <- 1
+  }
+  else{
+    valorNuevo <- 0
+  }
+  return(valorNuevo)
+}
+
+data_corregida$Finde <- sapply(data_corregida$DiaDeLaSemana, iden_weekend)
+```
+
+## 2.5- Selección de las variables
+
+Las variables seleccionadas para poder los construir los modelos son:
+
+-   Año: año de ocurriencia del accidente.
+
+-   Clase de accidente: clasificación del accidente.
+
+-   Diseño: sitio de la vía donde ocurrió el accidente.
+
+-   Fecha del accidente.
+
+-   Gravedad del accidente.
+
+-   Mes: mes en el que ocurrió el accidente.
+
+-   Barrio: barrio donde ocurrió el accidente.
+
+-   Comuna: comuna en la que ocurrió el accidente.
+
+-   Latitud: latitud de donde fue el accidente.
+
+-   Longitud: longitud de donde fue el accidente.
+
+-   Dia: número del dia en el que sucedió el accidente.
+
+-   Semana: número de la semana en la que ocurrió el accidente.
+
+-   Dia: de la semana nombre del día en el que ocurrió el accidente.
+
+-   Quincena: indica si el dia que ocurrió el accidente fue quincena o no.
+
+-   Festivo: indica si el dia que ocurrió el accidente fue festivo no.
+
+-   Fin de semana: indica si el dia que ocurrió el accidente fue fin de semana o no.
+
+```{r}
+data_corregida <- subset(data_corregida, select = -c(CBML,DIRECCION, DIRECCION.ENCASILLADA, EXPEDIENTE, FECHA_ACCIDENTES, NRO_RADICADO, NUMCOMUNA,X, Y.., LOCATION))
+```
+
+En la Tabla 21 se puede observar el tamaño de la base de datos ya con los datos perfilados.
+
+```{r}
+size <- data.frame(Filas=nrow(data_corregida),Columnas = ncol(data_corregida))
+
+kable(size,caption = "Tamaño de los datos") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 21.** Tamaño de la base de datos</center>
+
+<br>

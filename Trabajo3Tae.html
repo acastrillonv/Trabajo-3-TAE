@@ -139,12 +139,14 @@ ul.task-list li input[type="checkbox"] {
 <strong>Tabla 1.</strong> Tipo de variable de cada columna del dataset “Data”
 </center>
 <p><br></p>
+<section id="correción-del-formato-de-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="correción-del-formato-de-los-datos">2.1- Correción del formato de los datos</h2>
 <p>Para el procesamiento de los datos, vamos analizar principalmente la variable “AÑO”. Como podemos observar en la Tabla 2, la cual muestra los primeros 10 valores diferentes en esta variable, existen diferentes errores. El primero que podemos identificar es que existe un error de tipado para el año 2019, el cual aparece “2019\r”. Otro error que se puede observar es que hay error de almacenamiento en esta misma variable. Por último, como regla del proyecto, no se va a trabajar con registros del año 2017.</p>
 <div class="cell">
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>AÑO</caption>
+<caption>Año</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> AÑO </th>
@@ -209,7 +211,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>AÑO Corregido</caption>
+<caption>Año Corregido</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> AÑO </th>
@@ -250,7 +252,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Tabla 3.</strong> Valores únicos de la variable “AÑO” corregidos
 </center>
 <p><br></p>
-<p>Ahora, relizamos el análisis de la variable “CLASE_ACCIDENTE”. En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente “Caída de Ocupante”, la cual se corregirá con este estandar. También se corregirán los valores que se muestran como “” por “Otro”.</p>
+<p>Ahora, relizamos el análisis de la variable “CLASE_ACCIDENTE”. En la Tabla 4, podemos observar que existen errores de escritura con la clase accidente “Caída de Ocupante”, la cual se corregirá con este estandar. También se corregirán los valores que se muestran como “” por NA.</p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -353,7 +355,7 @@ ul.task-list li input[type="checkbox"] {
    <td style="text-align:right;"> 31 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> "" </td>
+   <td style="text-align:left;"> NA </td>
    <td style="text-align:right;"> 6 </td>
   </tr>
 </tbody>
@@ -492,7 +494,7 @@ ul.task-list li input[type="checkbox"] {
    <td style="text-align:right;"> 1064 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> "" </td>
+   <td style="text-align:left;"> NA </td>
    <td style="text-align:right;"> 899 </td>
   </tr>
   <tr>
@@ -607,11 +609,511 @@ ul.task-list li input[type="checkbox"] {
 <strong>Tabla 9.</strong> Valores únicos de la variable “GRAVEDAD_ACCIDENTE” corregidos
 </center>
 <p><br></p>
+<p>Al analizar la variable “NUMCOMUNA”, podemos observar en la Tabla 10 los errores de escritura que hay en el número de la columna, puesto que existen varias formas para referenciar a la misma información, como lo es el casi de la comuna “2” y “02”. También hay valores que no hacen referencia a ningún número de comuna, estos valores se modificaran por valores NA.</p>
 <div class="cell">
 <div class="cell-output-display">
 
 <table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Gravedad Accidente corregidos</caption>
+<caption>Número de comuna</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> NUMCOMUNA </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 10 </td>
+   <td style="text-align:right;"> 43696 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11 </td>
+   <td style="text-align:right;"> 22135 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 05 </td>
+   <td style="text-align:right;"> 18744 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 14 </td>
+   <td style="text-align:right;"> 17770 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sin Inf </td>
+   <td style="text-align:right;"> 16492 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 15 </td>
+   <td style="text-align:right;"> 15309 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 16 </td>
+   <td style="text-align:right;"> 13796 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 07 </td>
+   <td style="text-align:right;"> 12668 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 04 </td>
+   <td style="text-align:right;"> 10853 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 09 </td>
+   <td style="text-align:right;"> 7424 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12 </td>
+   <td style="text-align:right;"> 6591 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 03 </td>
+   <td style="text-align:right;"> 5873 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 06 </td>
+   <td style="text-align:right;"> 5199 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 08 </td>
+   <td style="text-align:right;"> 4999 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:right;"> 3547 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 80 </td>
+   <td style="text-align:right;"> 3356 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 01 </td>
+   <td style="text-align:right;"> 2770 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 02 </td>
+   <td style="text-align:right;"> 2624 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 60 </td>
+   <td style="text-align:right;"> 2233 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:right;"> 1692 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 7 </td>
+   <td style="text-align:right;"> 1130 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:right;"> 1083 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 9 </td>
+   <td style="text-align:right;"> 863 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:right;"> 727 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 8 </td>
+   <td style="text-align:right;"> 675 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 6 </td>
+   <td style="text-align:right;"> 496 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 70 </td>
+   <td style="text-align:right;"> 487 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 90 </td>
+   <td style="text-align:right;"> 485 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:right;"> 399 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:right;"> 308 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> In </td>
+   <td style="text-align:right;"> 97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 50 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> AU </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SN </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 10.</strong> Valores únicos de la variable “NUMCOMUNA”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>Corrigiendo lo anterior, se puede observar los números de las comunas corregidos en la Tabla 11.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Número de comuna corregido</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> NUMCOMUNA </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 10 </td>
+   <td style="text-align:right;"> 43696 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11 </td>
+   <td style="text-align:right;"> 22135 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:right;"> 20436 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 14 </td>
+   <td style="text-align:right;"> 17770 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 16613 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 15 </td>
+   <td style="text-align:right;"> 15309 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 7 </td>
+   <td style="text-align:right;"> 13798 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 16 </td>
+   <td style="text-align:right;"> 13796 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:right;"> 11936 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 9 </td>
+   <td style="text-align:right;"> 8287 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:right;"> 6600 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12 </td>
+   <td style="text-align:right;"> 6591 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 6 </td>
+   <td style="text-align:right;"> 5695 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 8 </td>
+   <td style="text-align:right;"> 5674 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:right;"> 3547 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 80 </td>
+   <td style="text-align:right;"> 3356 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:right;"> 3169 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:right;"> 2932 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 60 </td>
+   <td style="text-align:right;"> 2233 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 70 </td>
+   <td style="text-align:right;"> 487 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 90 </td>
+   <td style="text-align:right;"> 485 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 50 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 11.</strong> Valores únicos de la variable “NUMCOMUNA” corregidos
+</center>
+<p><br></p>
+<p>Continuando con la variable “BARRIO”, se observa que también existen errores de escritura como se observa en la Tabla 12. Estos errores se corrigen, dando resultado a lo observado en la Tabla 13.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Barrios</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> \xC1rea de Expansi\xF3n Altos de Calasanz </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> \xC1rea de Expansi\xF3n Pajarito </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> \xC1rea de Expansi\xF3n San Antonio de Prado </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0103 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0105 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0109 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0202 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0205 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0208 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0211 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0301 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0302 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0303 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 12.</strong> Valores únicos de la variable “BARRIO”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Barrios corregidos</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> BARRIO </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 15492 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> La Candelaria </td>
+   <td style="text-align:right;"> 4998 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Campo Amor </td>
+   <td style="text-align:right;"> 4385 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Perpetuo Socorro </td>
+   <td style="text-align:right;"> 4207 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caribe </td>
+   <td style="text-align:right;"> 3977 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 13.</strong> Valores únicos de la variable “BARRIO” corregidos
+</center>
+<p><br></p>
+<p>Ahora, analizando la variable “COMUNA”, podemos observar en la Tabla 14, que existen errores de escritura y también existen valores que no hacen referencia a ninguna comuna, estos serán sustituidos por el valor NA. En la Tabla 15 se pueden ver los valores de la comunas corregidos.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Comunas</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> COMUNA </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> La Candelaria </td>
+   <td style="text-align:right;"> 43750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Laureles Estadio </td>
+   <td style="text-align:right;"> 22186 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Castilla </td>
+   <td style="text-align:right;"> 20466 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> El Poblado </td>
+   <td style="text-align:right;"> 17821 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Guayabal </td>
+   <td style="text-align:right;"> 15350 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Robledo </td>
+   <td style="text-align:right;"> 13802 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aranjuez </td>
+   <td style="text-align:right;"> 11947 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Belén </td>
+   <td style="text-align:right;"> 11129 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:right;"> 9284 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Buenos Aires </td>
+   <td style="text-align:right;"> 8287 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 14.</strong> Valores únicos de la variable “COMUNA”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Comunas Corregidas</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> COMUNA </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> La Candelaria </td>
+   <td style="text-align:right;"> 43750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Laureles Estadio </td>
+   <td style="text-align:right;"> 22186 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Castilla </td>
+   <td style="text-align:right;"> 20466 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> El Poblado </td>
+   <td style="text-align:right;"> 17821 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 16320 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Guayabal </td>
+   <td style="text-align:right;"> 15350 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Belén </td>
+   <td style="text-align:right;"> 13804 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 15.</strong> Valores únicos de la variable “COMUNA” corregidos
+</center>
+<p><br></p>
+<p>Ahora, se analiza la variable “MES”</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Mes</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> MES </th>
@@ -672,35 +1174,482 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </div>
+<center>
+<strong>Tabla 16.</strong> Valores únicos de la variable “MES”
+</center>
+<p><br></p>
+<p>Se observa en la Tabla 16 que el formato de esta variable esta almacenado como dígito. Esto es cambiado por el nombre del mes como se observa en la Tabla 17.</p>
 <div class="cell">
 
 </div>
 <div class="cell">
+<div class="cell-output-display">
 
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>                  AÑO                  CBML       CLASE_ACCIDENTE 
-                    0                     0                     0 
-            DIRECCION DIRECCION.ENCASILLADA                DISEÑO 
-                    0                     0                     0 
-           EXPEDIENTE       FECHA_ACCIDENTE      FECHA_ACCIDENTES 
-                    0                     0                     0 
-   GRAVEDAD_ACCIDENTE                   MES          NRO_RADICADO 
-                    0                     0                     0 
-            NUMCOMUNA                BARRIO                COMUNA 
-                    0                     0                     0 
-             LOCATION                     X                   Y.. 
-                    0                     0                     0 </code></pre>
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Mes corregido</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> MES </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Agosto </td>
+   <td style="text-align:right;"> 22838 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Julio </td>
+   <td style="text-align:right;"> 21172 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Septiembre </td>
+   <td style="text-align:right;"> 20128 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Octubre </td>
+   <td style="text-align:right;"> 20101 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Diciembre </td>
+   <td style="text-align:right;"> 19514 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Noviembre </td>
+   <td style="text-align:right;"> 18659 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Febrero </td>
+   <td style="text-align:right;"> 18378 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Marzo </td>
+   <td style="text-align:right;"> 17610 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mayo </td>
+   <td style="text-align:right;"> 17224 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Enero </td>
+   <td style="text-align:right;"> 16648 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Junio </td>
+   <td style="text-align:right;"> 16621 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Abril </td>
+   <td style="text-align:right;"> 15667 </td>
+  </tr>
+</tbody>
+</table>
+
 </div>
 </div>
 <center>
-<strong>Tabla 2.</strong> Cantidad de datos perdidos (NA) por cada columna del dataframe “Data”
+<strong>Tabla 17.</strong> Valores únicos de la variable “MES” corregidos
+</center>
+<p><br></p>
+<p>La variable “LONGITUD” posee la latitud y la longitud del lugar donde ocurrió el accidente. Para facilidad de obtener estos valores, se cambia el formato de esta variable, creando dos variables en donde se almacene cada componente independiente.</p>
+<div class="cell">
+
+</div>
+<p>Por último, la variable “FECHA_ACCIDENTE” como vimos anteriormente, posee un formato “character”, este sera cambiado por formato “date” para poder trabajar mejor con la fecha.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="análisis-de-duplicados" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-de-duplicados">2.4- Análisis de duplicados</h2>
+<p>En la Tabla 18, podemos observar que hicisten 3 registros los cuales son duplicados en nuestra base de datos, estos registros serán eliminados.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Registros duplicados</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> AÑO </th>
+   <th style="text-align:left;"> CBML </th>
+   <th style="text-align:left;"> CLASE_ACCIDENTE </th>
+   <th style="text-align:left;"> DIRECCION </th>
+   <th style="text-align:left;"> DIRECCION.ENCASILLADA </th>
+   <th style="text-align:left;"> DISEÑO </th>
+   <th style="text-align:left;"> EXPEDIENTE </th>
+   <th style="text-align:left;"> FECHA_ACCIDENTE </th>
+   <th style="text-align:left;"> FECHA_ACCIDENTES </th>
+   <th style="text-align:left;"> GRAVEDAD_ACCIDENTE </th>
+   <th style="text-align:left;"> MES </th>
+   <th style="text-align:left;"> NRO_RADICADO </th>
+   <th style="text-align:left;"> NUMCOMUNA </th>
+   <th style="text-align:left;"> BARRIO </th>
+   <th style="text-align:left;"> COMUNA </th>
+   <th style="text-align:left;"> LOCATION </th>
+   <th style="text-align:left;"> X </th>
+   <th style="text-align:left;"> Y.. </th>
+   <th style="text-align:left;"> LATITUD </th>
+   <th style="text-align:left;"> LONGITUD </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 222221 </td>
+   <td style="text-align:left;"> 2015 </td>
+   <td style="text-align:left;"> 80003360020 </td>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:left;"> CR 63 CL 50 C Sur 09 </td>
+   <td style="text-align:left;"> CR  063  S 050 C  009 00000 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> A000177042 </td>
+   <td style="text-align:left;"> 2015-05-13 </td>
+   <td style="text-align:left;"> 2015-05-13T23:31:00.000Z </td>
+   <td style="text-align:left;"> Con muertos </td>
+   <td style="text-align:left;"> Mayo </td>
+   <td style="text-align:left;"> 050016000206201523690 </td>
+   <td style="text-align:left;"> 80 </td>
+   <td style="text-align:left;"> Cabecera San Antonio de Prado </td>
+   <td style="text-align:left;"> Corregimiento de San Antonio de Prado </td>
+   <td style="text-align:left;"> -75.6448608945, 6.17708308094 </td>
+   <td style="text-align:left;"> 826508.06 </td>
+   <td style="text-align:left;"> 118000 </td>
+   <td style="text-align:left;"> -75.6448608945 </td>
+   <td style="text-align:left;"> 6.17708308094 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 223276 </td>
+   <td style="text-align:left;"> 2016 </td>
+   <td style="text-align:left;"> 1018 </td>
+   <td style="text-align:left;"> Atropello </td>
+   <td style="text-align:left;"> CL 58 CR 50 </td>
+   <td style="text-align:left;"> CL  058   050  000 00000 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> A000487308 </td>
+   <td style="text-align:left;"> 2016-11-20 </td>
+   <td style="text-align:left;"> 2016-11-20T07:05:00.000Z </td>
+   <td style="text-align:left;"> Con muertos </td>
+   <td style="text-align:left;"> Noviembre </td>
+   <td style="text-align:left;"> 58560 </td>
+   <td style="text-align:left;"> 10 </td>
+   <td style="text-align:left;"> Villa Nueva </td>
+   <td style="text-align:left;"> La Candelaria </td>
+   <td style="text-align:left;"> -75.5642900962, 6.25591991287 </td>
+   <td style="text-align:left;"> 835453.06 </td>
+   <td style="text-align:left;"> 118000 </td>
+   <td style="text-align:left;"> -75.5642900962 </td>
+   <td style="text-align:left;"> 6.25591991287 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 223278 </td>
+   <td style="text-align:left;"> 2016 </td>
+   <td style="text-align:left;"> 1507 </td>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:left;"> CR 65 CL 2 </td>
+   <td style="text-align:left;"> CR  065   002  000 00000 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> "" </td>
+   <td style="text-align:left;"> 2016-11-21 </td>
+   <td style="text-align:left;"> 2016-11-21T21:20:00.000Z </td>
+   <td style="text-align:left;"> Con muertos </td>
+   <td style="text-align:left;"> Noviembre </td>
+   <td style="text-align:left;"> 58864 </td>
+   <td style="text-align:left;"> 15 </td>
+   <td style="text-align:left;"> Campo Amor </td>
+   <td style="text-align:left;"> Guayabal </td>
+   <td style="text-align:left;"> -75.5877675328, 6.21032079728 </td>
+   <td style="text-align:left;"> 832839.71 </td>
+   <td style="text-align:left;"> 118000 </td>
+   <td style="text-align:left;"> -75.5877675328 </td>
+   <td style="text-align:left;"> 6.21032079728 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 18.</strong> Registros duplicados en la base de datos
 </center>
 <p><br></p>
 <div class="cell">
 
 </div>
+<div class="cell">
+
+</div>
+<p>Por otro lado la variable “EXPEDIENTE”, el cual es un valor que asigna UNE que indica el número del registro del accidente ocurrido, el cual es un valor único, posee 348 registros duplicados. Estos registro duplicados poseen la misma información del accidente pero en las demás columnas de la base de datos existen cambios o variaciones en la información, por lo tanto también serán eliminados estos registros.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="análisis-de-los-valores-na" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-de-los-valores-na">2.3- Análisis de los valores NA</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Cantidad de datos perdidos (NA) por cada variable</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> AÑO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CBML </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CLASE_ACCIDENTE </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DIRECCION </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DIRECCION.ENCASILLADA </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DISEÑO </td>
+   <td style="text-align:right;"> 473 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> EXPEDIENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> FECHA_ACCIDENTE </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> FECHA_ACCIDENTES </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAVEDAD_ACCIDENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MES </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NRO_RADICADO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NUMCOMUNA </td>
+   <td style="text-align:right;"> 16585 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BARRIO </td>
+   <td style="text-align:right;"> 1046 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> COMUNA </td>
+   <td style="text-align:right;"> 16295 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LOCATION </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> X </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Y.. </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LATITUD </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LONGITUD </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 19.</strong> Cantidad de datos perdidos (NA) por cada variable
+</center>
+<p><br></p>
+<p>Se puede observar en la Tabla 19, que las variables “NUMCOMUNA”, “COMUNA” y “BARRIO” poseen bastantes valores NA. La cantidad de registros en los que las 3 columnas son NA a la vez son 1018, estos registros serán eliminados ya que no aportan información sobre donde fue el accidente. También serán eliminados los registros donde las variables “CLASE_ACCIDENTE”, “DISEÑO” y “FECHA_ACCIDENTE” son NA ya que no son significativos. También se va a eliminar los registros donde las variables “NUMCOMUNA” y “COMUNA” son NA a la vez, ya que tampoco aportan suficiente ubicación de estos registros. Los resultados de lo anterior, se puede observar en la Tabla 20.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Cantidad de datos perdidos (NA) por cada variable</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> AÑO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CBML </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CLASE_ACCIDENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DIRECCION </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DIRECCION.ENCASILLADA </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DISEÑO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> EXPEDIENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> FECHA_ACCIDENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> FECHA_ACCIDENTES </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAVEDAD_ACCIDENTE </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MES </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NRO_RADICADO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NUMCOMUNA </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BARRIO </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> COMUNA </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LOCATION </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> X </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Y.. </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LATITUD </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LONGITUD </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 20.</strong> Cantidad de datos perdidos (NA) por cada variable
+</center>
+<p><br></p>
+</section>
+<section id="transformación-y-creación-de-nuevas-variables" class="level2">
+<h2 class="anchored" data-anchor-id="transformación-y-creación-de-nuevas-variables">2.4- Transformación y creación de nuevas variables</h2>
+<p>Para el proyecto, se necesita conocer las variables “Día” y “Semana”, ambas serán calculadas mediante la variable “FECHA_ACCIDENTE”. También como fechas especiales, se tendrán en cuenta los días que son quincena, las fechas que son festivos en Colombia, y los días que son fines de semana (Domingo, Sábado).</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="selección-de-las-variables" class="level2">
+<h2 class="anchored" data-anchor-id="selección-de-las-variables">2.5- Selección de las variables</h2>
+<p>Las variables seleccionadas para poder los construir los modelos son:</p>
+<ul>
+<li><p>Año: año de ocurriencia del accidente.</p></li>
+<li><p>Clase de accidente: clasificación del accidente.</p></li>
+<li><p>Diseño: sitio de la vía donde ocurrió el accidente.</p></li>
+<li><p>Fecha del accidente.</p></li>
+<li><p>Gravedad del accidente.</p></li>
+<li><p>Mes: mes en el que ocurrió el accidente.</p></li>
+<li><p>Barrio: barrio donde ocurrió el accidente.</p></li>
+<li><p>Comuna: comuna en la que ocurrió el accidente.</p></li>
+<li><p>Latitud: latitud de donde fue el accidente.</p></li>
+<li><p>Longitud: longitud de donde fue el accidente.</p></li>
+<li><p>Dia: número del dia en el que sucedió el accidente.</p></li>
+<li><p>Semana: número de la semana en la que ocurrió el accidente.</p></li>
+<li><p>Dia: de la semana nombre del día en el que ocurrió el accidente.</p></li>
+<li><p>Quincena: indica si el dia que ocurrió el accidente fue quincena o no.</p></li>
+<li><p>Festivo: indica si el dia que ocurrió el accidente fue festivo no.</p></li>
+<li><p>Fin de semana: indica si el dia que ocurrió el accidente fue fin de semana o no.</p></li>
+</ul>
+<div class="cell">
+
+</div>
+<p>En la Tabla 21 se puede observar el tamaño de la base de datos ya con los datos perfilados.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Tamaño de los datos</caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Filas </th>
+   <th style="text-align:right;"> Columnas </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 207061 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 21.</strong> Tamaño de la base de datos
+</center>
+<p><br></p>
+</section>
 </section>
 
 </main>

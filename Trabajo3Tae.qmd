@@ -15,6 +15,7 @@ library(dplyr)
 library(stringr)
 library(lubridate)
 library(tidyverse)
+library(caret)
 ```
 
 # 1- Contexto del problema
@@ -842,6 +843,25 @@ Las variables seleccionadas para poder los construir los modelos son:
 
 ```{r}
 data_corregida <- subset(data_corregida, select = -c(CBML,DIRECCION, DIRECCION.ENCASILLADA, EXPEDIENTE, FECHA_ACCIDENTES, NRO_RADICADO, NUMCOMUNA,X, Y.., LOCATION))
+
+#Se cambian los formatos
+
+data_corregida$AÑO <- as.numeric(data_corregida$AÑO)
+data_corregida$CLASE_ACCIDENTE <- as.factor(data_corregida$CLASE_ACCIDENTE)
+data_corregida$DISEÑO <- as.factor(data_corregida$DISEÑO)
+data_corregida$GRAVEDAD_ACCIDENTE <- as.factor(data_corregida$GRAVEDAD_ACCIDENTE)
+data_corregida$MES <- as.factor(data_corregida$MES)
+data_corregida$BARRIO <- as.factor(data_corregida$BARRIO)
+data_corregida$COMUNA <- as.factor(data_corregida$COMUNA)
+data_corregida$LATITUD <- as.numeric(data_corregida$LATITUD)
+data_corregida$LONGITUD <- as.numeric(data_corregida$LONGITUD)
+data_corregida$Dia <- as.numeric(data_corregida$Dia)
+data_corregida$Semana <- as.numeric(data_corregida$Semana)
+data_corregida$DiaDeLaSemana <- as.factor(data_corregida$DiaDeLaSemana)
+data_corregida$Quincena <- as.numeric(data_corregida$Quincena)
+data_corregida$Festivo <- as.numeric(data_corregida$Festivo)
+data_corregida$Finde <- as.numeric(data_corregida$Finde)
+
 ```
 
 En la Tabla 21 se puede observar el tamaño de la base de datos ya con los datos perfilados.
@@ -863,4 +883,121 @@ kable(size,caption = "Tamaño de los datos") %>%
 #accFechas <- data_corregida %>% 
 #  group_by(FECHA_ACCIDENTE) %>% 
 #  summarise(TOTAL = n())
+```
+
+# 3- Modelo
+
+Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge la tecnica KNN (K vecinos más cercanos).
+
+## 3.1- Construcción del modelo
+
+Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Choque, Atropello, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.
+
+Ya con el dataset anteriormente construido, se va a crear un modelo por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.
+
+Estos modelo se va construir haciendo uso de los registros de los accidentes registrados en los años 2014, 2015, 2016 y 2018. Para la validación de los modelos se van a utilizar los registros de los accidentes registrados en los años 2019 y 2020.
+
+```{r}
+#Agrupación del dataset por fecha y accidente
+
+data_modelo <- data_corregida %>% 
+  group_by(FECHA_ACCIDENTE, CLASE_ACCIDENTE) %>% 
+  summarise(Numero_Accidente = n())
+
+data_modelo$Año <- year(data_modelo$FECHA_ACCIDENTE)
+data_modelo$Dia <- day(data_modelo$FECHA_ACCIDENTE)
+data_modelo$Semana <- week(data_modelo$FECHA_ACCIDENTE)
+data_modelo$DiaDeLaSemana <- weekdays(data_modelo$FECHA_ACCIDENTE)
+data_corregida$Quincena <- sapply(data_corregida$Dia, iden_quincena) 
+data_modelo <- mutate(data_modelo, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), 1, 0) )
+data_modelo$Finde <- sapply(data_modelo$DiaDeLaSemana, iden_weekend)
+data_modelo$MES <- month(data_modelo$FECHA_ACCIDENTE)
+
+data_modelo <- data_modelo %>% 
+  mutate(MES = recode(MES,
+                         "1" = "Enero",
+                         "2" = "Febrero",
+                         "3" = "Marzo",
+                         "4" = "Abril",
+                         "5" = "Mayo",
+                         "6" = "Junio",
+                         "7" = "Julio",
+                         "8" = "Agosto",
+                         "9" = "Septiembre",
+                         "10" = "Octubre",
+                         "11" = "Noviembre",
+                         "12" = "Diciembre",
+                         ))
+
+data_modelo$CLASE_ACCIDENTE <- as.factor(data_modelo$CLASE_ACCIDENTE)
+data_modelo$Numero_Accidente <- as.numeric(data_modelo$Numero_Accidente)
+data_modelo$Dia <- as.numeric(data_modelo$Dia)
+data_modelo$Semana <- as.numeric(data_modelo$Semana)
+data_modelo$DiaDeLaSemana <- as.factor(data_modelo$DiaDeLaSemana)
+data_modelo$Festivo <- as.numeric(data_modelo$Festivo)
+data_modelo$Finde <- as.numeric(data_modelo$Finde)
+data_modelo$MES <- as.factor(data_modelo$MES)
+data_modelo$Año <- as.numeric(data_modelo$Año)
+```
+
+```{r}
+kable(head(data_modelo,4),caption = "Dataset Nuevo") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 22.** Primeros registros del dataset nuevo </center>
+
+<br>
+
+```{r}
+#Estandarizacion variables categorica
+data_cat <- data_modelo[variables_cat]
+data_cat <- subset(data_cat,select = -c(CLASE_ACCIDENTE,DiaDeLaSemana))
+onehotencoding <- dummyVars(~.,data = data_cat)
+data_cat_dummy <- as.data.frame(predict(onehotencoding,data_cat))
+
+data_modelo <- subset(data_modelo, select = -c(DiaDeLaSemana,MES))
+data_modelo <- cbind(data_modelo,data_cat_dummy)
+
+#Division de datos train y val
+train <- data_modelo[(data_modelo$Año==2014 | data_modelo$Año==2015 | data_modelo$Año==2016 | data_modelo$Año==2018),]
+train <- subset(train, select = -c(Año, FECHA_ACCIDENTE))
+val <- data_modelo[(data_modelo$Año==2019 | data_modelo$Año==2020),]
+val <- subset(val, select = -c(Año, FECHA_ACCIDENTE))
+
+#Se divide X-Y
+X_train <- subset(train, select = -c(Numero_Accidente))
+Y_train <- subset(train, select = c(Numero_Accidente,CLASE_ACCIDENTE))
+
+X_val <- subset(val, select = -c(Numero_Accidente))
+Y_val <- subset(val, select = c(Numero_Accidente,CLASE_ACCIDENTE))
+
+#Estandarizacion numerica de X_train
+variables_num <- sapply(X_train, is.numeric)
+data_num <- X_train[variables_num]
+
+media_X_tr <- colMeans(data_num)
+sd_X_tr <- apply(data_num,2,sd)
+X_tr_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
+X_tr_std <- as.data.frame(X_tr_std)
+X_tr_std$CLASE_ACCIDENTE <- X_train$CLASE_ACCIDENTE
+```
+
+Debido a que se va a trabajar con la técnica de KNN, se tiene que encontrar el óptimo K para cada modelo.
+
+```{r}
+#función para el calculo del mae
+MAE <- function(X,Y){
+  
+}
+
+#función para encontrar el valor optimo K
+optimo_K <- function(X,Y){
+  
+}
+```
+
+```{r}
+
 ```

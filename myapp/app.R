@@ -1,6 +1,7 @@
 library(leaflet)
 library(dplyr)
 
+# datos <- readRDS("datos.rds")
 
 # See above for the definitions of ui and server
 ui <- fluidPage(
@@ -10,12 +11,12 @@ ui <- fluidPage(
       selectInput(
         inputId = "TipoAccidente",
         label = "Tipo de Accidente",
-        choices = c("Carro","Moto")
+        choices = c("Choque","Atropello","Caida de Ocupante","Volcamiento","Incendio","Otro")
       ),
       selectInput(
         inputId = "Mes",
         label = "Mes",
-        choices = 1:12
+        choices = c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
       ),
       selectInput(
         inputId = "Ano",
@@ -38,7 +39,9 @@ server <- function(input, output) {
   output$map <- renderLeaflet({
     leaflet() %>% 
     addProviderTiles("OpenStreetMap.Mapnik",options = providerTileOptions(noWrap = FALSE)) %>%
-    setView(lng = -75.56, lat = 6.24, zoom = 13)
+    setView(lng = -75.56, lat = 6.24, zoom = 13) # %>%
+    # addCircles(lng = ~LONGITUD, lat = ~LATITUD, weight = 2, 
+      #         radius = 20)
     
   })
 }

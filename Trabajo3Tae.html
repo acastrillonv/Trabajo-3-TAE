@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="procesamiento-de-los-datos" class="level1">
 <h1>2- Procesamiento de los datos</h1>
-<p>la Tabla 1, se puede observar que en su mayoria, casi todas las variables son de tipo “character”, exceptuando las variables “MES” y “NRO_RADICADO” que son de tipo “integer” y la variable “Y..” que es de tipo “numeric”.</p>
+<p>En la Tabla 1, se puede observar que en su mayoria, casi todas las variables son de tipo “character”, exceptuando las variables “MES” y “NRO_RADICADO” que son de tipo “integer” y la variable “Y..” que es de tipo “numeric”.</p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -1649,6 +1649,549 @@ ul.task-list li input[type="checkbox"] {
 <strong>Tabla 21.</strong> Tamaño de la base de datos
 </center>
 <p><br></p>
+</section>
+</section>
+<section id="modelo-predictivo" class="level1">
+<h1>3- Modelo predictivo</h1>
+<p>Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge la tecnica KNN (K vecinos más cercanos).</p>
+<section id="construcción-del-modelo" class="level2">
+<h2 class="anchored" data-anchor-id="construcción-del-modelo">3.1- Construcción del modelo</h2>
+<p>Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.</p>
+<p>Ya con el dataset anteriormente construido, se va a crear un modelo por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.</p>
+<p>Estos modelo se va construir haciendo uso de los registros de los accidentes registrados en los años 2014, 2015, 2016 y 2018. Para la validación de los modelos se van a utilizar los registros de los accidentes registrados en los años 2019 y 2020.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Dataset Nuevo</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> FECHA_ACCIDENTE </th>
+   <th style="text-align:left;"> CLASE_ACCIDENTE </th>
+   <th style="text-align:right;"> Numero_Accidente </th>
+   <th style="text-align:right;"> Año </th>
+   <th style="text-align:right;"> Dia </th>
+   <th style="text-align:right;"> Semana </th>
+   <th style="text-align:left;"> DiaDeLaSemana </th>
+   <th style="text-align:left;"> Quincena </th>
+   <th style="text-align:left;"> Festivo </th>
+   <th style="text-align:left;"> Finde </th>
+   <th style="text-align:left;"> MES </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2014-07-04 </td>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:left;"> viernes </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Julio </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2014-07-05 </td>
+   <td style="text-align:left;"> Atropello </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:left;"> sábado </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Si </td>
+   <td style="text-align:left;"> Julio </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2014-07-05 </td>
+   <td style="text-align:left;"> Caída de Ocupante </td>
+   <td style="text-align:right;"> 18 </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:left;"> sábado </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Si </td>
+   <td style="text-align:left;"> Julio </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2014-07-05 </td>
+   <td style="text-align:left;"> Choque </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:left;"> sábado </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Si </td>
+   <td style="text-align:left;"> Julio </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 22.</strong> Primeros registros del dataset nuevo
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>Debido a que se va a trabajar con la técnica de KNN, se tiene que encontrar el K óptimo para cada modelo. Para esto se realizarán diferentes pruebas usando distintos valores de K, los cuales van desde K=2 hasta K=20. Para seleccionar el K óptimo, se evaluará en cada modelo-prueba la métrica MAE (Error Absoluto Medio) haciendo uso de los datos de entrenamiento y los datos de validación, y medirá el porcentaje de variación entre ambos errores calculados. Se escogerá el valor K que menor valor de variación posea. También se tiene que tener en cuenta que el valor K seleccionado debe tener un porcentaje de variación menor a 15%.</p>
+<div class="cell">
+
+</div>
+<section id="k-óptimo-para-accidente-tipo-atropello" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-atropello">3.1.1- K óptimo para accidente tipo “Atropello”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Importance of components:
+                          PC1    PC2    PC3     PC4     PC5     PC6     PC7
+Standard deviation     1.4919 1.4791 1.4319 1.35206 1.05279 1.05188 1.05079
+Proportion of Variance 0.1112 0.1093 0.1025 0.09135 0.05538 0.05529 0.05517
+Cumulative Proportion  0.1112 0.2205 0.3230 0.41434 0.46973 0.52502 0.58019
+                           PC8     PC9    PC10    PC11   PC12    PC13    PC14
+Standard deviation     1.04864 1.04512 1.04210 1.03945 1.0376 1.03731 1.02229
+Proportion of Variance 0.05495 0.05458 0.05427 0.05399 0.0538 0.05377 0.05222
+Cumulative Proportion  0.63514 0.68972 0.74398 0.79797 0.8518 0.90554 0.95776
+                          PC15    PC16      PC17      PC18      PC19     PC20
+Standard deviation     0.91933 0.01406 1.008e-15 8.231e-16 4.762e-16 1.37e-16
+Proportion of Variance 0.04223 0.00001 0.000e+00 0.000e+00 0.000e+00 0.00e+00
+Cumulative Proportion  0.99999 1.00000 1.000e+00 1.000e+00 1.000e+00 1.00e+00</code></pre>
+</div>
+</div>
+<p>En la Tabla 23, podemos observar que el mejor K</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2.356897 </td>
+   <td style="text-align:left;"> 4.098616 </td>
+   <td style="text-align:left;"> 42.4953 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.589915 </td>
+   <td style="text-align:left;"> 3.979837 </td>
+   <td style="text-align:left;"> 34.92411 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.775383 </td>
+   <td style="text-align:left;"> 3.900875 </td>
+   <td style="text-align:left;"> 28.85232 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.822819 </td>
+   <td style="text-align:left;"> 3.860972 </td>
+   <td style="text-align:left;"> 26.88838 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.858054 </td>
+   <td style="text-align:left;"> 3.86479 </td>
+   <td style="text-align:left;"> 26.04892 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.887601 </td>
+   <td style="text-align:left;"> 3.857037 </td>
+   <td style="text-align:left;"> 25.13423 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.90973 </td>
+   <td style="text-align:left;"> 3.82976 </td>
+   <td style="text-align:left;"> 24.02319 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.93788 </td>
+   <td style="text-align:left;"> 3.825211 </td>
+   <td style="text-align:left;"> 23.1969 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.941482 </td>
+   <td style="text-align:left;"> 3.834761 </td>
+   <td style="text-align:left;"> 23.29426 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.943961 </td>
+   <td style="text-align:left;"> 3.841556 </td>
+   <td style="text-align:left;"> 23.3654 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.95281 </td>
+   <td style="text-align:left;"> 3.831686 </td>
+   <td style="text-align:left;"> 22.93705 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.956874 </td>
+   <td style="text-align:left;"> 3.824011 </td>
+   <td style="text-align:left;"> 22.6761 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.968204 </td>
+   <td style="text-align:left;"> 3.834544 </td>
+   <td style="text-align:left;"> 22.59304 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.97666 </td>
+   <td style="text-align:left;"> 3.825912 </td>
+   <td style="text-align:left;"> 22.19738 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.98019 </td>
+   <td style="text-align:left;"> 3.833766 </td>
+   <td style="text-align:left;"> 22.26468 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.986293 </td>
+   <td style="text-align:left;"> 3.827961 </td>
+   <td style="text-align:left;"> 21.98739 </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.99761 </td>
+   <td style="text-align:left;"> 3.823346 </td>
+   <td style="text-align:left;"> 21.59721 </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.998645 </td>
+   <td style="text-align:left;"> 3.828442 </td>
+   <td style="text-align:left;"> 21.67455 </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.000586 </td>
+   <td style="text-align:left;"> 3.831497 </td>
+   <td style="text-align:left;"> 21.68634 </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.007894 </td>
+   <td style="text-align:left;"> 3.830886 </td>
+   <td style="text-align:left;"> 21.48306 </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.014461 </td>
+   <td style="text-align:left;"> 3.830627 </td>
+   <td style="text-align:left;"> 21.30632 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.01365 </td>
+   <td style="text-align:left;"> 3.826783 </td>
+   <td style="text-align:left;"> 21.24846 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.019747 </td>
+   <td style="text-align:left;"> 3.808707 </td>
+   <td style="text-align:left;"> 20.71465 </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.026157 </td>
+   <td style="text-align:left;"> 3.811819 </td>
+   <td style="text-align:left;"> 20.61122 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.026845 </td>
+   <td style="text-align:left;"> 3.816692 </td>
+   <td style="text-align:left;"> 20.69455 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.023375 </td>
+   <td style="text-align:left;"> 3.814473 </td>
+   <td style="text-align:left;"> 20.73939 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.024827 </td>
+   <td style="text-align:left;"> 3.825869 </td>
+   <td style="text-align:left;"> 20.93751 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.029367 </td>
+   <td style="text-align:left;"> 3.825665 </td>
+   <td style="text-align:left;"> 20.81464 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.032164 </td>
+   <td style="text-align:left;"> 3.8307 </td>
+   <td style="text-align:left;"> 20.84569 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.027723 </td>
+   <td style="text-align:left;"> 3.830268 </td>
+   <td style="text-align:left;"> 20.9527 </td>
+   <td style="text-align:right;"> 31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.028627 </td>
+   <td style="text-align:left;"> 3.829345 </td>
+   <td style="text-align:left;"> 20.91007 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.029496 </td>
+   <td style="text-align:left;"> 3.82781 </td>
+   <td style="text-align:left;"> 20.85562 </td>
+   <td style="text-align:right;"> 33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.027523 </td>
+   <td style="text-align:left;"> 3.831247 </td>
+   <td style="text-align:left;"> 20.97813 </td>
+   <td style="text-align:right;"> 34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.031703 </td>
+   <td style="text-align:left;"> 3.829729 </td>
+   <td style="text-align:left;"> 20.83766 </td>
+   <td style="text-align:right;"> 35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.036274 </td>
+   <td style="text-align:left;"> 3.833317 </td>
+   <td style="text-align:left;"> 20.79252 </td>
+   <td style="text-align:right;"> 36 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.038802 </td>
+   <td style="text-align:left;"> 3.83861 </td>
+   <td style="text-align:left;"> 20.83588 </td>
+   <td style="text-align:right;"> 37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.038602 </td>
+   <td style="text-align:left;"> 3.841913 </td>
+   <td style="text-align:left;"> 20.90915 </td>
+   <td style="text-align:right;"> 38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.040846 </td>
+   <td style="text-align:left;"> 3.842555 </td>
+   <td style="text-align:left;"> 20.86395 </td>
+   <td style="text-align:right;"> 39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.036613 </td>
+   <td style="text-align:left;"> 3.83492 </td>
+   <td style="text-align:left;"> 20.81679 </td>
+   <td style="text-align:right;"> 40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.03925 </td>
+   <td style="text-align:left;"> 3.832094 </td>
+   <td style="text-align:left;"> 20.68959 </td>
+   <td style="text-align:right;"> 41 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.040231 </td>
+   <td style="text-align:left;"> 3.837788 </td>
+   <td style="text-align:left;"> 20.78169 </td>
+   <td style="text-align:right;"> 42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.041452 </td>
+   <td style="text-align:left;"> 3.83375 </td>
+   <td style="text-align:left;"> 20.6664 </td>
+   <td style="text-align:right;"> 43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.041965 </td>
+   <td style="text-align:left;"> 3.836905 </td>
+   <td style="text-align:left;"> 20.71827 </td>
+   <td style="text-align:right;"> 44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.042017 </td>
+   <td style="text-align:left;"> 3.830736 </td>
+   <td style="text-align:left;"> 20.58922 </td>
+   <td style="text-align:right;"> 45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.042684 </td>
+   <td style="text-align:left;"> 3.830252 </td>
+   <td style="text-align:left;"> 20.5618 </td>
+   <td style="text-align:right;"> 46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.047002 </td>
+   <td style="text-align:left;"> 3.833754 </td>
+   <td style="text-align:left;"> 20.52172 </td>
+   <td style="text-align:right;"> 47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.045924 </td>
+   <td style="text-align:left;"> 3.837619 </td>
+   <td style="text-align:left;"> 20.62986 </td>
+   <td style="text-align:right;"> 48 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.045513 </td>
+   <td style="text-align:left;"> 3.83944 </td>
+   <td style="text-align:left;"> 20.6782 </td>
+   <td style="text-align:right;"> 49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.04582 </td>
+   <td style="text-align:left;"> 3.836421 </td>
+   <td style="text-align:left;"> 20.60778 </td>
+   <td style="text-align:right;"> 50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.04637 </td>
+   <td style="text-align:left;"> 3.836135 </td>
+   <td style="text-align:left;"> 20.58751 </td>
+   <td style="text-align:right;"> 51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.050451 </td>
+   <td style="text-align:left;"> 3.842353 </td>
+   <td style="text-align:left;"> 20.60981 </td>
+   <td style="text-align:right;"> 52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.056025 </td>
+   <td style="text-align:left;"> 3.843154 </td>
+   <td style="text-align:left;"> 20.48135 </td>
+   <td style="text-align:right;"> 53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.052212 </td>
+   <td style="text-align:left;"> 3.841044 </td>
+   <td style="text-align:left;"> 20.5369 </td>
+   <td style="text-align:right;"> 54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.053502 </td>
+   <td style="text-align:left;"> 3.838718 </td>
+   <td style="text-align:left;"> 20.45515 </td>
+   <td style="text-align:right;"> 55 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.05488 </td>
+   <td style="text-align:left;"> 3.837087 </td>
+   <td style="text-align:left;"> 20.38544 </td>
+   <td style="text-align:right;"> 56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.056189 </td>
+   <td style="text-align:left;"> 3.835271 </td>
+   <td style="text-align:left;"> 20.3136 </td>
+   <td style="text-align:right;"> 57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.055593 </td>
+   <td style="text-align:left;"> 3.837811 </td>
+   <td style="text-align:left;"> 20.38189 </td>
+   <td style="text-align:right;"> 58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.053989 </td>
+   <td style="text-align:left;"> 3.835846 </td>
+   <td style="text-align:left;"> 20.38289 </td>
+   <td style="text-align:right;"> 59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.055265 </td>
+   <td style="text-align:left;"> 3.836851 </td>
+   <td style="text-align:left;"> 20.37052 </td>
+   <td style="text-align:right;"> 60 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 23.</strong> Análisis del valor K para la variable “Atropello”
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  20.31   20.62   20.85   22.15   22.09   42.50 </code></pre>
+</div>
+</div>
+<center>
+<strong>Tabla 24.</strong> Análisis del variación del error MAE para la variable “Atropello”
+</center>
+<p><br></p>
+</section>
+<section id="k-óptimo-para-accidente-tipo-choque" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-choque">3.1.2- K óptimo para accidente tipo “Choque”</h3>
+<div class="cell">
+
+</div>
+</section>
+<section id="k-óptimo-para-accidente-tipo-caída-de-ocupante" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-caída-de-ocupante">3.1.3- K óptimo para accidente tipo “Caída de Ocupante”</h3>
+<div class="cell">
+
+</div>
+</section>
+<section id="k-óptimo-para-accidente-tipo-volcamiento" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-volcamiento">3.1.4- K óptimo para accidente tipo “Volcamiento”</h3>
+<div class="cell">
+
+</div>
+</section>
+<section id="k-óptimo-para-accidente-tipo-incendio" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-incendio">3.1.5- K óptimo para accidente tipo “Incendio”</h3>
+<div class="cell">
+
+</div>
+</section>
+<section id="k-óptimo-para-accidente-tipo-otro" class="level3">
+<h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-otro">3.1.6- K óptimo para accidente tipo “Otro”</h3>
+<div class="cell">
+
+</div>
+</section>
 </section>
 </section>
 

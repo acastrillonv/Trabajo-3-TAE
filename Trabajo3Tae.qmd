@@ -16,6 +16,7 @@ library(stringr)
 library(lubridate)
 library(tidyverse)
 library(caret)
+library(FSinR)
 ```
 
 # 1- Contexto del problema
@@ -30,7 +31,7 @@ data <- read.csv("incidentes_viales.csv", encoding = "UTF-8", header = TRUE, sep
 
 # 2- Procesamiento de los datos
 
-la Tabla 1, se puede observar que en su mayoria, casi todas las variables son de tipo "character", exceptuando las variables "MES" y "NRO_RADICADO" que son de tipo "integer" y la variable "Y.." que es de tipo "numeric".
+En la Tabla 1, se puede observar que en su mayoria, casi todas las variables son de tipo "character", exceptuando las variables "MES" y "NRO_RADICADO" que son de tipo "integer" y la variable "Y.." que es de tipo "numeric".
 
 ```{r}
 analisis_de_variables<-as.data.frame(lapply(data, class))
@@ -751,16 +752,16 @@ data_corregida$DiaDeLaSemana <- weekdays(data_corregida$FECHA_ACCIDENTE)
 iden_quincena <- function(p){
   
   if (p==15){
-    valorNuevo <- 1
+    valorNuevo <- "Si"
   }
   else if(p==30){
-    valorNuevo <- 1
+    valorNuevo <- "Si"
   }
   else if(p==31){
-    valorNuevo <- 1
+    valorNuevo <- "Si"
   }
   else{
-    valorNuevo <- 0
+    valorNuevo <- "No"
   }
   return(valorNuevo)
 }
@@ -783,7 +784,7 @@ festivos_2020 <- c("2020-01-01","2020-01-06","2020-03-23","2020-04-10","2020-04-
 
 fecha_festivas <- as.Date(c(festivos_2014,festivos_2015,festivos_2016,festivos_2018,festivos_2019,festivos_2020))
 
-data_corregida <- mutate(data_corregida, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), 1, 0) )
+data_corregida <- mutate(data_corregida, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), "Si", "No") )
 
 
 #Fines de semana
@@ -791,13 +792,13 @@ data_corregida <- mutate(data_corregida, Festivo=ifelse((FECHA_ACCIDENTE %in% fe
 iden_weekend <- function(p){
   
   if (p=="domingo"){
-    valorNuevo <- 1
+    valorNuevo <- "Si"
   }
   else if(p=="sábado"){
-    valorNuevo <- 1
+    valorNuevo <- "Si"
   }
   else{
-    valorNuevo <- 0
+    valorNuevo <- "No"
   }
   return(valorNuevo)
 }
@@ -858,9 +859,9 @@ data_corregida$LONGITUD <- as.numeric(data_corregida$LONGITUD)
 data_corregida$Dia <- as.numeric(data_corregida$Dia)
 data_corregida$Semana <- as.numeric(data_corregida$Semana)
 data_corregida$DiaDeLaSemana <- as.factor(data_corregida$DiaDeLaSemana)
-data_corregida$Quincena <- as.numeric(data_corregida$Quincena)
-data_corregida$Festivo <- as.numeric(data_corregida$Festivo)
-data_corregida$Finde <- as.numeric(data_corregida$Finde)
+data_corregida$Quincena <- as.factor(data_corregida$Quincena)
+data_corregida$Festivo <- as.factor(data_corregida$Festivo)
+data_corregida$Finde <- as.factor(data_corregida$Finde)
 
 ```
 
@@ -878,20 +879,13 @@ kable(size,caption = "Tamaño de los datos") %>%
 
 <br>
 
-```{r}
-#Ejemplo de como agrupar
-#accFechas <- data_corregida %>% 
-#  group_by(FECHA_ACCIDENTE) %>% 
-#  summarise(TOTAL = n())
-```
-
-# 3- Modelo
+# 3- Modelo predictivo
 
 Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge la tecnica KNN (K vecinos más cercanos).
 
 ## 3.1- Construcción del modelo
 
-Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Choque, Atropello, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.
+Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.
 
 Ya con el dataset anteriormente construido, se va a crear un modelo por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.
 
@@ -908,8 +902,8 @@ data_modelo$Año <- year(data_modelo$FECHA_ACCIDENTE)
 data_modelo$Dia <- day(data_modelo$FECHA_ACCIDENTE)
 data_modelo$Semana <- week(data_modelo$FECHA_ACCIDENTE)
 data_modelo$DiaDeLaSemana <- weekdays(data_modelo$FECHA_ACCIDENTE)
-data_corregida$Quincena <- sapply(data_corregida$Dia, iden_quincena) 
-data_modelo <- mutate(data_modelo, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), 1, 0) )
+data_modelo$Quincena <- sapply(data_modelo$Dia, iden_quincena) 
+data_modelo <- mutate(data_modelo, Festivo=ifelse((FECHA_ACCIDENTE %in% fecha_festivas), "Si", "No") )
 data_modelo$Finde <- sapply(data_modelo$DiaDeLaSemana, iden_weekend)
 data_modelo$MES <- month(data_modelo$FECHA_ACCIDENTE)
 
@@ -934,10 +928,43 @@ data_modelo$Numero_Accidente <- as.numeric(data_modelo$Numero_Accidente)
 data_modelo$Dia <- as.numeric(data_modelo$Dia)
 data_modelo$Semana <- as.numeric(data_modelo$Semana)
 data_modelo$DiaDeLaSemana <- as.factor(data_modelo$DiaDeLaSemana)
-data_modelo$Festivo <- as.numeric(data_modelo$Festivo)
-data_modelo$Finde <- as.numeric(data_modelo$Finde)
+data_modelo$Festivo <- as.factor(data_modelo$Festivo)
+data_modelo$Finde <- as.factor(data_modelo$Finde)
 data_modelo$MES <- as.factor(data_modelo$MES)
 data_modelo$Año <- as.numeric(data_modelo$Año)
+data_modelo$Quincena <- as.factor(data_modelo$Quincena)
+```
+
+```{r}
+X_train <- accFechaAcc[accFechaAcc$AÑOX==2014 | accFechaAcc$AÑOX==2015 | accFechaAcc$AÑOX==2016 | accFechaAcc$AÑOX==2017, -which(names(accFechaAcc) == "ACCIDENTES")] 
+  X_train <- X_train[X_train$CLASE_ACCIDENTE==clase,]
+  y_train <- accFechaAcc[accFechaAcc$AÑOX==2014 | accFechaAcc$AÑOX==2015 | accFechaAcc$AÑOX==2016 | accFechaAcc$AÑOX==2017,]
+    y_train <- y_train[y_train$CLASE_ACCIDENTE==clase,]
+  y_train <- y_train$ACCIDENTES
+    
+  X_test <- accFechaAcc[accFechaAcc$AÑOX==2018 | accFechaAcc$AÑOX==2019 ,-which(names(accFechaAcc) == "ACCIDENTES")]
+  X_test <- X_test[X_test$CLASE_ACCIDENTE==clase,]
+  y_test <- accFechaAcc[accFechaAcc$AÑOX==2018 | accFechaAcc$AÑOX==2019 ,]
+  y_test <- y_test[y_test$CLASE_ACCIDENTE==clase,]
+  y_test <- y_test$ACCIDENTES
+    
+  for (i in 2:13){
+    filter_evaluator <- filterEvaluator('determinationCoefficient')
+    skb_direct_search <- selectKBest(i)
+    
+    
+    mejoresColumnas <- skb_direct_search(accFechaAcc, 'ACCIDENTES', filter_evaluator)
+    
+    X_train_aux <- X_train[c(mejoresColumnas$featuresSelected)]
+    X_train_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_train_aux, as.factor)
+    X_train_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_train_aux, as.numeric)
+    X_train_aux$CLASE_ACCIDENTE <- NULL
+    
+   
+    X_test_aux<-X_test[c(mejoresColumnas$featuresSelected)]
+    X_test_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_test_aux, as.factor)
+    X_test_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_test_aux, as.numeric)
+    X_test_aux$CLASE_ACCIDENTE <- NULL
 ```
 
 ```{r}
@@ -946,12 +973,13 @@ kable(head(data_modelo,4),caption = "Dataset Nuevo") %>%
   kable_minimal()
 ```
 
-<center>**Tabla 22.** Primeros registros del dataset nuevo </center>
+<center>**Tabla 22.** Primeros registros del dataset nuevo</center>
 
 <br>
 
 ```{r}
 #Estandarizacion variables categorica
+variables_cat <- sapply(data_modelo, is.factor)
 data_cat <- data_modelo[variables_cat]
 data_cat <- subset(data_cat,select = -c(CLASE_ACCIDENTE,DiaDeLaSemana))
 onehotencoding <- dummyVars(~.,data = data_cat)
@@ -979,25 +1007,224 @@ data_num <- X_train[variables_num]
 
 media_X_tr <- colMeans(data_num)
 sd_X_tr <- apply(data_num,2,sd)
-X_tr_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
-X_tr_std <- as.data.frame(X_tr_std)
-X_tr_std$CLASE_ACCIDENTE <- X_train$CLASE_ACCIDENTE
+X_train_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
+X_train_std <- as.data.frame(X_train_std)
+X_train_std$CLASE_ACCIDENTE <- X_train$CLASE_ACCIDENTE
+
+#Estandarizacion numerica de X_val
+variables_num <- sapply(X_val, is.numeric)
+data_num <- X_val[variables_num]
+
+X_val_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
+X_val_std <- as.data.frame(X_val_std)
+X_val_std$CLASE_ACCIDENTE <- X_val$CLASE_ACCIDENTE
 ```
 
-Debido a que se va a trabajar con la técnica de KNN, se tiene que encontrar el óptimo K para cada modelo.
+Debido a que se va a trabajar con la técnica de KNN, se tiene que encontrar el K óptimo para cada modelo. Para esto se realizarán diferentes pruebas usando distintos valores de K, los cuales van desde K=2 hasta K=20. Para seleccionar el K óptimo, se evaluará en cada modelo-prueba la métrica MAE (Error Absoluto Medio) haciendo uso de los datos de entrenamiento y los datos de validación, y medirá el porcentaje de variación entre ambos errores calculados. Se escogerá el valor K que menor valor de variación posea. También se tiene que tener en cuenta que el valor K seleccionado debe tener un porcentaje de variación menor a 15%.
 
 ```{r}
-#función para el calculo del mae
-MAE <- function(X,Y){
-  
+#función para el calculo del mae (error absoluto medio)
+Error_MAE <- function(Y_real,Y_pred){
+  mae <- mean(abs(Y_real - Y_pred))
+  return(mae)
 }
 
 #función para encontrar el valor optimo K
-optimo_K <- function(X,Y){
+optimo_K <- function(k,X_t,Y_t,X_v,Y_v){
+  
+  modelo_knn <- knnreg(x=X_t, y = Y_t$Numero_Accidente, k = k)
+  predicciones_train <- predict(modelo_knn, newdata = X_t)
+  predicciones_val <- predict(modelo_knn, newdata = X_v)
+  mae_t <- Error_MAE(Y_t$Numero_Accidente,predicciones_train)
+  mae_v <- Error_MAE(Y_v$Numero_Accidente,predicciones_val)
+  
+  #variacion entre mae_t y mae_v
+  vari <- abs(mae_t-mae_v)
+  vari <- vari/max(mae_t,mae_v)
+  vari <- vari*100
+  
+  resultado <- list(Mae_t=mae_t,
+                    Mae_v=mae_v,
+                    Variacion=vari)
+  return(resultado)
   
 }
 ```
 
-```{r}
+### 3.1.1- K óptimo para accidente tipo "Atropello"
 
+```{r}
+#Caso para accidente tipo Atropello
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Atropello")
+X_tr <- subset(X_tr, select = c(Festivo.Si, Festivo.No, Semana))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Atropello")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Atropello")
+X_vl <- subset(X_vl, select = c(Festivo.Si, Festivo.No, Semana))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Atropello")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:80
+
+resultadosC1 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC1 <- t(resultadosC1)
+rownames(resultadosC1) <- 1:nrow(resultadosC1)
+resultadosC1 <- as.data.frame(resultadosC1)
+resultadosC1$K <- k
+```
+
+```{r}
+ACP <- prcomp(X_tr, center = FALSE)
+summary(ACP)
+```
+
+```{r}
+X_tr_acp <- data.frame(ACP$x[,1:2])
+ACP_vl <- predict(ACP, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:2])
+```
+
+En la Tabla 23, podemos observar que el mejor K
+
+```{r}
+kable(resultadosC1,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 23.** Análisis del valor K para la variable "Atropello"</center>
+
+<br>
+
+```{r}
+resultadosC1$Mae_t <- as.numeric(resultadosC1$Mae_t)
+resultadosC1$Mae_v <- as.numeric(resultadosC1$Mae_v)
+resultadosC1$Variacion <- as.numeric(resultadosC1$Variacion)
+
+summary(resultadosC1$Variacion)
+```
+
+<center>**Tabla 24.** Análisis del variación del error MAE para la variable "Atropello"</center>
+
+<br>
+
+### 3.1.2- K óptimo para accidente tipo "Choque"
+
+```{r}
+#Caso para accidente tipo Choque
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Choque")
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Choque")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Choque")
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Choque")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:20
+
+resultadosC2 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC2 <- t(resultadosC2)
+rownames(resultadosC2) <- 1:nrow(resultadosC2)
+resultadosC2 <- as.data.frame(resultadosC2)
+resultadosC2$K <- k
+```
+
+### 3.1.3- K óptimo para accidente tipo "Caída de Ocupante"
+
+```{r}
+#Caso para accidente tipo Caída de Ocupante
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Caída de Ocupante")
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Caída de Ocupante")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Caída de Ocupante")
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Caída de Ocupante")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:20
+
+resultadosC3 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC3 <- t(resultadosC3)
+rownames(resultadosC3) <- 1:nrow(resultadosC3)
+resultadosC3 <- as.data.frame(resultadosC3)
+resultadosC3$K <- k
+```
+
+### 3.1.4- K óptimo para accidente tipo "Volcamiento"
+
+```{r}
+#Caso para accidente tipo Volcamiento
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Volcamiento")
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Volcamiento")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Volcamiento")
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Volcamiento")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:20
+
+resultadosC4 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC4 <- t(resultadosC4)
+rownames(resultadosC4) <- 1:nrow(resultadosC4)
+resultadosC4 <- as.data.frame(resultadosC4)
+resultadosC4$K <- k
+```
+
+### 3.1.5- K óptimo para accidente tipo "Incendio"
+
+```{r}
+#Caso para accidente tipo Incendio
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Incendio")
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Incendio")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Incendio")
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Incendio")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:20
+
+resultadosC5 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC5 <- t(resultadosC5)
+rownames(resultadosC5) <- 1:nrow(resultadosC5)
+resultadosC5 <- as.data.frame(resultadosC5)
+resultadosC5$K <- k
+```
+
+### 3.1.6- K óptimo para accidente tipo "Otro"
+
+```{r}
+#Caso para accidente tipo Otro
+X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Otro")
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
+Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Otro")
+Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
+
+X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Otro")
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
+Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Otro")
+Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
+
+k <- 2:20
+
+resultadosC6 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+resultadosC6 <- t(resultadosC6)
+rownames(resultadosC6) <- 1:nrow(resultadosC6)
+resultadosC6 <- as.data.frame(resultadosC6)
+resultadosC6$K <- k
+```
+
+```{r}
+filter_evaluator <- filterEvaluator('determinationCoefficient')
+p <- selectKBest(data=data_modelo, class='Numero_Accidente', filter_evaluator)
 ```

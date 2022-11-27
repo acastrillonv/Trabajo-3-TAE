@@ -1550,7 +1550,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 <br>
 
-Entre las grádicas 3 y 4 no se logran evidenciar diferencias grandes, tienen aproximadamente el mismo comportamiento en ambos años tanto en los picos bajos como en los picos altos. Esto significa que el comportamiento de las accidentes de tipo Choque va a ser muy similar en ambos años.
+Entre las gráficas 3 y 4 podemos evidenciar una mayor cantidad de picos bajos en los meses de mitad del año, de resto, las gráficas tienen aproximadamente el mismo comportamiento en ambos años tanto en los picos bajos como en los picos altos. Esto significa que el comportamiento de las accidentes de tipo Choque va a ser muy similar en ambos años.
 
 ### 3.2.3- Predicción de la accidentalidad para tipo de accidente "Caída de Ocupante"
 
@@ -1585,7 +1585,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 <br>
 
-Luego de observar las gráficas 5 y 6 podemos observar que, en la gráfica 6, hay picos más profundos que en la gráfica 5. Además, en los finales del mes de Junio hay una mayor cantidad de picos bajos en la gráfica 6.
+Luego de observar las gráficas 5 y 6 podemos observar que, en la gráfica 6, hay picos más profundos que en la gráfica 5. Además, en los finales del mes de Junio hay una mayor cantidad de picos bajos en la gráfica 6. También podemos ver que los picos bajos en la gráfica 6 son más extremos que los picos bajos que a los que llegan en la gráfica 5.
 
 ### 3.2.4- Predicción de la accidentalidad para tipo de accidente "Volcamiento"
 
@@ -1620,7 +1620,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 <br>
 
-La variación más notoria es en los primeros 3 meses en donde hay mayor cantidad de picos altos en la gráfica 8. Por otro lado, vemos en la grafica 7, en el mes de agosto, el pico mas alto de los 2 años de predicción.
+La variación más notoria es en los primeros 3 meses en donde hay mayor cantidad de picos altos en la gráfica 8. Por otro lado, vemos en la grafica 7, en el mes de agosto, el pico mas alto de los 2 años de predicción. En el mes de noviembre se ve un comportamiento un poco diferente, siendo mas variable en la gráfica del año 2022 (Figura 8).
 
 ### 3.2.5- Predicción de la accidentalidad para tipo de accidente "Otro"
 
@@ -1655,7 +1655,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 <br>
 
-En las gráficas 9 y 10 podemos encontrar un comportamiento muy similar a lo largo del año, a excepción del mes septiembre donde podemos ver un pico mas alto en la gráfica 10.
+En las gráficas 9 y 10 podemos encontrar un comportamiento muy similar a lo largo del año, lo que significa que el modelo predijo muy pocas variaciones entre el año 2021 y 2022 en relación a las accidentes de tipo diferente a choque, volcamiento, caída de ocupante o atropello, a excepción del mes septiembre donde podemos ver un pico más alto en la gráfica 10.
 
 # 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad
 

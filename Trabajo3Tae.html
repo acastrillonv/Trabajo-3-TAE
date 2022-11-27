@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="contexto-del-problema" class="level1">
 <h1>1- Contexto del problema</h1>
-<p>A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad.</p>
+<p>A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad. En una noticia, la Secretaría de Movilidad (2021) menciona que “Durante 2020, el Cuerpo Oficial de Bomberos Medellín atendió 3.188 accidentes de tránsito, un año en el que se redujo la siniestralidad por el confinamiento estricto derivado de la pandemia. En 2019 habían sido 7.398 y en 2018 fueron 10.110 accidentes asistidos”.</p>
 <p>Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentalidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.</p>
 <p>Este proyecto ayudaría a (), ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.</p>
 <p>Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).</p>
@@ -4126,6 +4126,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Gráfica 2.</strong> Predicción de accidentes tipo Atropello para el año 2022
 </center>
 <p><br></p>
+<p>Para los accidente tipo Atropello podemos evidenciar que el punto más bajo de accidentes en el año 2021 <strong>(gráfica 1)</strong> se alcanza a finales del mes de Julio, sin embargo, en el año 2022 <strong>(gráfica 2)</strong>, el punto mas bajo es alcanzado aproximadamente en los primeros días del mes de Junio. Por otro lado, los puntos más altos se alcanzan aproximadamente en la misma época en ambos años. y por último, podemos evidenciar que, en promedio, en el año 2022, se tienen mayor cantidad de picos bajos que en el año 2021.</p>
 </section>
 <section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-choque" class="level3">
 <h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-choque">3.2.2- Predicción de la accidentalidad para tipo de accidente “Choque”</h3>
@@ -4150,6 +4151,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Gráfica 4.</strong> Predicción de accidentes tipo Choque para el año 2022
 </center>
 <p><br></p>
+<p>Entre las grádicas 3 y 4 no se logran evidenciar diferencias grandes, tienen aproximadamente el mismo comportamiento en ambos años tanto en los picos bajos como en los picos altos. Esto significa que el comportamiento de las accidentes de tipo Choque va a ser muy similar en ambos años.</p>
 </section>
 <section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-caída-de-ocupante" class="level3">
 <h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-caída-de-ocupante">3.2.3- Predicción de la accidentalidad para tipo de accidente “Caída de Ocupante”</h3>
@@ -4174,6 +4176,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Gráfica 6.</strong> Predicción de accidentes tipo Caída de Ocupante para el año 2022
 </center>
 <p><br></p>
+<p>Luego de observar las gráficas 5 y 6 podemos observar que, en la gráfica 6, hay picos más profundos que en la gráfica 5. Además, en los finales del mes de Junio hay una mayor cantidad de picos bajos en la gráfica 6.</p>
 </section>
 <section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-volcamiento" class="level3">
 <h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-volcamiento">3.2.4- Predicción de la accidentalidad para tipo de accidente “Volcamiento”</h3>
@@ -4198,6 +4201,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Gráfica 8.</strong> Predicción de accidentes tipo Volcamiento para el año 2022
 </center>
 <p><br></p>
+<p>La variación más notoria es en los primeros 3 meses en donde hay mayor cantidad de picos altos en la gráfica 8. Por otro lado, vemos en la grafica 7, en el mes de agosto, el pico mas alto de los 2 años de predicción.</p>
 </section>
 <section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-otro" class="level3">
 <h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-otro">3.2.5- Predicción de la accidentalidad para tipo de accidente “Otro”</h3>
@@ -4222,6 +4226,7 @@ ul.task-list li input[type="checkbox"] {
 <strong>Gráfica 10.</strong> Predicción de accidentes tipo Otro para el año 2022
 </center>
 <p><br></p>
+<p>En las gráficas 9 y 10 podemos encontrar un comportamiento muy similar a lo largo del año, a excepción del mes septiembre donde podemos ver un pico mas alto en la gráfica 10.</p>
 </section>
 </section>
 </section>
@@ -4344,34 +4349,34 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: center;">Min. : 0.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">1st Qu.: 167.0</td>
-<td style="text-align: center;">1st Qu.: 91.25</td>
-<td style="text-align: center;">1st Qu.: 17.00</td>
-<td style="text-align: center;">1st Qu.: 17.00</td>
+<td style="text-align: center;">1st Qu.: 76.5</td>
+<td style="text-align: center;">1st Qu.: 35.25</td>
+<td style="text-align: center;">1st Qu.: 9.00</td>
+<td style="text-align: center;">1st Qu.: 11.00</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Median : 470.5</td>
-<td style="text-align: center;">Median : 268.50</td>
-<td style="text-align: center;">Median : 48.00</td>
-<td style="text-align: center;">Median : 45.00</td>
+<td style="text-align: center;">Median : 322.0</td>
+<td style="text-align: center;">Median : 178.00</td>
+<td style="text-align: center;">Median : 35.00</td>
+<td style="text-align: center;">Median : 35.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Mean : 722.9</td>
-<td style="text-align: center;">Mean : 493.65</td>
-<td style="text-align: center;">Mean : 67.91</td>
-<td style="text-align: center;">Mean : 61.89</td>
+<td style="text-align: center;">Mean : 611.9</td>
+<td style="text-align: center;">Mean : 418.98</td>
+<td style="text-align: center;">Mean : 64.91</td>
+<td style="text-align: center;">Mean : 55.34</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3rd Qu.: 920.8</td>
-<td style="text-align: center;">3rd Qu.: 610.75</td>
-<td style="text-align: center;">3rd Qu.: 88.25</td>
-<td style="text-align: center;">3rd Qu.: 89.25</td>
+<td style="text-align: center;">3rd Qu.: 719.0</td>
+<td style="text-align: center;">3rd Qu.: 417.00</td>
+<td style="text-align: center;">3rd Qu.: 83.50</td>
+<td style="text-align: center;">3rd Qu.: 90.75</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Max. :4981.0</td>
 <td style="text-align: center;">Max. :3476.00</td>
 <td style="text-align: center;">Max. :830.00</td>
-<td style="text-align: center;">Max. :338.00</td>
+<td style="text-align: center;">Max. :308.00</td>
 </tr>
 </tbody>
 </table>
@@ -4388,23 +4393,23 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Min. :0.2256</td>
+<td style="text-align: center;">Min. :0.2378</td>
 <td style="text-align: center;">Min. :1</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">1st Qu.:0.2327</td>
+<td style="text-align: center;">1st Qu.:0.2405</td>
 <td style="text-align: center;">1st Qu.:1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Median :0.2368</td>
+<td style="text-align: center;">Median :0.2447</td>
 <td style="text-align: center;">Median :1</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Mean :0.2392</td>
+<td style="text-align: center;">Mean :0.2469</td>
 <td style="text-align: center;">Mean :1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3rd Qu.:0.2436</td>
+<td style="text-align: center;">3rd Qu.:0.2500</td>
 <td style="text-align: center;">3rd Qu.:1</td>
 </tr>
 <tr class="even">
@@ -4417,107 +4422,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <center>
 <strong>Tabla 36.</strong> Resumen de grupo con clasificación = 1
-</center>
-<p><br></p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped">
-<caption>Table continues below</caption>
-<colgroup>
-<col style="width: 29%">
-<col style="width: 22%">
-<col style="width: 20%">
-<col style="width: 27%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">cantidad_accidentes</th>
-<th style="text-align: center;">Choque</th>
-<th style="text-align: center;">Atropello</th>
-<th style="text-align: center;">Caida_de_Ocupante</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Min. :1.000</td>
-<td style="text-align: center;">Min. :0.0000</td>
-<td style="text-align: center;">Min. :0.00</td>
-<td style="text-align: center;">Min. :0</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">1st Qu.:2.000</td>
-<td style="text-align: center;">1st Qu.:0.2500</td>
-<td style="text-align: center;">1st Qu.:0.00</td>
-<td style="text-align: center;">1st Qu.:0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Median :2.500</td>
-<td style="text-align: center;">Median :1.0000</td>
-<td style="text-align: center;">Median :0.00</td>
-<td style="text-align: center;">Median :0</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Mean :2.833</td>
-<td style="text-align: center;">Mean :0.8333</td>
-<td style="text-align: center;">Mean :0.50</td>
-<td style="text-align: center;">Mean :0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">3rd Qu.:3.750</td>
-<td style="text-align: center;">3rd Qu.:1.0000</td>
-<td style="text-align: center;">3rd Qu.:0.75</td>
-<td style="text-align: center;">3rd Qu.:0</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Max. :5.000</td>
-<td style="text-align: center;">Max. :2.0000</td>
-<td style="text-align: center;">Max. :2.00</td>
-<td style="text-align: center;">Max. :0</td>
-</tr>
-</tbody>
-</table>
-<table class="table table-sm table-striped">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Valor</th>
-<th style="text-align: center;">Riesgo</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Min. :0.00000</td>
-<td style="text-align: center;">Min. :2</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">1st Qu.:0.09375</td>
-<td style="text-align: center;">1st Qu.:2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Median :0.12500</td>
-<td style="text-align: center;">Median :2</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Mean :0.10139</td>
-<td style="text-align: center;">Mean :2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">3rd Qu.:0.12500</td>
-<td style="text-align: center;">3rd Qu.:2</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Max. :0.15000</td>
-<td style="text-align: center;">Max. :2</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<center>
-<strong>Tabla 37.</strong> Resumen de grupo con clasificación = 2
 </center>
 <p><br></p>
 <div class="cell">
@@ -4591,34 +4495,34 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Min. :0.3333</td>
-<td style="text-align: center;">Min. :3</td>
+<td style="text-align: center;">Min. :2</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">1st Qu.:0.3542</td>
-<td style="text-align: center;">1st Qu.:3</td>
+<td style="text-align: center;">1st Qu.:2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Median :0.3750</td>
-<td style="text-align: center;">Median :3</td>
+<td style="text-align: center;">Median :2</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Mean :0.4028</td>
-<td style="text-align: center;">Mean :3</td>
+<td style="text-align: center;">Mean :2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">3rd Qu.:0.4375</td>
-<td style="text-align: center;">3rd Qu.:3</td>
+<td style="text-align: center;">3rd Qu.:2</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Max. :0.5000</td>
-<td style="text-align: center;">Max. :3</td>
+<td style="text-align: center;">Max. :2</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <center>
-<strong>Tabla 38.</strong> Resumen de grupo con clasificación = 3
+<strong>Tabla 37.</strong> Resumen de grupo con clasificación = 2
 </center>
 <p><br></p>
 <div class="cell">
@@ -4627,9 +4531,9 @@ ul.task-list li input[type="checkbox"] {
 <caption>Table continues below</caption>
 <colgroup>
 <col style="width: 28%">
+<col style="width: 23%">
 <col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 26%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -4641,40 +4545,40 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Min. : 3.00</td>
-<td style="text-align: center;">Min. : 0.00</td>
+<td style="text-align: center;">Min. : 4.0</td>
+<td style="text-align: center;">Min. : 1.00</td>
 <td style="text-align: center;">Min. : 0.00</td>
 <td style="text-align: center;">Min. : 0.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">1st Qu.: 28.75</td>
-<td style="text-align: center;">1st Qu.: 10.75</td>
-<td style="text-align: center;">1st Qu.: 2.00</td>
-<td style="text-align: center;">1st Qu.: 3.00</td>
+<td style="text-align: center;">1st Qu.: 182.2</td>
+<td style="text-align: center;">1st Qu.: 93.25</td>
+<td style="text-align: center;">1st Qu.: 16.00</td>
+<td style="text-align: center;">1st Qu.: 17.00</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Median : 75.50</td>
-<td style="text-align: center;">Median : 35.50</td>
-<td style="text-align: center;">Median : 14.00</td>
-<td style="text-align: center;">Median : 7.00</td>
+<td style="text-align: center;">Median : 450.0</td>
+<td style="text-align: center;">Median : 246.50</td>
+<td style="text-align: center;">Median : 47.00</td>
+<td style="text-align: center;">Median : 42.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Mean : 226.00</td>
-<td style="text-align: center;">Mean :115.91</td>
-<td style="text-align: center;">Mean : 31.54</td>
-<td style="text-align: center;">Mean : 26.28</td>
+<td style="text-align: center;">Mean : 682.2</td>
+<td style="text-align: center;">Mean : 456.08</td>
+<td style="text-align: center;">Mean : 61.87</td>
+<td style="text-align: center;">Mean : 58.18</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3rd Qu.: 328.00</td>
-<td style="text-align: center;">3rd Qu.:168.00</td>
-<td style="text-align: center;">3rd Qu.: 41.50</td>
-<td style="text-align: center;">3rd Qu.: 33.75</td>
+<td style="text-align: center;">3rd Qu.: 917.2</td>
+<td style="text-align: center;">3rd Qu.: 553.50</td>
+<td style="text-align: center;">3rd Qu.: 87.50</td>
+<td style="text-align: center;">3rd Qu.: 79.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Max. :1037.00</td>
-<td style="text-align: center;">Max. :688.00</td>
-<td style="text-align: center;">Max. :157.00</td>
-<td style="text-align: center;">Max. :144.00</td>
+<td style="text-align: center;">Max. :4368.0</td>
+<td style="text-align: center;">Max. :3311.00</td>
+<td style="text-align: center;">Max. :400.00</td>
+<td style="text-align: center;">Max. :338.00</td>
 </tr>
 </tbody>
 </table>
@@ -4691,27 +4595,128 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Min. :0.1667</td>
+<td style="text-align: center;">Min. :0.1875</td>
+<td style="text-align: center;">Min. :3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:0.2265</td>
+<td style="text-align: center;">1st Qu.:3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :0.2320</td>
+<td style="text-align: center;">Median :3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :0.2285</td>
+<td style="text-align: center;">Mean :3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:0.2349</td>
+<td style="text-align: center;">3rd Qu.:3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :0.2376</td>
+<td style="text-align: center;">Max. :3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 38.</strong> Resumen de grupo con clasificación = 3
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 21%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">cantidad_accidentes</th>
+<th style="text-align: center;">Choque</th>
+<th style="text-align: center;">Atropello</th>
+<th style="text-align: center;">Caida_de_Ocupante</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. : 1.000</td>
+<td style="text-align: center;">Min. : 0.000</td>
+<td style="text-align: center;">Min. :0.000</td>
+<td style="text-align: center;">Min. :0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.: 2.000</td>
+<td style="text-align: center;">1st Qu.: 0.000</td>
+<td style="text-align: center;">1st Qu.:0.000</td>
+<td style="text-align: center;">1st Qu.:0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median : 3.000</td>
+<td style="text-align: center;">Median : 1.000</td>
+<td style="text-align: center;">Median :0.000</td>
+<td style="text-align: center;">Median :0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean : 5.875</td>
+<td style="text-align: center;">Mean : 1.875</td>
+<td style="text-align: center;">Mean :0.625</td>
+<td style="text-align: center;">Mean :0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.: 4.250</td>
+<td style="text-align: center;">3rd Qu.: 1.250</td>
+<td style="text-align: center;">3rd Qu.:1.250</td>
+<td style="text-align: center;">3rd Qu.:0.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :27.000</td>
+<td style="text-align: center;">Max. :10.000</td>
+<td style="text-align: center;">Max. :2.000</td>
+<td style="text-align: center;">Max. :3.00</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :0.0000</td>
 <td style="text-align: center;">Min. :4</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">1st Qu.:0.2043</td>
+<td style="text-align: center;">1st Qu.:0.1146</td>
 <td style="text-align: center;">1st Qu.:4</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Median :0.2198</td>
+<td style="text-align: center;">Median :0.1250</td>
 <td style="text-align: center;">Median :4</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Mean :0.2117</td>
+<td style="text-align: center;">Mean :0.1177</td>
 <td style="text-align: center;">Mean :4</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3rd Qu.:0.2236</td>
+<td style="text-align: center;">3rd Qu.:0.1542</td>
 <td style="text-align: center;">3rd Qu.:4</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Max. :0.2251</td>
+<td style="text-align: center;">Max. :0.1667</td>
 <td style="text-align: center;">Max. :4</td>
 </tr>
 </tbody>
@@ -4729,13 +4734,18 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
-<p>El resultado….</p>
+<p>A continuación, en el mapa podemos observar la clasificación que se le generó a cada barrio por comuna de la ciudad de Medellín.</p>
+<div class="cell">
+
+</div>
+<p>En el mapa podemos observar cuales barrios poseen gran cantidad de accidente, y cuales no.</p>
 </section>
 <section id="referencias" class="level1">
 <h1>Referencias</h1>
 <ul>
 <li><p>IBM. (2022). Algoritmo de k vecinos más cercanos. 2022, noviembre 24, de ibm.com. Sitio web: https://www.ibm.com/co-es/topics/knn</p></li>
 <li><p>Alcaldia de Medellín. (2021). Incidentes viales. 2022, noviembre 24, de medata. Sitio web: http://medata.gov.co/dataset/incidentes-viales</p></li>
+<li><p>Secretaría de Movilidad. (2021). Más de 1.240 accidentes de tránsito fueron atendidos por Bomberos Medellín en el primer semestre de 2021. 2022, noviembre 23, de medellin.gov.co. Sitio web: https://www.medellin.gov.co/es/sala-de-prensa/noticias/mas-de-1-240-accidentes-de-transito-fueron-atendidos-por-bomberos-medellin-en-el-primer-semestre-de-2021/#:~:text=Durante%202020%2C%20el%20Cuerpo%20Oficial,2018%20fueron%2010.110%20accidentes%20asistidos.</p></li>
 </ul>
 </section>
 

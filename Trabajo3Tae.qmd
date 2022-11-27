@@ -21,7 +21,7 @@ library(pander)
 
 # 1- Contexto del problema
 
-A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad.
+A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad. En una noticia, la Secretaría de Movilidad (2021) menciona que "Durante 2020, el Cuerpo Oficial de Bomberos Medellín atendió 3.188 accidentes de tránsito, un año en el que se redujo la siniestralidad por el confinamiento estricto derivado de la pandemia. En 2019 habían sido 7.398 y en 2018 fueron 10.110 accidentes asistidos".
 
 Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentalidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.
 
@@ -1659,7 +1659,7 @@ En las gráficas 9 y 10 podemos encontrar un comportamiento muy similar a lo lar
 
 # 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad
 
-Para poder crear la clasificación de la accidentalidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 34.
+Para poder crear la clasificación de la accidentalidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 35.
 
 ```{r}
 calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
@@ -1679,6 +1679,10 @@ kable(head(calculo_indice),caption = "Agrupación de los accidentes por barrios 
 <center>**Tabla 35.** Agrupación de los accidentes por barrios y comunas de la ciudad de Medellín</center>
 
 <br>
+
+En la Tabla 35, podemos observar que se tiene también el conteo de los accidentes tipo "Choque" producidos en cada barrio de las diferentes comunas . Esto se hizo ya que también se crea columna un valor que nos permitirá crear la clasificación en la agrupación. Este valor es un promedio de de los diferentes tipos de accidentes multiplicados por un peso. Estos pesos fueron seleccionados por nosotros los cuales son:
+
+-   25% para la variable
 
 En la Tabla 35, podemos observar que se tiene también el conteo de los tipos de accidentes producidos en cada barrio de las diferentes comunas (Choque, Atropello, Caída de ocupante). Esto se hizo ya que se crea un valor que nos permitirá crear la clasificación en la agrupación. Este valor es un promedio de de los diferentes tipos de accidentes multiplicados por un peso. Estos pesos fueron seleccionados por nosotros los cuales son:
 
@@ -1715,7 +1719,7 @@ grupo4 <- subset(grupo4, select = -c(BARRIO,COMUNA))
 Se procedé a crear la clasificación acorde a este valor. Para esto se utiliza un modelo de clustering usando el algoritmo de K-means. El valor K que se va a utilizar es K=4, para obtener las 4 clasificaciones que deseamos (Muy alta, alta, media, baja). Una vez obtenida la clasificación de a que grupo pertenece cada barrio de cada comuna, a continuación en las Tablas 36, 37, 38, 39 se puede observar un resumen estadístico de los diferentes grupos obtenidos.
 
 ```{r}
-pander(summary(grupo1))
+#pander(summary(grupo1))
 ```
 
 <center>**Tabla 36.** Resumen de grupo con clasificación = 1</center>
@@ -1723,7 +1727,7 @@ pander(summary(grupo1))
 <br>
 
 ```{r}
-pander(summary(grupo2))
+#pander(summary(grupo2))
 ```
 
 <center>**Tabla 37.** Resumen de grupo con clasificación = 2</center>
@@ -1731,7 +1735,7 @@ pander(summary(grupo2))
 <br>
 
 ```{r}
-pander(summary(grupo3))
+#pander(summary(grupo3))
 ```
 
 <center>**Tabla 38.** Resumen de grupo con clasificación = 3</center>
@@ -1739,7 +1743,7 @@ pander(summary(grupo3))
 <br>
 
 ```{r}
-pander(summary(grupo4))
+#pander(summary(grupo4))
 ```
 
 <center>**Tabla 39.** Resumen de grupo con clasificación = 4</center>
@@ -1768,10 +1772,56 @@ A continuación, en el mapa podemos observar la clasificación que se le generó
 
 ```
 
-En el mapa podemos observar cuales barrios poseen gran cantidad de accidente, y cuales no.
+En el mapa podemos observar cuales barrios poseen gran cantidad de accidente, y cuales no. Se tienen cuatro clasificaciones: Muy alta, Alta, Media, Baja.
 
-# Referencias
+Con este agrupamiento,
+
+```{r}
+calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
+          summarise(cantidad_accidentes = n(),
+                    Choque = length(CLASE_ACCIDENTE[CLASE_ACCIDENTE == "Choque"]),
+                    Porcentaje = Choque/cantidad_accidentes)
+calculo_indice <- calculo_indice[calculo_indice$BARRIO!= '""',]
+calculo_indice <- calculo_indice[calculo_indice$COMUNA!= '""',]
+
+
+```
+
+```{r}
+clasif <- function(p){
+  if (p<0.34){
+    pn <- "Leve"
+  }
+  else if (p>=0.34 & p<0.67){
+    pn <- "Media"
+  }
+  else{
+    pn <- "Alta"
+  }
+}
+
+calculo_indice$Riesgo <- sapply(calculo_indice$porcentaje, clasif)
+
+calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,Porcentaje))
+
+```
+
+```{r}
+#Mapa
+
+
+```
+
+# 5-  Links
+
+-   Para conocer la aplicación web que creamos, haz click, <a href='https://sebasrendon12.shinyapps.io/myapp2/' target="_blank"> aquí </a> .
+
+-   Para conocer el video donde explicamos acerca del funcionamiento de la aplicación, haz click, <a href='https://youtu.be/zIcxs7rd_9g' target="_blank"> aquí </a> .
+
+# 6- Referencias
 
 -   IBM. (2022). Algoritmo de k vecinos más cercanos. 2022, noviembre 24, de ibm.com. Sitio web: https://www.ibm.com/co-es/topics/knn
 
 -   Alcaldia de Medellín. (2021). Incidentes viales. 2022, noviembre 24, de medata. Sitio web: http://medata.gov.co/dataset/incidentes-viales
+
+-   Secretaría de Movilidad. (2021). Más de 1.240 accidentes de tránsito fueron atendidos por Bomberos Medellín en el primer semestre de 2021. 2022, noviembre 23, de medellin.gov.co. Sitio web: https://www.medellin.gov.co/es/sala-de-prensa/noticias/mas-de-1-240-accidentes-de-transito-fueron-atendidos-por-bomberos-medellin-en-el-primer-semestre-de-2021/#:\~:text=Durante%202020%2C%20el%20Cuerpo%20Oficial,2018%20fueron%2010.110%20accidentes%20asistidos.

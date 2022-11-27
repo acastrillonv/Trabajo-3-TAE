@@ -74,7 +74,11 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="contexto-del-problema" class="level1">
 <h1>1- Contexto del problema</h1>
-<p>sskks</p>
+<p>A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad.</p>
+<p>Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentalidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.</p>
+<p>Este proyecto ayudaría a (), ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.</p>
+<p>Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).</p>
+<p>También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentalidad en cada barrio (Muy alta, alta, media, baja).</p>
 <div class="cell">
 
 </div>
@@ -1601,7 +1605,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="selección-de-las-variables" class="level2">
 <h2 class="anchored" data-anchor-id="selección-de-las-variables">2.5- Selección de las variables</h2>
-<p>Las variables seleccionadas para poder los construir los modelos son:</p>
+<p>Las variables seleccionadas para el resto del trabajo son:</p>
 <ul>
 <li><p>Año: año de ocurriencia del accidente.</p></li>
 <li><p>Clase de accidente: clasificación del accidente.</p></li>
@@ -1653,11 +1657,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="modelo-predictivo" class="level1">
 <h1>3- Modelo predictivo</h1>
-<p>Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge la tecnica KNN (K vecinos más cercanos).</p>
+<p>Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge el algoritmo KNN (K vecinos más cercanos). Este algoritmo “es un clasificador de aprendizaje supervisado no paramétrico, que utiliza la proximidad para hacer clasificaciones o predicciones sobre la agrupación de un punto de datos individual”(IBM, 2022).</p>
 <section id="construcción-del-modelo" class="level2">
 <h2 class="anchored" data-anchor-id="construcción-del-modelo">3.1- Construcción del modelo</h2>
 <p>Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.</p>
-<p>Ya con el dataset anteriormente construido, se va a crear un modelo por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.</p>
+<p>Ya con el dataset anteriormente construido, se van a crear una serie de modelos por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.</p>
 <p>Estos modelo se va construir haciendo uso de los registros de los accidentes registrados en los años 2014, 2015, 2016 y 2018. Para la validación de los modelos se van a utilizar los registros de los accidentes registrados en los años 2019 y 2020.</p>
 <div class="cell">
 
@@ -1753,27 +1757,228 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="k-óptimo-para-accidente-tipo-atropello" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-atropello">3.1.1- K óptimo para accidente tipo “Atropello”</h3>
+<p>Para la selección de las variables que nos ayuden a encontrar el K optimo para este modelo, se realiza un Análisis de Componentes Principales el cual se puede ver en la Tabla 23. Para conservar el 52% de la variabilidad explicada en las variables, se va a trabajar con las primeras 6 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.492</td>
+<td style="text-align: center;">1.479</td>
+<td style="text-align: center;">1.432</td>
+<td style="text-align: center;">1.352</td>
+<td style="text-align: center;">1.053</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.1093</td>
+<td style="text-align: center;">0.1025</td>
+<td style="text-align: center;">0.09135</td>
+<td style="text-align: center;">0.05538</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.2205</td>
+<td style="text-align: center;">0.323</td>
+<td style="text-align: center;">0.4143</td>
+<td style="text-align: center;">0.4697</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.052</td>
+<td style="text-align: center;">1.051</td>
+<td style="text-align: center;">1.049</td>
+<td style="text-align: center;">1.045</td>
+<td style="text-align: center;">1.042</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05529</td>
+<td style="text-align: center;">0.05517</td>
+<td style="text-align: center;">0.05495</td>
+<td style="text-align: center;">0.05458</td>
+<td style="text-align: center;">0.05427</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.525</td>
+<td style="text-align: center;">0.5802</td>
+<td style="text-align: center;">0.6351</td>
+<td style="text-align: center;">0.6897</td>
+<td style="text-align: center;">0.744</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.039</td>
+<td style="text-align: center;">1.038</td>
+<td style="text-align: center;">1.037</td>
+<td style="text-align: center;">1.022</td>
+<td style="text-align: center;">0.9193</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05399</td>
+<td style="text-align: center;">0.0538</td>
+<td style="text-align: center;">0.05377</td>
+<td style="text-align: center;">0.05222</td>
+<td style="text-align: center;">0.04223</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.798</td>
+<td style="text-align: center;">0.8518</td>
+<td style="text-align: center;">0.9055</td>
+<td style="text-align: center;">0.9578</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+<th style="text-align: center;">PC17</th>
+<th style="text-align: center;">PC18</th>
+<th style="text-align: center;">PC19</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.01406</td>
+<td style="text-align: center;">1.008e-15</td>
+<td style="text-align: center;">8.231e-16</td>
+<td style="text-align: center;">4.762e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">1e-05</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.37e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 23.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Atropello”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Importance of components:
-                          PC1    PC2    PC3     PC4     PC5     PC6     PC7
-Standard deviation     1.4919 1.4791 1.4319 1.35206 1.05279 1.05188 1.05079
-Proportion of Variance 0.1112 0.1093 0.1025 0.09135 0.05538 0.05529 0.05517
-Cumulative Proportion  0.1112 0.2205 0.3230 0.41434 0.46973 0.52502 0.58019
-                           PC8     PC9    PC10    PC11   PC12    PC13    PC14
-Standard deviation     1.04864 1.04512 1.04210 1.03945 1.0376 1.03731 1.02229
-Proportion of Variance 0.05495 0.05458 0.05427 0.05399 0.0538 0.05377 0.05222
-Cumulative Proportion  0.63514 0.68972 0.74398 0.79797 0.8518 0.90554 0.95776
-                          PC15    PC16      PC17      PC18      PC19     PC20
-Standard deviation     0.91933 0.01406 1.008e-15 8.231e-16 4.762e-16 1.37e-16
-Proportion of Variance 0.04223 0.00001 0.000e+00 0.000e+00 0.000e+00 0.00e+00
-Cumulative Proportion  0.99999 1.00000 1.000e+00 1.000e+00 1.000e+00 1.00e+00</code></pre>
-</div>
-</div>
-<p>En la Tabla 23, podemos observar que el mejor K</p>
+<p>En la Tabla 24, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=25, el cual tiene una variación en la métrica de error MAE de 20.56%, el mínimo porcentaje encontrado.</p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -1789,358 +1994,178 @@ Cumulative Proportion  0.99999 1.00000 1.000e+00 1.000e+00 1.000e+00 1.00e+00</c
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 2.356897 </td>
-   <td style="text-align:left;"> 4.098616 </td>
-   <td style="text-align:left;"> 42.4953 </td>
+   <td style="text-align:left;"> 2.350248 </td>
+   <td style="text-align:left;"> 4.04845 </td>
+   <td style="text-align:left;"> 41.94696 </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.589915 </td>
-   <td style="text-align:left;"> 3.979837 </td>
-   <td style="text-align:left;"> 34.92411 </td>
+   <td style="text-align:left;"> 2.597585 </td>
+   <td style="text-align:left;"> 3.934146 </td>
+   <td style="text-align:left;"> 33.97334 </td>
    <td style="text-align:right;"> 3 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.775383 </td>
-   <td style="text-align:left;"> 3.900875 </td>
-   <td style="text-align:left;"> 28.85232 </td>
+   <td style="text-align:left;"> 2.75963 </td>
+   <td style="text-align:left;"> 3.929676 </td>
+   <td style="text-align:left;"> 29.77462 </td>
    <td style="text-align:right;"> 4 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.822819 </td>
-   <td style="text-align:left;"> 3.860972 </td>
-   <td style="text-align:left;"> 26.88838 </td>
+   <td style="text-align:left;"> 2.820016 </td>
+   <td style="text-align:left;"> 3.88108 </td>
+   <td style="text-align:left;"> 27.33938 </td>
    <td style="text-align:right;"> 5 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.858054 </td>
-   <td style="text-align:left;"> 3.86479 </td>
-   <td style="text-align:left;"> 26.04892 </td>
+   <td style="text-align:left;"> 2.859934 </td>
+   <td style="text-align:left;"> 3.871613 </td>
+   <td style="text-align:left;"> 26.13068 </td>
    <td style="text-align:right;"> 6 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.887601 </td>
-   <td style="text-align:left;"> 3.857037 </td>
-   <td style="text-align:left;"> 25.13423 </td>
+   <td style="text-align:left;"> 2.888706 </td>
+   <td style="text-align:left;"> 3.861312 </td>
+   <td style="text-align:left;"> 25.18848 </td>
    <td style="text-align:right;"> 7 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.90973 </td>
-   <td style="text-align:left;"> 3.82976 </td>
-   <td style="text-align:left;"> 24.02319 </td>
+   <td style="text-align:left;"> 2.902596 </td>
+   <td style="text-align:left;"> 3.826006 </td>
+   <td style="text-align:left;"> 24.1351 </td>
    <td style="text-align:right;"> 8 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.93788 </td>
-   <td style="text-align:left;"> 3.825211 </td>
-   <td style="text-align:left;"> 23.1969 </td>
+   <td style="text-align:left;"> 2.927217 </td>
+   <td style="text-align:left;"> 3.825479 </td>
+   <td style="text-align:left;"> 23.48103 </td>
    <td style="text-align:right;"> 9 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.941482 </td>
-   <td style="text-align:left;"> 3.834761 </td>
-   <td style="text-align:left;"> 23.29426 </td>
+   <td style="text-align:left;"> 2.926846 </td>
+   <td style="text-align:left;"> 3.830827 </td>
+   <td style="text-align:left;"> 23.59755 </td>
    <td style="text-align:right;"> 10 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.943961 </td>
-   <td style="text-align:left;"> 3.841556 </td>
-   <td style="text-align:left;"> 23.3654 </td>
+   <td style="text-align:left;"> 2.923116 </td>
+   <td style="text-align:left;"> 3.835354 </td>
+   <td style="text-align:left;"> 23.78497 </td>
    <td style="text-align:right;"> 11 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.95281 </td>
-   <td style="text-align:left;"> 3.831686 </td>
-   <td style="text-align:left;"> 22.93705 </td>
+   <td style="text-align:left;"> 2.937065 </td>
+   <td style="text-align:left;"> 3.825655 </td>
+   <td style="text-align:left;"> 23.22714 </td>
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.956874 </td>
-   <td style="text-align:left;"> 3.824011 </td>
-   <td style="text-align:left;"> 22.6761 </td>
+   <td style="text-align:left;"> 2.939413 </td>
+   <td style="text-align:left;"> 3.813323 </td>
+   <td style="text-align:left;"> 22.91728 </td>
    <td style="text-align:right;"> 13 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.968204 </td>
-   <td style="text-align:left;"> 3.834544 </td>
-   <td style="text-align:left;"> 22.59304 </td>
+   <td style="text-align:left;"> 2.94854 </td>
+   <td style="text-align:left;"> 3.820351 </td>
+   <td style="text-align:left;"> 22.82019 </td>
    <td style="text-align:right;"> 14 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.97666 </td>
-   <td style="text-align:left;"> 3.825912 </td>
-   <td style="text-align:left;"> 22.19738 </td>
+   <td style="text-align:left;"> 2.957751 </td>
+   <td style="text-align:left;"> 3.805666 </td>
+   <td style="text-align:left;"> 22.28033 </td>
    <td style="text-align:right;"> 15 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.98019 </td>
-   <td style="text-align:left;"> 3.833766 </td>
-   <td style="text-align:left;"> 22.26468 </td>
+   <td style="text-align:left;"> 2.967779 </td>
+   <td style="text-align:left;"> 3.814259 </td>
+   <td style="text-align:left;"> 22.19251 </td>
    <td style="text-align:right;"> 16 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.986293 </td>
-   <td style="text-align:left;"> 3.827961 </td>
-   <td style="text-align:left;"> 21.98739 </td>
+   <td style="text-align:left;"> 2.975596 </td>
+   <td style="text-align:left;"> 3.813725 </td>
+   <td style="text-align:left;"> 21.97665 </td>
    <td style="text-align:right;"> 17 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.99761 </td>
-   <td style="text-align:left;"> 3.823346 </td>
-   <td style="text-align:left;"> 21.59721 </td>
+   <td style="text-align:left;"> 2.984907 </td>
+   <td style="text-align:left;"> 3.806294 </td>
+   <td style="text-align:left;"> 21.57972 </td>
    <td style="text-align:right;"> 18 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2.998645 </td>
-   <td style="text-align:left;"> 3.828442 </td>
-   <td style="text-align:left;"> 21.67455 </td>
+   <td style="text-align:left;"> 2.985939 </td>
+   <td style="text-align:left;"> 3.798291 </td>
+   <td style="text-align:left;"> 21.38731 </td>
    <td style="text-align:right;"> 19 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.000586 </td>
-   <td style="text-align:left;"> 3.831497 </td>
-   <td style="text-align:left;"> 21.68634 </td>
+   <td style="text-align:left;"> 2.987527 </td>
+   <td style="text-align:left;"> 3.798736 </td>
+   <td style="text-align:left;"> 21.35469 </td>
    <td style="text-align:right;"> 20 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.007894 </td>
-   <td style="text-align:left;"> 3.830886 </td>
-   <td style="text-align:left;"> 21.48306 </td>
+   <td style="text-align:left;"> 2.993043 </td>
+   <td style="text-align:left;"> 3.810219 </td>
+   <td style="text-align:left;"> 21.44696 </td>
    <td style="text-align:right;"> 21 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.014461 </td>
-   <td style="text-align:left;"> 3.830627 </td>
-   <td style="text-align:left;"> 21.30632 </td>
+   <td style="text-align:left;"> 2.997499 </td>
+   <td style="text-align:left;"> 3.818345 </td>
+   <td style="text-align:left;"> 21.49743 </td>
    <td style="text-align:right;"> 22 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.01365 </td>
-   <td style="text-align:left;"> 3.826783 </td>
-   <td style="text-align:left;"> 21.24846 </td>
+   <td style="text-align:left;"> 2.997801 </td>
+   <td style="text-align:left;"> 3.81285 </td>
+   <td style="text-align:left;"> 21.37636 </td>
    <td style="text-align:right;"> 23 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.019747 </td>
-   <td style="text-align:left;"> 3.808707 </td>
-   <td style="text-align:left;"> 20.71465 </td>
+   <td style="text-align:left;"> 3.01076 </td>
+   <td style="text-align:left;"> 3.801008 </td>
+   <td style="text-align:left;"> 20.79049 </td>
    <td style="text-align:right;"> 24 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.026157 </td>
-   <td style="text-align:left;"> 3.811819 </td>
-   <td style="text-align:left;"> 20.61122 </td>
+   <td style="text-align:left;"> 3.019686 </td>
+   <td style="text-align:left;"> 3.801442 </td>
+   <td style="text-align:left;"> 20.56473 </td>
    <td style="text-align:right;"> 25 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.026845 </td>
-   <td style="text-align:left;"> 3.816692 </td>
-   <td style="text-align:left;"> 20.69455 </td>
+   <td style="text-align:left;"> 3.022514 </td>
+   <td style="text-align:left;"> 3.807976 </td>
+   <td style="text-align:left;"> 20.62676 </td>
    <td style="text-align:right;"> 26 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.023375 </td>
-   <td style="text-align:left;"> 3.814473 </td>
-   <td style="text-align:left;"> 20.73939 </td>
+   <td style="text-align:left;"> 3.020571 </td>
+   <td style="text-align:left;"> 3.809976 </td>
+   <td style="text-align:left;"> 20.7194 </td>
    <td style="text-align:right;"> 27 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.024827 </td>
-   <td style="text-align:left;"> 3.825869 </td>
-   <td style="text-align:left;"> 20.93751 </td>
+   <td style="text-align:left;"> 3.025785 </td>
+   <td style="text-align:left;"> 3.824374 </td>
+   <td style="text-align:left;"> 20.88158 </td>
    <td style="text-align:right;"> 28 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.029367 </td>
-   <td style="text-align:left;"> 3.825665 </td>
-   <td style="text-align:left;"> 20.81464 </td>
+   <td style="text-align:left;"> 3.029129 </td>
+   <td style="text-align:left;"> 3.823901 </td>
+   <td style="text-align:left;"> 20.78431 </td>
    <td style="text-align:right;"> 29 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 3.032164 </td>
-   <td style="text-align:left;"> 3.8307 </td>
-   <td style="text-align:left;"> 20.84569 </td>
+   <td style="text-align:left;"> 3.034508 </td>
+   <td style="text-align:left;"> 3.836711 </td>
+   <td style="text-align:left;"> 20.9086 </td>
    <td style="text-align:right;"> 30 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.027723 </td>
-   <td style="text-align:left;"> 3.830268 </td>
-   <td style="text-align:left;"> 20.9527 </td>
-   <td style="text-align:right;"> 31 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.028627 </td>
-   <td style="text-align:left;"> 3.829345 </td>
-   <td style="text-align:left;"> 20.91007 </td>
-   <td style="text-align:right;"> 32 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.029496 </td>
-   <td style="text-align:left;"> 3.82781 </td>
-   <td style="text-align:left;"> 20.85562 </td>
-   <td style="text-align:right;"> 33 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.027523 </td>
-   <td style="text-align:left;"> 3.831247 </td>
-   <td style="text-align:left;"> 20.97813 </td>
-   <td style="text-align:right;"> 34 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.031703 </td>
-   <td style="text-align:left;"> 3.829729 </td>
-   <td style="text-align:left;"> 20.83766 </td>
-   <td style="text-align:right;"> 35 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.036274 </td>
-   <td style="text-align:left;"> 3.833317 </td>
-   <td style="text-align:left;"> 20.79252 </td>
-   <td style="text-align:right;"> 36 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.038802 </td>
-   <td style="text-align:left;"> 3.83861 </td>
-   <td style="text-align:left;"> 20.83588 </td>
-   <td style="text-align:right;"> 37 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.038602 </td>
-   <td style="text-align:left;"> 3.841913 </td>
-   <td style="text-align:left;"> 20.90915 </td>
-   <td style="text-align:right;"> 38 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.040846 </td>
-   <td style="text-align:left;"> 3.842555 </td>
-   <td style="text-align:left;"> 20.86395 </td>
-   <td style="text-align:right;"> 39 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.036613 </td>
-   <td style="text-align:left;"> 3.83492 </td>
-   <td style="text-align:left;"> 20.81679 </td>
-   <td style="text-align:right;"> 40 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.03925 </td>
-   <td style="text-align:left;"> 3.832094 </td>
-   <td style="text-align:left;"> 20.68959 </td>
-   <td style="text-align:right;"> 41 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.040231 </td>
-   <td style="text-align:left;"> 3.837788 </td>
-   <td style="text-align:left;"> 20.78169 </td>
-   <td style="text-align:right;"> 42 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.041452 </td>
-   <td style="text-align:left;"> 3.83375 </td>
-   <td style="text-align:left;"> 20.6664 </td>
-   <td style="text-align:right;"> 43 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.041965 </td>
-   <td style="text-align:left;"> 3.836905 </td>
-   <td style="text-align:left;"> 20.71827 </td>
-   <td style="text-align:right;"> 44 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.042017 </td>
-   <td style="text-align:left;"> 3.830736 </td>
-   <td style="text-align:left;"> 20.58922 </td>
-   <td style="text-align:right;"> 45 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.042684 </td>
-   <td style="text-align:left;"> 3.830252 </td>
-   <td style="text-align:left;"> 20.5618 </td>
-   <td style="text-align:right;"> 46 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.047002 </td>
-   <td style="text-align:left;"> 3.833754 </td>
-   <td style="text-align:left;"> 20.52172 </td>
-   <td style="text-align:right;"> 47 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.045924 </td>
-   <td style="text-align:left;"> 3.837619 </td>
-   <td style="text-align:left;"> 20.62986 </td>
-   <td style="text-align:right;"> 48 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.045513 </td>
-   <td style="text-align:left;"> 3.83944 </td>
-   <td style="text-align:left;"> 20.6782 </td>
-   <td style="text-align:right;"> 49 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.04582 </td>
-   <td style="text-align:left;"> 3.836421 </td>
-   <td style="text-align:left;"> 20.60778 </td>
-   <td style="text-align:right;"> 50 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.04637 </td>
-   <td style="text-align:left;"> 3.836135 </td>
-   <td style="text-align:left;"> 20.58751 </td>
-   <td style="text-align:right;"> 51 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.050451 </td>
-   <td style="text-align:left;"> 3.842353 </td>
-   <td style="text-align:left;"> 20.60981 </td>
-   <td style="text-align:right;"> 52 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.056025 </td>
-   <td style="text-align:left;"> 3.843154 </td>
-   <td style="text-align:left;"> 20.48135 </td>
-   <td style="text-align:right;"> 53 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.052212 </td>
-   <td style="text-align:left;"> 3.841044 </td>
-   <td style="text-align:left;"> 20.5369 </td>
-   <td style="text-align:right;"> 54 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.053502 </td>
-   <td style="text-align:left;"> 3.838718 </td>
-   <td style="text-align:left;"> 20.45515 </td>
-   <td style="text-align:right;"> 55 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.05488 </td>
-   <td style="text-align:left;"> 3.837087 </td>
-   <td style="text-align:left;"> 20.38544 </td>
-   <td style="text-align:right;"> 56 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.056189 </td>
-   <td style="text-align:left;"> 3.835271 </td>
-   <td style="text-align:left;"> 20.3136 </td>
-   <td style="text-align:right;"> 57 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.055593 </td>
-   <td style="text-align:left;"> 3.837811 </td>
-   <td style="text-align:left;"> 20.38189 </td>
-   <td style="text-align:right;"> 58 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.053989 </td>
-   <td style="text-align:left;"> 3.835846 </td>
-   <td style="text-align:left;"> 20.38289 </td>
-   <td style="text-align:right;"> 59 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 3.055265 </td>
-   <td style="text-align:left;"> 3.836851 </td>
-   <td style="text-align:left;"> 20.37052 </td>
-   <td style="text-align:right;"> 60 </td>
   </tr>
 </tbody>
 </table>
@@ -2148,51 +2173,2570 @@ Cumulative Proportion  0.99999 1.00000 1.000e+00 1.000e+00 1.000e+00 1.00e+00</c
 </div>
 </div>
 <center>
-<strong>Tabla 23.</strong> Análisis del valor K para la variable “Atropello”
+<strong>Tabla 24.</strong> Análisis del valor K para la variable “Atropello”
 </center>
 <p><br></p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  20.31   20.62   20.85   22.15   22.09   42.50 </code></pre>
+
 </div>
-</div>
-<center>
-<strong>Tabla 24.</strong> Análisis del variación del error MAE para la variable “Atropello”
-</center>
-<p><br></p>
 </section>
 <section id="k-óptimo-para-accidente-tipo-choque" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-choque">3.1.2- K óptimo para accidente tipo “Choque”</h3>
+<p>Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 25. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.491</td>
+<td style="text-align: center;">1.479</td>
+<td style="text-align: center;">1.431</td>
+<td style="text-align: center;">1.352</td>
+<td style="text-align: center;">1.053</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.1093</td>
+<td style="text-align: center;">0.1024</td>
+<td style="text-align: center;">0.09133</td>
+<td style="text-align: center;">0.05542</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.2204</td>
+<td style="text-align: center;">0.3229</td>
+<td style="text-align: center;">0.4142</td>
+<td style="text-align: center;">0.4696</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.052</td>
+<td style="text-align: center;">1.051</td>
+<td style="text-align: center;">1.049</td>
+<td style="text-align: center;">1.045</td>
+<td style="text-align: center;">1.042</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05535</td>
+<td style="text-align: center;">0.05524</td>
+<td style="text-align: center;">0.05502</td>
+<td style="text-align: center;">0.05459</td>
+<td style="text-align: center;">0.05424</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.525</td>
+<td style="text-align: center;">0.5802</td>
+<td style="text-align: center;">0.6352</td>
+<td style="text-align: center;">0.6898</td>
+<td style="text-align: center;">0.744</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.039</td>
+<td style="text-align: center;">1.037</td>
+<td style="text-align: center;">1.037</td>
+<td style="text-align: center;">1.022</td>
+<td style="text-align: center;">0.9197</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05396</td>
+<td style="text-align: center;">0.05377</td>
+<td style="text-align: center;">0.05375</td>
+<td style="text-align: center;">0.05219</td>
+<td style="text-align: center;">0.04227</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.798</td>
+<td style="text-align: center;">0.8518</td>
+<td style="text-align: center;">0.9055</td>
+<td style="text-align: center;">0.9577</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 14%">
+<col style="width: 12%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+<th style="text-align: center;">PC17</th>
+<th style="text-align: center;">PC18</th>
+<th style="text-align: center;">PC19</th>
+<th style="text-align: center;">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.01406</td>
+<td style="text-align: center;">1.88e-15</td>
+<td style="text-align: center;">9.862e-16</td>
+<td style="text-align: center;">8.57e-16</td>
+<td style="text-align: center;">2.675e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">1e-05</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 25.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Choque”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>En la Tabla 26, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=29, el cual tiene una variación en la métrica de error MAE de 40.7%, el mínimo porcentaje encontrado.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 9.616419 </td>
+   <td style="text-align:left;"> 22.5821 </td>
+   <td style="text-align:left;"> 57.41575 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.26895 </td>
+   <td style="text-align:left;"> 21.53255 </td>
+   <td style="text-align:left;"> 47.66552 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.69216 </td>
+   <td style="text-align:left;"> 21.12902 </td>
+   <td style="text-align:left;"> 44.66301 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.80667 </td>
+   <td style="text-align:left;"> 21.00469 </td>
+   <td style="text-align:left;"> 43.79032 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.95302 </td>
+   <td style="text-align:left;"> 20.96497 </td>
+   <td style="text-align:left;"> 42.98576 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.02578 </td>
+   <td style="text-align:left;"> 20.81939 </td>
+   <td style="text-align:left;"> 42.23762 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.0632 </td>
+   <td style="text-align:left;"> 20.80263 </td>
+   <td style="text-align:left;"> 42.01117 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.00591 </td>
+   <td style="text-align:left;"> 21.00927 </td>
+   <td style="text-align:left;"> 42.85424 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.99967 </td>
+   <td style="text-align:left;"> 21.13041 </td>
+   <td style="text-align:left;"> 43.21135 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 11.98415 </td>
+   <td style="text-align:left;"> 21.25016 </td>
+   <td style="text-align:left;"> 43.60444 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.02836 </td>
+   <td style="text-align:left;"> 21.28599 </td>
+   <td style="text-align:left;"> 43.49164 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.09018 </td>
+   <td style="text-align:left;"> 21.35722 </td>
+   <td style="text-align:left;"> 43.39067 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.09307 </td>
+   <td style="text-align:left;"> 21.30397 </td>
+   <td style="text-align:left;"> 43.23558 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.21849 </td>
+   <td style="text-align:left;"> 21.30933 </td>
+   <td style="text-align:left;"> 42.66129 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.24792 </td>
+   <td style="text-align:left;"> 21.33687 </td>
+   <td style="text-align:left;"> 42.5974 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.30752 </td>
+   <td style="text-align:left;"> 21.28961 </td>
+   <td style="text-align:left;"> 42.19 </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.32474 </td>
+   <td style="text-align:left;"> 21.245 </td>
+   <td style="text-align:left;"> 41.98758 </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.33848 </td>
+   <td style="text-align:left;"> 21.19422 </td>
+   <td style="text-align:left;"> 41.78374 </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.32885 </td>
+   <td style="text-align:left;"> 21.20186 </td>
+   <td style="text-align:left;"> 41.85014 </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.33201 </td>
+   <td style="text-align:left;"> 21.23961 </td>
+   <td style="text-align:left;"> 41.93863 </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.36401 </td>
+   <td style="text-align:left;"> 21.25518 </td>
+   <td style="text-align:left;"> 41.8306 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.38298 </td>
+   <td style="text-align:left;"> 21.24074 </td>
+   <td style="text-align:left;"> 41.70174 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.39882 </td>
+   <td style="text-align:left;"> 21.22235 </td>
+   <td style="text-align:left;"> 41.57659 </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.43953 </td>
+   <td style="text-align:left;"> 21.25272 </td>
+   <td style="text-align:left;"> 41.46853 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.49342 </td>
+   <td style="text-align:left;"> 21.18167 </td>
+   <td style="text-align:left;"> 41.01777 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.50031 </td>
+   <td style="text-align:left;"> 21.16222 </td>
+   <td style="text-align:left;"> 40.93102 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.5322 </td>
+   <td style="text-align:left;"> 21.14676 </td>
+   <td style="text-align:left;"> 40.73699 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.53403 </td>
+   <td style="text-align:left;"> 21.13311 </td>
+   <td style="text-align:left;"> 40.69007 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 12.53924 </td>
+   <td style="text-align:left;"> 21.17777 </td>
+   <td style="text-align:left;"> 40.79055 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 26.</strong> Análisis del valor K para la variable “Choque”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
 </section>
 <section id="k-óptimo-para-accidente-tipo-caída-de-ocupante" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-caída-de-ocupante">3.1.3- K óptimo para accidente tipo “Caída de Ocupante”</h3>
+<p>Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 27. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.492</td>
+<td style="text-align: center;">1.479</td>
+<td style="text-align: center;">1.432</td>
+<td style="text-align: center;">1.352</td>
+<td style="text-align: center;">1.053</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.1113</td>
+<td style="text-align: center;">0.1093</td>
+<td style="text-align: center;">0.1025</td>
+<td style="text-align: center;">0.09134</td>
+<td style="text-align: center;">0.05543</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.1113</td>
+<td style="text-align: center;">0.2206</td>
+<td style="text-align: center;">0.3231</td>
+<td style="text-align: center;">0.4145</td>
+<td style="text-align: center;">0.4699</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.052</td>
+<td style="text-align: center;">1.051</td>
+<td style="text-align: center;">1.049</td>
+<td style="text-align: center;">1.045</td>
+<td style="text-align: center;">1.043</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05533</td>
+<td style="text-align: center;">0.05522</td>
+<td style="text-align: center;">0.05499</td>
+<td style="text-align: center;">0.05462</td>
+<td style="text-align: center;">0.05431</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.5253</td>
+<td style="text-align: center;">0.5805</td>
+<td style="text-align: center;">0.6355</td>
+<td style="text-align: center;">0.6901</td>
+<td style="text-align: center;">0.7444</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.039</td>
+<td style="text-align: center;">1.038</td>
+<td style="text-align: center;">1.033</td>
+<td style="text-align: center;">1.022</td>
+<td style="text-align: center;">0.9188</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05399</td>
+<td style="text-align: center;">0.05384</td>
+<td style="text-align: center;">0.05334</td>
+<td style="text-align: center;">0.05224</td>
+<td style="text-align: center;">0.04219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.7984</td>
+<td style="text-align: center;">0.8522</td>
+<td style="text-align: center;">0.9056</td>
+<td style="text-align: center;">0.9578</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+<th style="text-align: center;">PC17</th>
+<th style="text-align: center;">PC18</th>
+<th style="text-align: center;">PC19</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.01407</td>
+<td style="text-align: center;">1.286e-15</td>
+<td style="text-align: center;">8.634e-16</td>
+<td style="text-align: center;">2.316e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">1e-05</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">6.377e-17</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 27.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Caída de Ocupante”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>En la Tabla 28, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 22.29%, el mínimo porcentaje encontrado.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2.327647 </td>
+   <td style="text-align:left;"> 4.548634 </td>
+   <td style="text-align:left;"> 48.82756 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.662373 </td>
+   <td style="text-align:left;"> 4.417696 </td>
+   <td style="text-align:left;"> 39.73389 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.818984 </td>
+   <td style="text-align:left;"> 4.301578 </td>
+   <td style="text-align:left;"> 34.46627 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.892045 </td>
+   <td style="text-align:left;"> 4.280179 </td>
+   <td style="text-align:left;"> 32.43169 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.920165 </td>
+   <td style="text-align:left;"> 4.299135 </td>
+   <td style="text-align:left;"> 32.07552 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.952588 </td>
+   <td style="text-align:left;"> 4.243735 </td>
+   <td style="text-align:left;"> 30.42479 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.964222 </td>
+   <td style="text-align:left;"> 4.217383 </td>
+   <td style="text-align:left;"> 29.71419 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.968249 </td>
+   <td style="text-align:left;"> 4.184757 </td>
+   <td style="text-align:left;"> 29.06999 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.987092 </td>
+   <td style="text-align:left;"> 4.15073 </td>
+   <td style="text-align:left;"> 28.03453 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2.994432 </td>
+   <td style="text-align:left;"> 4.140185 </td>
+   <td style="text-align:left;"> 27.67395 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.014717 </td>
+   <td style="text-align:left;"> 4.119286 </td>
+   <td style="text-align:left;"> 26.81458 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.032475 </td>
+   <td style="text-align:left;"> 4.102901 </td>
+   <td style="text-align:left;"> 26.0895 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.052118 </td>
+   <td style="text-align:left;"> 4.076437 </td>
+   <td style="text-align:left;"> 25.1278 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.071046 </td>
+   <td style="text-align:left;"> 4.079276 </td>
+   <td style="text-align:left;"> 24.71589 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.079313 </td>
+   <td style="text-align:left;"> 4.0803 </td>
+   <td style="text-align:left;"> 24.53219 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.087286 </td>
+   <td style="text-align:left;"> 4.064271 </td>
+   <td style="text-align:left;"> 24.03837 </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.101145 </td>
+   <td style="text-align:left;"> 4.042709 </td>
+   <td style="text-align:left;"> 23.29041 </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.098809 </td>
+   <td style="text-align:left;"> 4.051125 </td>
+   <td style="text-align:left;"> 23.50745 </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.096789 </td>
+   <td style="text-align:left;"> 4.034392 </td>
+   <td style="text-align:left;"> 23.24026 </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.100576 </td>
+   <td style="text-align:left;"> 4.030164 </td>
+   <td style="text-align:left;"> 23.06576 </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.110096 </td>
+   <td style="text-align:left;"> 4.035222 </td>
+   <td style="text-align:left;"> 22.92627 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.117747 </td>
+   <td style="text-align:left;"> 4.031931 </td>
+   <td style="text-align:left;"> 22.67361 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.124771 </td>
+   <td style="text-align:left;"> 4.039694 </td>
+   <td style="text-align:left;"> 22.64832 </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.133575 </td>
+   <td style="text-align:left;"> 4.043199 </td>
+   <td style="text-align:left;"> 22.49764 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.136379 </td>
+   <td style="text-align:left;"> 4.049269 </td>
+   <td style="text-align:left;"> 22.54456 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.129885 </td>
+   <td style="text-align:left;"> 4.050205 </td>
+   <td style="text-align:left;"> 22.72282 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.142087 </td>
+   <td style="text-align:left;"> 4.04986 </td>
+   <td style="text-align:left;"> 22.41492 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.143471 </td>
+   <td style="text-align:left;"> 4.051387 </td>
+   <td style="text-align:left;"> 22.41001 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.145179 </td>
+   <td style="text-align:left;"> 4.047362 </td>
+   <td style="text-align:left;"> 22.29064 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 28.</strong> Análisis del valor K para la variable “Caída de Ocupante”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
 </section>
 <section id="k-óptimo-para-accidente-tipo-volcamiento" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-volcamiento">3.1.4- K óptimo para accidente tipo “Volcamiento”</h3>
+<p>Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 29. Para conservar el 32.25% de la variabilidad explicada en las variables, se va a trabajar con las primeras 3 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.502</td>
+<td style="text-align: center;">1.472</td>
+<td style="text-align: center;">1.423</td>
+<td style="text-align: center;">1.348</td>
+<td style="text-align: center;">1.056</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.1129</td>
+<td style="text-align: center;">0.1084</td>
+<td style="text-align: center;">0.1013</td>
+<td style="text-align: center;">0.09092</td>
+<td style="text-align: center;">0.0558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.1129</td>
+<td style="text-align: center;">0.2212</td>
+<td style="text-align: center;">0.3225</td>
+<td style="text-align: center;">0.4134</td>
+<td style="text-align: center;">0.4692</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.053</td>
+<td style="text-align: center;">1.053</td>
+<td style="text-align: center;">1.051</td>
+<td style="text-align: center;">1.049</td>
+<td style="text-align: center;">1.047</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05549</td>
+<td style="text-align: center;">0.05542</td>
+<td style="text-align: center;">0.05528</td>
+<td style="text-align: center;">0.05505</td>
+<td style="text-align: center;">0.05479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.5247</td>
+<td style="text-align: center;">0.5801</td>
+<td style="text-align: center;">0.6354</td>
+<td style="text-align: center;">0.6904</td>
+<td style="text-align: center;">0.7452</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.043</td>
+<td style="text-align: center;">1.039</td>
+<td style="text-align: center;">1.022</td>
+<td style="text-align: center;">1.02</td>
+<td style="text-align: center;">0.9161</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05439</td>
+<td style="text-align: center;">0.05401</td>
+<td style="text-align: center;">0.05229</td>
+<td style="text-align: center;">0.05209</td>
+<td style="text-align: center;">0.04198</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.7996</td>
+<td style="text-align: center;">0.8536</td>
+<td style="text-align: center;">0.9059</td>
+<td style="text-align: center;">0.958</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+<th style="text-align: center;">PC17</th>
+<th style="text-align: center;">PC18</th>
+<th style="text-align: center;">PC19</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.01403</td>
+<td style="text-align: center;">1.671e-15</td>
+<td style="text-align: center;">1.175e-15</td>
+<td style="text-align: center;">8.185e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">1e-05</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">5.857e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 29.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Volcamiento”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>En la Tabla 30, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 23.96%, el mínimo porcentaje encontrado.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 1.401319 </td>
+   <td style="text-align:left;"> 2.553198 </td>
+   <td style="text-align:left;"> 45.11512 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.547278 </td>
+   <td style="text-align:left;"> 2.473684 </td>
+   <td style="text-align:left;"> 37.45047 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.635194 </td>
+   <td style="text-align:left;"> 2.44101 </td>
+   <td style="text-align:left;"> 33.01156 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.65453 </td>
+   <td style="text-align:left;"> 2.423845 </td>
+   <td style="text-align:left;"> 31.73943 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.678438 </td>
+   <td style="text-align:left;"> 2.428675 </td>
+   <td style="text-align:left;"> 30.8908 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.697514 </td>
+   <td style="text-align:left;"> 2.38482 </td>
+   <td style="text-align:left;"> 28.82003 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.699472 </td>
+   <td style="text-align:left;"> 2.379622 </td>
+   <td style="text-align:left;"> 28.58228 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.708046 </td>
+   <td style="text-align:left;"> 2.355646 </td>
+   <td style="text-align:left;"> 27.49141 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.71729 </td>
+   <td style="text-align:left;"> 2.343247 </td>
+   <td style="text-align:left;"> 26.71324 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.712509 </td>
+   <td style="text-align:left;"> 2.33639 </td>
+   <td style="text-align:left;"> 26.7028 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.713361 </td>
+   <td style="text-align:left;"> 2.327852 </td>
+   <td style="text-align:left;"> 26.39731 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.714328 </td>
+   <td style="text-align:left;"> 2.327668 </td>
+   <td style="text-align:left;"> 26.35 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.719112 </td>
+   <td style="text-align:left;"> 2.325461 </td>
+   <td style="text-align:left;"> 26.07436 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.716623 </td>
+   <td style="text-align:left;"> 2.317532 </td>
+   <td style="text-align:left;"> 25.92883 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.719271 </td>
+   <td style="text-align:left;"> 2.316008 </td>
+   <td style="text-align:left;"> 25.76577 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.723741 </td>
+   <td style="text-align:left;"> 2.319753 </td>
+   <td style="text-align:left;"> 25.69291 </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.722246 </td>
+   <td style="text-align:left;"> 2.329723 </td>
+   <td style="text-align:left;"> 26.07507 </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.728736 </td>
+   <td style="text-align:left;"> 2.324119 </td>
+   <td style="text-align:left;"> 25.61759 </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.733013 </td>
+   <td style="text-align:left;"> 2.319707 </td>
+   <td style="text-align:left;"> 25.29171 </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.736515 </td>
+   <td style="text-align:left;"> 2.326316 </td>
+   <td style="text-align:left;"> 25.35343 </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.738501 </td>
+   <td style="text-align:left;"> 2.324423 </td>
+   <td style="text-align:left;"> 25.20718 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.741037 </td>
+   <td style="text-align:left;"> 2.323427 </td>
+   <td style="text-align:left;"> 25.06598 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.745811 </td>
+   <td style="text-align:left;"> 2.326065 </td>
+   <td style="text-align:left;"> 24.94574 </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.752702 </td>
+   <td style="text-align:left;"> 2.319763 </td>
+   <td style="text-align:left;"> 24.4448 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.754692 </td>
+   <td style="text-align:left;"> 2.322156 </td>
+   <td style="text-align:left;"> 24.43696 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.753131 </td>
+   <td style="text-align:left;"> 2.31867 </td>
+   <td style="text-align:left;"> 24.39067 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.755655 </td>
+   <td style="text-align:left;"> 2.318687 </td>
+   <td style="text-align:left;"> 24.28237 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.759039 </td>
+   <td style="text-align:left;"> 2.313945 </td>
+   <td style="text-align:left;"> 23.98096 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.758873 </td>
+   <td style="text-align:left;"> 2.313212 </td>
+   <td style="text-align:left;"> 23.96401 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 30.</strong> Análisis del valor K para la variable “Volcamiento”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
 </section>
 <section id="k-óptimo-para-accidente-tipo-incendio" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-incendio">3.1.5- K óptimo para accidente tipo “Incendio”</h3>
+<p>Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 31. Para conservar el 99.9% de la variabilidad explicada en las variables, se va a trabajar con las primeras 12 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">2.439</td>
+<td style="text-align: center;">2.133</td>
+<td style="text-align: center;">1.873</td>
+<td style="text-align: center;">1.477</td>
+<td style="text-align: center;">1.337</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.2509</td>
+<td style="text-align: center;">0.1919</td>
+<td style="text-align: center;">0.1479</td>
+<td style="text-align: center;">0.09203</td>
+<td style="text-align: center;">0.07537</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.2509</td>
+<td style="text-align: center;">0.4428</td>
+<td style="text-align: center;">0.5907</td>
+<td style="text-align: center;">0.6827</td>
+<td style="text-align: center;">0.7581</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.169</td>
+<td style="text-align: center;">1.115</td>
+<td style="text-align: center;">1.065</td>
+<td style="text-align: center;">0.8822</td>
+<td style="text-align: center;">0.7949</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05766</td>
+<td style="text-align: center;">0.05239</td>
+<td style="text-align: center;">0.04783</td>
+<td style="text-align: center;">0.03282</td>
+<td style="text-align: center;">0.02664</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.8158</td>
+<td style="text-align: center;">0.8681</td>
+<td style="text-align: center;">0.916</td>
+<td style="text-align: center;">0.9488</td>
+<td style="text-align: center;">0.9754</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.5961</td>
+<td style="text-align: center;">0.4537</td>
+<td style="text-align: center;">0.1455</td>
+<td style="text-align: center;">0.006643</td>
+<td style="text-align: center;">2.31e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.01498</td>
+<td style="text-align: center;">0.00868</td>
+<td style="text-align: center;">0.00089</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.9904</td>
+<td style="text-align: center;">0.9991</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.314e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 31.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Incendio”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>En la Tabla 32, podemos observar que no existe variación del error MAE a medida que aumenta K. Esto se debe a que la cantidad de registro tanto para entrenamiento y para validación son muy pocos. La cantidad de registros para datos de entrenamiento son de 16, y para validación son 8, esto hace que el modelo funcione perfectamente con cualquier valor K. Debido a los pocos registros existentes de este tipo de accidente, no se va a generar ningún modelo de predicción para esta categoría de accidente.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> NaN </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> NaN </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> NaN </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> NaN </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> NaN </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 32.</strong> Análisis del valor K para la variable “Incendio”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
 </section>
 <section id="k-óptimo-para-accidente-tipo-otro" class="level3">
 <h3 class="anchored" data-anchor-id="k-óptimo-para-accidente-tipo-otro">3.1.6- K óptimo para accidente tipo “Otro”</h3>
+<p>Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 33. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+<th style="text-align: center;">PC3</th>
+<th style="text-align: center;">PC4</th>
+<th style="text-align: center;">PC5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.492</td>
+<td style="text-align: center;">1.479</td>
+<td style="text-align: center;">1.432</td>
+<td style="text-align: center;">1.352</td>
+<td style="text-align: center;">1.053</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.1093</td>
+<td style="text-align: center;">0.1025</td>
+<td style="text-align: center;">0.09135</td>
+<td style="text-align: center;">0.05538</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.1112</td>
+<td style="text-align: center;">0.2205</td>
+<td style="text-align: center;">0.323</td>
+<td style="text-align: center;">0.4143</td>
+<td style="text-align: center;">0.4697</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC6</th>
+<th style="text-align: center;">PC7</th>
+<th style="text-align: center;">PC8</th>
+<th style="text-align: center;">PC9</th>
+<th style="text-align: center;">PC10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.052</td>
+<td style="text-align: center;">1.051</td>
+<td style="text-align: center;">1.049</td>
+<td style="text-align: center;">1.045</td>
+<td style="text-align: center;">1.042</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05529</td>
+<td style="text-align: center;">0.05517</td>
+<td style="text-align: center;">0.05495</td>
+<td style="text-align: center;">0.05458</td>
+<td style="text-align: center;">0.05427</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.525</td>
+<td style="text-align: center;">0.5802</td>
+<td style="text-align: center;">0.6351</td>
+<td style="text-align: center;">0.6897</td>
+<td style="text-align: center;">0.744</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC11</th>
+<th style="text-align: center;">PC12</th>
+<th style="text-align: center;">PC13</th>
+<th style="text-align: center;">PC14</th>
+<th style="text-align: center;">PC15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.039</td>
+<td style="text-align: center;">1.038</td>
+<td style="text-align: center;">1.037</td>
+<td style="text-align: center;">1.022</td>
+<td style="text-align: center;">0.9193</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0.05399</td>
+<td style="text-align: center;">0.0538</td>
+<td style="text-align: center;">0.05377</td>
+<td style="text-align: center;">0.05222</td>
+<td style="text-align: center;">0.04223</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">0.798</td>
+<td style="text-align: center;">0.8518</td>
+<td style="text-align: center;">0.9055</td>
+<td style="text-align: center;">0.9578</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC16</th>
+<th style="text-align: center;">PC17</th>
+<th style="text-align: center;">PC18</th>
+<th style="text-align: center;">PC19</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">0.01406</td>
+<td style="text-align: center;">1.008e-15</td>
+<td style="text-align: center;">8.231e-16</td>
+<td style="text-align: center;">4.762e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">1e-05</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Standard deviation</strong></td>
+<td style="text-align: center;">1.37e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Proportion of Variance</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Cumulative Proportion</strong></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 33.</strong> Análisis de Componentes Principales para los registro de tipo de accidente “Otro”
+</center>
+<p><br></p>
+<div class="cell">
+
+</div>
+<p>En la Tabla 34, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 20.9%, el mínimo porcentaje encontrado.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Análisis del valor K</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mae_t </th>
+   <th style="text-align:left;"> Mae_v </th>
+   <th style="text-align:left;"> Variacion </th>
+   <th style="text-align:right;"> K </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2.861808 </td>
+   <td style="text-align:left;"> 5.143092 </td>
+   <td style="text-align:left;"> 44.35628 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.190424 </td>
+   <td style="text-align:left;"> 4.954028 </td>
+   <td style="text-align:left;"> 35.59939 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.348562 </td>
+   <td style="text-align:left;"> 4.807401 </td>
+   <td style="text-align:left;"> 30.34569 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.379709 </td>
+   <td style="text-align:left;"> 4.733679 </td>
+   <td style="text-align:left;"> 28.60291 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.424952 </td>
+   <td style="text-align:left;"> 4.71931 </td>
+   <td style="text-align:left;"> 27.42686 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.473626 </td>
+   <td style="text-align:left;"> 4.696693 </td>
+   <td style="text-align:left;"> 26.04101 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.483037 </td>
+   <td style="text-align:left;"> 4.723844 </td>
+   <td style="text-align:left;"> 26.26689 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.500023 </td>
+   <td style="text-align:left;"> 4.709061 </td>
+   <td style="text-align:left;"> 25.67473 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.513251 </td>
+   <td style="text-align:left;"> 4.696783 </td>
+   <td style="text-align:left;"> 25.1988 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.534645 </td>
+   <td style="text-align:left;"> 4.702927 </td>
+   <td style="text-align:left;"> 24.8416 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.554265 </td>
+   <td style="text-align:left;"> 4.678509 </td>
+   <td style="text-align:left;"> 24.02995 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.566632 </td>
+   <td style="text-align:left;"> 4.673587 </td>
+   <td style="text-align:left;"> 23.68534 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.566347 </td>
+   <td style="text-align:left;"> 4.693119 </td>
+   <td style="text-align:left;"> 24.00902 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.569272 </td>
+   <td style="text-align:left;"> 4.695279 </td>
+   <td style="text-align:left;"> 23.9817 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.578226 </td>
+   <td style="text-align:left;"> 4.69296 </td>
+   <td style="text-align:left;"> 23.75332 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.5873 </td>
+   <td style="text-align:left;"> 4.685147 </td>
+   <td style="text-align:left;"> 23.43251 </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.590331 </td>
+   <td style="text-align:left;"> 4.685895 </td>
+   <td style="text-align:left;"> 23.38004 </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.594999 </td>
+   <td style="text-align:left;"> 4.674792 </td>
+   <td style="text-align:left;"> 23.0982 </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.608015 </td>
+   <td style="text-align:left;"> 4.671662 </td>
+   <td style="text-align:left;"> 22.76807 </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.607172 </td>
+   <td style="text-align:left;"> 4.66674 </td>
+   <td style="text-align:left;"> 22.70466 </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.609469 </td>
+   <td style="text-align:left;"> 4.646409 </td>
+   <td style="text-align:left;"> 22.31703 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.615825 </td>
+   <td style="text-align:left;"> 4.6415 </td>
+   <td style="text-align:left;"> 22.09793 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.616133 </td>
+   <td style="text-align:left;"> 4.639667 </td>
+   <td style="text-align:left;"> 22.06052 </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.617175 </td>
+   <td style="text-align:left;"> 4.631368 </td>
+   <td style="text-align:left;"> 21.89835 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.620833 </td>
+   <td style="text-align:left;"> 4.621962 </td>
+   <td style="text-align:left;"> 21.66026 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.634587 </td>
+   <td style="text-align:left;"> 4.624705 </td>
+   <td style="text-align:left;"> 21.40933 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.640542 </td>
+   <td style="text-align:left;"> 4.619077 </td>
+   <td style="text-align:left;"> 21.18463 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.64288 </td>
+   <td style="text-align:left;"> 4.614321 </td>
+   <td style="text-align:left;"> 21.05274 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3.654457 </td>
+   <td style="text-align:left;"> 4.620179 </td>
+   <td style="text-align:left;"> 20.90227 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 34.</strong> Análisis del valor K para la variable “Otro”
+</center>
+<p><br></p>
 <div class="cell">
 
 </div>
 </section>
 </section>
+<section id="comportamiento-de-la-accidentalidad-en-los-años-2021-y-2022" class="level2">
+<h2 class="anchored" data-anchor-id="comportamiento-de-la-accidentalidad-en-los-años-2021-y-2022">3.2 - Comportamiento de la accidentalidad en los años 2021 y 2022</h2>
+<div class="cell">
+
+</div>
+<section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-atropello" class="level3">
+<h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-atropello">3.2.1- Predicción de la accidentalidad para tipo de accidente “Atropello”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 1.</strong> Predicción de accidentes tipo Atropello para el año 2021
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 2.</strong> Predicción de accidentes tipo Atropello para el año 2022
+</center>
+<p><br></p>
+</section>
+<section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-choque" class="level3">
+<h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-choque">3.2.2- Predicción de la accidentalidad para tipo de accidente “Choque”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 3.</strong> Predicción de accidentes tipo Choque para el año 2021
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 4.</strong> Predicción de accidentes tipo Choque para el año 2022
+</center>
+<p><br></p>
+</section>
+<section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-caída-de-ocupante" class="level3">
+<h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-caída-de-ocupante">3.2.3- Predicción de la accidentalidad para tipo de accidente “Caída de Ocupante”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 5.</strong> Predicción de accidentes tipo Caída de Ocupante para el año 2021
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 6.</strong> Predicción de accidentes tipo Caída de Ocupante para el año 2022
+</center>
+<p><br></p>
+</section>
+<section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-volcamiento" class="level3">
+<h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-volcamiento">3.2.4- Predicción de la accidentalidad para tipo de accidente “Volcamiento”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 7.</strong> Predicción de accidentes tipo Volcamiento para el año 2021
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 8.</strong> Predicción de accidentes tipo Volcamiento para el año 2022
+</center>
+<p><br></p>
+</section>
+<section id="predicción-de-la-accidentalidad-para-tipo-de-accidente-otro" class="level3">
+<h3 class="anchored" data-anchor-id="predicción-de-la-accidentalidad-para-tipo-de-accidente-otro">3.2.5- Predicción de la accidentalidad para tipo de accidente “Otro”</h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 9.</strong> Predicción de accidentes tipo Otro para el año 2021
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Trabajo3Tae_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<center>
+<strong>Gráfica 10.</strong> Predicción de accidentes tipo Otro para el año 2022
+</center>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="agrupamiento-de-los-barrios-de-medellín-de-acuerdo-a-su-accidentalidad" class="level1">
+<h1>4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad</h1>
+<p>Para poder crear la clasificación de la accidentalidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 34.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table lightable-minimal" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Agrupación de los accidentes por barrios y comunas</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> BARRIO </th>
+   <th style="text-align:left;"> COMUNA </th>
+   <th style="text-align:right;"> cantidad_accidentes </th>
+   <th style="text-align:right;"> Choque </th>
+   <th style="text-align:right;"> Atropello </th>
+   <th style="text-align:right;"> Caida_de_Ocupante </th>
+   <th style="text-align:right;"> Valor </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Área de expansión Altos de Calasanz </td>
+   <td style="text-align:left;"> Corregimiento de San Cristóbal </td>
+   <td style="text-align:right;"> 90 </td>
+   <td style="text-align:right;"> 68 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 0.2305556 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Área de expansión Pajarito </td>
+   <td style="text-align:left;"> Corregimiento de San Cristóbal </td>
+   <td style="text-align:right;"> 862 </td>
+   <td style="text-align:right;"> 377 </td>
+   <td style="text-align:right;"> 105 </td>
+   <td style="text-align:right;"> 144 </td>
+   <td style="text-align:right;"> 0.2233179 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Área de expansión San Antonio de Prado </td>
+   <td style="text-align:left;"> Corregimiento de San Antonio de Prado </td>
+   <td style="text-align:right;"> 76 </td>
+   <td style="text-align:right;"> 41 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 0.2434211 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Popular </td>
+   <td style="text-align:left;"> Popular </td>
+   <td style="text-align:right;"> 463 </td>
+   <td style="text-align:right;"> 192 </td>
+   <td style="text-align:right;"> 121 </td>
+   <td style="text-align:right;"> 66 </td>
+   <td style="text-align:right;"> 0.2402808 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Moscú No. 2 </td>
+   <td style="text-align:left;"> Popular </td>
+   <td style="text-align:right;"> 349 </td>
+   <td style="text-align:right;"> 136 </td>
+   <td style="text-align:right;"> 90 </td>
+   <td style="text-align:right;"> 49 </td>
+   <td style="text-align:right;"> 0.2320917 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aldea Pablo VI </td>
+   <td style="text-align:left;"> Popular </td>
+   <td style="text-align:right;"> 78 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:right;"> 21 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:right;"> 0.2756410 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<center>
+<strong>Tabla 35.</strong> Agrupación de los accidentes por barrios y comunas de la ciudad de Medellín
+</center>
+<p><br></p>
+<p>En la Tabla 35, podemos observar que se tiene también el conteo de los tipos de accidentes producidos en cada barrio de las diferentes comunas (Choque, Atropello, Caída de ocupante). Esto se hizo ya que se crea un valor que nos permitirá crear la clasificación en la agrupación. Este valor es un promedio de de los diferentes tipos de accidentes multiplicados por un peso. Estos pesos fueron seleccionados por nosotros los cuales son:</p>
+<ul>
+<li><p>25% para la variable choque.</p></li>
+<li><p>25% para la variable.</p></li>
+<li><p>50% para la variable caída del ocupante.</p></li>
+</ul>
+<div class="cell">
+
+</div>
+<p>Se procedé a crear la clasificación acorde a este valor. Para esto se utiliza un modelo de clustering usando el algoritmo de K-means. El valor K que se va a utilizar es K=4, para obtener las 4 clasificaciones que deseamos (Muy alta, alta, media, baja). Una vez obtenida la clasificación de a que grupo pertenece cada barrio de cada comuna, a continuación en las Tablas 36, 37, 38, 39 se puede observar un resumen estadístico de los diferentes grupos obtenidos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 23%">
+<col style="width: 22%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">cantidad_accidentes</th>
+<th style="text-align: center;">Choque</th>
+<th style="text-align: center;">Atropello</th>
+<th style="text-align: center;">Caida_de_Ocupante</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. : 1.0</td>
+<td style="text-align: center;">Min. : 1.00</td>
+<td style="text-align: center;">Min. : 0.00</td>
+<td style="text-align: center;">Min. : 0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.: 167.0</td>
+<td style="text-align: center;">1st Qu.: 91.25</td>
+<td style="text-align: center;">1st Qu.: 17.00</td>
+<td style="text-align: center;">1st Qu.: 17.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median : 470.5</td>
+<td style="text-align: center;">Median : 268.50</td>
+<td style="text-align: center;">Median : 48.00</td>
+<td style="text-align: center;">Median : 45.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean : 722.9</td>
+<td style="text-align: center;">Mean : 493.65</td>
+<td style="text-align: center;">Mean : 67.91</td>
+<td style="text-align: center;">Mean : 61.89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.: 920.8</td>
+<td style="text-align: center;">3rd Qu.: 610.75</td>
+<td style="text-align: center;">3rd Qu.: 88.25</td>
+<td style="text-align: center;">3rd Qu.: 89.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :4981.0</td>
+<td style="text-align: center;">Max. :3476.00</td>
+<td style="text-align: center;">Max. :830.00</td>
+<td style="text-align: center;">Max. :338.00</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :0.2256</td>
+<td style="text-align: center;">Min. :1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:0.2327</td>
+<td style="text-align: center;">1st Qu.:1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :0.2368</td>
+<td style="text-align: center;">Median :1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :0.2392</td>
+<td style="text-align: center;">Mean :1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:0.2436</td>
+<td style="text-align: center;">3rd Qu.:1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :0.2794</td>
+<td style="text-align: center;">Max. :1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 36.</strong> Resumen de grupo con clasificación = 1
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">cantidad_accidentes</th>
+<th style="text-align: center;">Choque</th>
+<th style="text-align: center;">Atropello</th>
+<th style="text-align: center;">Caida_de_Ocupante</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :1.000</td>
+<td style="text-align: center;">Min. :0.0000</td>
+<td style="text-align: center;">Min. :0.00</td>
+<td style="text-align: center;">Min. :0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:2.000</td>
+<td style="text-align: center;">1st Qu.:0.2500</td>
+<td style="text-align: center;">1st Qu.:0.00</td>
+<td style="text-align: center;">1st Qu.:0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :2.500</td>
+<td style="text-align: center;">Median :1.0000</td>
+<td style="text-align: center;">Median :0.00</td>
+<td style="text-align: center;">Median :0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :2.833</td>
+<td style="text-align: center;">Mean :0.8333</td>
+<td style="text-align: center;">Mean :0.50</td>
+<td style="text-align: center;">Mean :0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:3.750</td>
+<td style="text-align: center;">3rd Qu.:1.0000</td>
+<td style="text-align: center;">3rd Qu.:0.75</td>
+<td style="text-align: center;">3rd Qu.:0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :5.000</td>
+<td style="text-align: center;">Max. :2.0000</td>
+<td style="text-align: center;">Max. :2.00</td>
+<td style="text-align: center;">Max. :0</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :0.00000</td>
+<td style="text-align: center;">Min. :2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:0.09375</td>
+<td style="text-align: center;">1st Qu.:2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :0.12500</td>
+<td style="text-align: center;">Median :2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :0.10139</td>
+<td style="text-align: center;">Mean :2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:0.12500</td>
+<td style="text-align: center;">3rd Qu.:2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :0.15000</td>
+<td style="text-align: center;">Max. :2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 37.</strong> Resumen de grupo con clasificación = 2
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">cantidad_accidentes</th>
+<th style="text-align: center;">Choque</th>
+<th style="text-align: center;">Atropello</th>
+<th style="text-align: center;">Caida_de_Ocupante</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :1.0</td>
+<td style="text-align: center;">Min. :0.0000</td>
+<td style="text-align: center;">Min. :0.0000</td>
+<td style="text-align: center;">Min. :1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:1.5</td>
+<td style="text-align: center;">1st Qu.:0.5000</td>
+<td style="text-align: center;">1st Qu.:0.0000</td>
+<td style="text-align: center;">1st Qu.:1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :2.0</td>
+<td style="text-align: center;">Median :1.0000</td>
+<td style="text-align: center;">Median :0.0000</td>
+<td style="text-align: center;">Median :1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :2.0</td>
+<td style="text-align: center;">Mean :0.6667</td>
+<td style="text-align: center;">Mean :0.3333</td>
+<td style="text-align: center;">Mean :1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:2.5</td>
+<td style="text-align: center;">3rd Qu.:1.0000</td>
+<td style="text-align: center;">3rd Qu.:0.5000</td>
+<td style="text-align: center;">3rd Qu.:1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :3.0</td>
+<td style="text-align: center;">Max. :1.0000</td>
+<td style="text-align: center;">Max. :1.0000</td>
+<td style="text-align: center;">Max. :1</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :0.3333</td>
+<td style="text-align: center;">Min. :3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:0.3542</td>
+<td style="text-align: center;">1st Qu.:3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :0.3750</td>
+<td style="text-align: center;">Median :3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :0.4028</td>
+<td style="text-align: center;">Mean :3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:0.4375</td>
+<td style="text-align: center;">3rd Qu.:3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :0.5000</td>
+<td style="text-align: center;">Max. :3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 38.</strong> Resumen de grupo con clasificación = 3
+</center>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Table continues below</caption>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">cantidad_accidentes</th>
+<th style="text-align: center;">Choque</th>
+<th style="text-align: center;">Atropello</th>
+<th style="text-align: center;">Caida_de_Ocupante</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. : 3.00</td>
+<td style="text-align: center;">Min. : 0.00</td>
+<td style="text-align: center;">Min. : 0.00</td>
+<td style="text-align: center;">Min. : 0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.: 28.75</td>
+<td style="text-align: center;">1st Qu.: 10.75</td>
+<td style="text-align: center;">1st Qu.: 2.00</td>
+<td style="text-align: center;">1st Qu.: 3.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median : 75.50</td>
+<td style="text-align: center;">Median : 35.50</td>
+<td style="text-align: center;">Median : 14.00</td>
+<td style="text-align: center;">Median : 7.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean : 226.00</td>
+<td style="text-align: center;">Mean :115.91</td>
+<td style="text-align: center;">Mean : 31.54</td>
+<td style="text-align: center;">Mean : 26.28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.: 328.00</td>
+<td style="text-align: center;">3rd Qu.:168.00</td>
+<td style="text-align: center;">3rd Qu.: 41.50</td>
+<td style="text-align: center;">3rd Qu.: 33.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :1037.00</td>
+<td style="text-align: center;">Max. :688.00</td>
+<td style="text-align: center;">Max. :157.00</td>
+<td style="text-align: center;">Max. :144.00</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Min. :0.1667</td>
+<td style="text-align: center;">Min. :4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1st Qu.:0.2043</td>
+<td style="text-align: center;">1st Qu.:4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Median :0.2198</td>
+<td style="text-align: center;">Median :4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mean :0.2117</td>
+<td style="text-align: center;">Mean :4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3rd Qu.:0.2236</td>
+<td style="text-align: center;">3rd Qu.:4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Max. :0.2251</td>
+<td style="text-align: center;">Max. :4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<center>
+<strong>Tabla 39.</strong> Resumen de grupo con clasificación = 4
+</center>
+<p><br></p>
+<p>Analizando los resumenes estadísticos de cada grupo, se decide utilizar el valor de la media de la variable “atropella” como referencia para la clasificación del grupo, siendo la clasificación “Baja” el grupo que posee la menor media de la variable “atropella”, y clasificación “Muy Alto” el grupo que posee la mayor media.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<p>El resultado….</p>
+</section>
+<section id="referencias" class="level1">
+<h1>Referencias</h1>
+<ul>
+<li><p>IBM. (2022). Algoritmo de k vecinos más cercanos. 2022, noviembre 24, de ibm.com. Sitio web: https://www.ibm.com/co-es/topics/knn</p></li>
+<li><p>Alcaldia de Medellín. (2021). Incidentes viales. 2022, noviembre 24, de medata. Sitio web: http://medata.gov.co/dataset/incidentes-viales</p></li>
+</ul>
 </section>
 
 </main>

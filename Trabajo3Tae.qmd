@@ -1447,9 +1447,9 @@ df_2022$Finde <- as.factor(df_2022$Finde)
 df_2022$MES <- as.factor(df_2022$MES)
 df_2022$Quincena <- as.factor(df_2022$Quincena)
 
-#Procesamiento
+#Procesamiento año 2021
 
-#Estandarizacion variables categorica
+##Estandarizacion variables categorica
 variables_cat <- sapply(df_2021, is.factor)
 data_cat <- df_2021[variables_cat]
 data_cat <- subset(data_cat,select = -c(DiaDeLaSemana))
@@ -1458,11 +1458,194 @@ data_cat_dummy <- as.data.frame(predict(onehotencoding,data_cat))
 
 df_2021 <- subset(df_2021, select = -c(DiaDeLaSemana,MES))
 df_2021 <- cbind(df_2021,data_cat_dummy)
+Fecha_2021 <- df_2021$Fecha
+df_2021 <- subset(df_2021 , select = -c(Quincena,Festivo,Finde,Fecha))
+##Se centra la información usando la media y la desviacion de los datos con los que fue entrenado el modelo.
+df_2021_std <- scale(df_2021,center = media_X_tr, scale = sd_X_tr)
+df_2021_std <- as.data.frame(df_2021_std)
 
-X_train_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
-X_train_std <- as.data.frame(X_train_std)
+#Procesamiento año 2022
 
+##Estandarizacion variables categorica
+variables_cat <- sapply(df_2022, is.factor)
+data_cat <- df_2022[variables_cat]
+data_cat <- subset(data_cat,select = -c(DiaDeLaSemana))
+onehotencoding <- dummyVars(~.,data = data_cat)
+data_cat_dummy <- as.data.frame(predict(onehotencoding,data_cat))
+
+df_2022 <- subset(df_2022, select = -c(DiaDeLaSemana,MES))
+df_2022 <- cbind(df_2022,data_cat_dummy)
+Fecha_2022 <- df_2022$Fecha
+df_2022 <- subset(df_2022 , select = -c(Quincena,Festivo,Finde,Fecha))
+##Se centra la información usando la media y la desviacion de los datos con los que fue entrenado el modelo.
+df_2022_std <- scale(df_2022,center = media_X_tr, scale = sd_X_tr)
+df_2022_std <- as.data.frame(df_2022_std)
 ```
+
+### 3.2.1- Predicción de la accidentalidad para tipo de accidente "Atropello"
+
+```{r}
+#Se calculan las predicciones
+ACP <- predict(ACP_c1, newdata= df_2021_std)
+df_2021_acp <- data.frame(ACP[,1:6])
+predicciones_2021 <- predict(modelo_atropello, newdata = df_2021_acp)
+predicciones_2021 <- as.data.frame(predicciones_2021)
+predicciones_2021$Fecha <- Fecha_2021
+
+ACP <- predict(ACP_c1, newdata= df_2022_std)
+df_2022_acp <- data.frame(ACP[,1:6])
+predicciones_2022 <- predict(modelo_atropello, newdata = df_2022_acp)
+predicciones_2022 <- as.data.frame(predicciones_2022)
+predicciones_2022$Fecha <- Fecha_2022
+```
+
+```{r}
+plot(predicciones_2021$Fecha,predicciones_2021$predicciones_2021, type = "l", main = "Predicción de accidentes tipo Atropello para el año 2021", xlab = "Año 2021", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 1.** Predicción de accidentes tipo Atropello para el año 2021</center>
+
+<br>
+
+```{r}
+plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", main = "Predicción de accidentes tipo Atropello para el año 2022", xlab = "Año 2022", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 2.** Predicción de accidentes tipo Atropello para el año 2022</center>
+
+<br>
+
+### 3.2.2- Predicción de la accidentalidad para tipo de accidente "Choque"
+
+```{r}
+#Se calculan las predicciones
+ACP <- predict(ACP_c2, newdata= df_2021_std)
+df_2021_acp <- data.frame(ACP[,1:2])
+predicciones_2021 <- predict(modelo_choque, newdata = df_2021_acp)
+predicciones_2021 <- as.data.frame(predicciones_2021)
+predicciones_2021$Fecha <- Fecha_2021
+
+ACP <- predict(ACP_c2, newdata= df_2022_std)
+df_2022_acp <- data.frame(ACP[,1:2])
+predicciones_2022 <- predict(modelo_choque, newdata = df_2022_acp)
+predicciones_2022 <- as.data.frame(predicciones_2022)
+predicciones_2022$Fecha <- Fecha_2022
+```
+
+```{r}
+plot(predicciones_2021$Fecha,predicciones_2021$predicciones_2021, type = "l", main = "Predicción de accidentes tipo Choque  para el año 2021", xlab = "Año 2021", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 3.** Predicción de accidentes tipo Choque para el año 2021</center>
+
+<br>
+
+```{r}
+plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", main = "Predicción de accidentes tipo Choque  para el año 2022", xlab = "Año 2022", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 4.** Predicción de accidentes tipo Choque para el año 2022</center>
+
+<br>
+
+### 3.2.3- Predicción de la accidentalidad para tipo de accidente "Caída de Ocupante"
+
+```{r}
+#Se calculan las predicciones
+ACP <- predict(ACP_c3, newdata= df_2021_std)
+df_2021_acp <- data.frame(ACP[,1:2])
+predicciones_2021 <- predict(modelo_ca, newdata = df_2021_acp)
+predicciones_2021 <- as.data.frame(predicciones_2021)
+predicciones_2021$Fecha <- Fecha_2021
+
+ACP <- predict(ACP_c3, newdata= df_2022_std)
+df_2022_acp <- data.frame(ACP[,1:2])
+predicciones_2022 <- predict(modelo_ca, newdata = df_2022_acp)
+predicciones_2022 <- as.data.frame(predicciones_2022)
+predicciones_2022$Fecha <- Fecha_2022
+```
+
+```{r}
+plot(predicciones_2021$Fecha,predicciones_2021$predicciones_2021, type = "l", main = "Predicción de accidentes tipo Caída de Ocupante para el año 2021", xlab = "Año 2021", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 5.** Predicción de accidentes tipo Caída de Ocupante para el año 2021</center>
+
+<br>
+
+```{r}
+plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", main = "Predicción de accidentes tipo Caída de Ocupante  para el año 2022", xlab = "Año 2022", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 6.** Predicción de accidentes tipo Caída de Ocupante para el año 2022</center>
+
+<br>
+
+### 3.2.4- Predicción de la accidentalidad para tipo de accidente "Volcamiento"
+
+```{r}
+#Se calculan las predicciones
+ACP <- predict(ACP_c4, newdata= df_2021_std)
+df_2021_acp <- data.frame(ACP[,1:3])
+predicciones_2021 <- predict(modelo_volcamiento, newdata = df_2021_acp)
+predicciones_2021 <- as.data.frame(predicciones_2021)
+predicciones_2021$Fecha <- Fecha_2021
+
+ACP <- predict(ACP_c4, newdata= df_2022_std)
+df_2022_acp <- data.frame(ACP[,1:3])
+predicciones_2022 <- predict(modelo_volcamiento, newdata = df_2022_acp)
+predicciones_2022 <- as.data.frame(predicciones_2022)
+predicciones_2022$Fecha <- Fecha_2022
+```
+
+```{r}
+plot(predicciones_2021$Fecha,predicciones_2021$predicciones_2021, type = "l", main = "Predicción de accidentes tipo Volcamiento para el año 2021", xlab = "Año 2021", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 7.** Predicción de accidentes tipo Volcamiento para el año 2021</center>
+
+<br>
+
+```{r}
+plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", main = "Predicción de accidentes tipo Volcamiento  para el año 2022", xlab = "Año 2022", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 8.** Predicción de accidentes tipo Volcamiento para el año 2022</center>
+
+<br>
+
+### 3.2.5- Predicción de la accidentalidad para tipo de accidente "Otro"
+
+```{r}
+#Se calculan las predicciones
+ACP <- predict(ACP_c6, newdata= df_2021_std)
+df_2021_acp <- data.frame(ACP[,1:2])
+predicciones_2021 <- predict(modelo_otro, newdata = df_2021_acp)
+predicciones_2021 <- as.data.frame(predicciones_2021)
+predicciones_2021$Fecha <- Fecha_2021
+
+ACP <- predict(ACP_c6, newdata= df_2022_std)
+df_2022_acp <- data.frame(ACP[,1:2])
+predicciones_2022 <- predict(modelo_otro, newdata = df_2022_acp)
+predicciones_2022 <- as.data.frame(predicciones_2022)
+predicciones_2022$Fecha <- Fecha_2022
+```
+
+```{r}
+plot(predicciones_2021$Fecha,predicciones_2021$predicciones_2021, type = "l", main = "Predicción de accidentes tipo Otro para el año 2021", xlab = "Año 2021", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 9.** Predicción de accidentes tipo Otro para el año 2021</center>
+
+<br>
+
+```{r}
+plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", main = "Predicción de accidentes tipo Otro  para el año 2022", xlab = "Año 2022", ylab = "Número de accidentes", col="red")
+```
+
+<center>**Gráfica 10.** Predicción de accidentes tipo Otro para el año 2022</center>
+
+<br>
 
 # 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad
 
@@ -1478,7 +1661,7 @@ calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
 
 calculo_indice <- calculo_indice[calculo_indice$BARRIO!='""',]
 
-kable(calculo_indice,caption = "Agrupación de los accidentes por barrios y comunas") %>% 
+kable(head(calculo_indice),caption = "Agrupación de los accidentes por barrios y comunas") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
 ```

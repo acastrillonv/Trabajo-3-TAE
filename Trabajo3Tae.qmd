@@ -27,7 +27,7 @@ Con la realización de este proyecto, se desea crear una serie de modelos que pe
 
 Este proyecto ayudaría a (), ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.
 
-Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras).
+Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).
 
 También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentalidad en cada barrio (Muy alta, alta, media, baja).
 
@@ -816,7 +816,7 @@ data_corregida$Finde <- sapply(data_corregida$DiaDeLaSemana, iden_weekend)
 
 ## 2.5- Selección de las variables
 
-Las variables seleccionadas para poder los construir los modelos son:
+Las variables seleccionadas para el resto del trabajo son:
 
 -   Año: año de ocurriencia del accidente.
 
@@ -891,13 +891,13 @@ kable(size,caption = "Tamaño de los datos") %>%
 
 # 3- Modelo predictivo
 
-Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge la tecnica KNN (K vecinos más cercanos).
+Ya con la limpieza realizada a los datos, se procede con la creación del modelo de predicción. Para realizar el modelo, se escoge el algoritmo KNN (K vecinos más cercanos). Este algoritmo "es un clasificador de aprendizaje supervisado no paramétrico, que utiliza la proximidad para hacer clasificaciones o predicciones sobre la agrupación de un punto de datos individual"(IBM, 2022).
 
 ## 3.1- Construcción del modelo
 
 Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.
 
-Ya con el dataset anteriormente construido, se va a crear un modelo por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.
+Ya con el dataset anteriormente construido, se van a crear una serie de modelos por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.
 
 Estos modelo se va construir haciendo uso de los registros de los accidentes registrados en los años 2014, 2015, 2016 y 2018. Para la validación de los modelos se van a utilizar los registros de los accidentes registrados en los años 2019 y 2020.
 
@@ -1081,6 +1081,11 @@ kable(resultadosC1,caption = "Análisis del valor K") %>%
 
 <br>
 
+```{r}
+#Modelo final
+modelo_atropello <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 25)
+```
+
 ### 3.1.2- K óptimo para accidente tipo "Choque"
 
 Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 25. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.
@@ -1131,6 +1136,11 @@ kable(resultadosC2,caption = "Análisis del valor K") %>%
 <center>**Tabla 26.** Análisis del valor K para la variable "Choque"</center>
 
 <br>
+
+```{r}
+#Modelo final
+modelo_choque <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 29)
+```
 
 ### 3.1.3- K óptimo para accidente tipo "Caída de Ocupante"
 
@@ -1183,6 +1193,11 @@ kable(resultadosC3,caption = "Análisis del valor K") %>%
 
 <br>
 
+```{r}
+#Modelo final
+modelo_ca <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 30)
+```
+
 ### 3.1.4- K óptimo para accidente tipo "Volcamiento"
 
 Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 29. Para conservar el 32.25% de la variabilidad explicada en las variables, se va a trabajar con las primeras 3 componentes principales.
@@ -1234,6 +1249,11 @@ kable(resultadosC4,caption = "Análisis del valor K") %>%
 
 <br>
 
+```{r}
+#Modelo final
+modelo_volcamiento <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 30)
+```
+
 ### 3.1.5- K óptimo para accidente tipo "Incendio"
 
 Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 31. Para conservar el 99.9% de la variabilidad explicada en las variables, se va a trabajar con las primeras 12 componentes principales.
@@ -1265,7 +1285,7 @@ X_tr_acp <- data.frame(ACP_c5$x[,1:12])
 ACP_vl <- predict(ACP_c5, newdata= X_vl)
 X_vl_acp <- data.frame(ACP_vl[,1:12])
 
-k <- 2:30
+k <- 2:6
 resultadosC5 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC5 <- t(resultadosC5)
 rownames(resultadosC5) <- 1:nrow(resultadosC5)
@@ -1273,7 +1293,7 @@ resultadosC5 <- as.data.frame(resultadosC5)
 resultadosC5$K <- k
 ```
 
-En la Tabla 32, podemos observar que no existe variación del error MAE a medida que aumenta K. Esto se debe a que la cantidad de registro tanto para entrenamiento y para validación son muy pocos. La cantidad de registros para datos de entrenamiento son de 16, y para validación son 8, esto hace que el modelo funcione perfectamente con valor K bajo. Para este modelo se escoge un K=2, el cual tiene una variación en la métrica de error MAE de 0%, el mínimo porcentaje encontrado.
+En la Tabla 32, podemos observar que no existe variación del error MAE a medida que aumenta K. Esto se debe a que la cantidad de registro tanto para entrenamiento y para validación son muy pocos. La cantidad de registros para datos de entrenamiento son de 16, y para validación son 8, esto hace que el modelo funcione perfectamente con cualquier valor K. Debido a los pocos registros existentes de este tipo de accidente, no se va a generar ningún modelo de predicción para esta categoría de accidente.
 
 ```{r}
 kable(resultadosC5,caption = "Análisis del valor K") %>% 
@@ -1284,6 +1304,11 @@ kable(resultadosC5,caption = "Análisis del valor K") %>%
 <center>**Tabla 32.** Análisis del valor K para la variable "Incendio"</center>
 
 <br>
+
+```{r}
+#Modelo final
+#modelo_incendio <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 2)
+```
 
 ### 3.1.6- K óptimo para accidente tipo "Otro"
 
@@ -1335,3 +1360,220 @@ kable(resultadosC6,caption = "Análisis del valor K") %>%
 <center>**Tabla 34.** Análisis del valor K para la variable "Otro"</center>
 
 <br>
+
+```{r}
+#Modelo final
+modelo_otro <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 30)
+```
+
+## 3.2 - Comportamiento de la accidentalidad en los años 2021 y 2022
+
+```{r}
+#fecha festivos
+festivos_2021 <- c("2021-01-01","2021-01-11","2021-03-22","2021-04-01","2021-04-02","2021-04-04","2021-05-01","2021-05-17","2021-06-07","2021-07-05","2021-07-20","2021-08-07","2021-08-15","2021-10-18","2021-11-08","2021-11-15","2021-12-08","2021-12-25")
+
+festivos_2022 <- c("2022-01-01","2022-01-10","2022-03-21","2022-04-14","2022-04-15","2022-04-17","2022-05-01","2022-05-30","2022-06-20","2022-06-27","2022-07-04","2022-07-20","2022-08-07","2022-08-17","2022-10-17","2022-11-07","2022-11-14","2022-12-08","2022-12-25")
+
+fecha_festivos2 <- as.Date(c(festivos_2021,festivos_2022))
+
+
+# df 2021
+df_2021 <- as.data.frame(seq(from=as.Date("2021-01-01"), to=as.Date("2021-12-31"), by=1))
+names(df_2021) <- c("Fecha")
+df_2021$Dia <- day(df_2021$Fecha)
+df_2021$Semana <- week(df_2021$Fecha)
+df_2021$Quincena <- sapply(df_2021$Dia, iden_quincena)
+df_2021 <- mutate(df_2021,Festivo=ifelse((Fecha %in% fecha_festivos2), "Si", "No"))
+df_2021$DiaDeLaSemana <- weekdays(df_2021$Fecha)
+df_2021$Finde <- sapply(df_2021$DiaDeLaSemana, iden_weekend)
+df_2021$MES <- month(df_2021$Fecha)
+
+df_2021 <- df_2021 %>% 
+  mutate(MES = recode(MES,
+                         "1" = "Enero",
+                         "2" = "Febrero",
+                         "3" = "Marzo",
+                         "4" = "Abril",
+                         "5" = "Mayo",
+                         "6" = "Junio",
+                         "7" = "Julio",
+                         "8" = "Agosto",
+                         "9" = "Septiembre",
+                         "10" = "Octubre",
+                         "11" = "Noviembre",
+                         "12" = "Diciembre",
+                         ))
+
+df_2021$Dia <- as.numeric(df_2021$Dia)
+df_2021$Semana <- as.numeric(df_2021$Semana)
+df_2021$DiaDeLaSemana <- as.factor(df_2021$DiaDeLaSemana)
+df_2021$Festivo <- as.factor(df_2021$Festivo)
+df_2021$Finde <- as.factor(df_2021$Finde)
+df_2021$MES <- as.factor(df_2021$MES)
+df_2021$Quincena <- as.factor(df_2021$Quincena)
+
+# df 2022
+df_2022 <- as.data.frame(seq(from=as.Date("2022-01-01"), to=as.Date("2022-12-31"), by=1))
+names(df_2022) <- c("Fecha")
+df_2022$Dia <- day(df_2022$Fecha)
+df_2022$Semana <- week(df_2022$Fecha)
+df_2022$Quincena <- sapply(df_2022$Dia, iden_quincena)
+df_2022 <- mutate(df_2022,Festivo=ifelse((Fecha %in% fecha_festivos2), "Si", "No"))
+df_2022$DiaDeLaSemana <- weekdays(df_2022$Fecha)
+df_2022$Finde <- sapply(df_2022$DiaDeLaSemana, iden_weekend)
+df_2022$MES <- month(df_2022$Fecha)
+
+df_2022 <- df_2022 %>% 
+  mutate(MES = recode(MES,
+                         "1" = "Enero",
+                         "2" = "Febrero",
+                         "3" = "Marzo",
+                         "4" = "Abril",
+                         "5" = "Mayo",
+                         "6" = "Junio",
+                         "7" = "Julio",
+                         "8" = "Agosto",
+                         "9" = "Septiembre",
+                         "10" = "Octubre",
+                         "11" = "Noviembre",
+                         "12" = "Diciembre",
+                         ))
+
+df_2022$Dia <- as.numeric(df_2022$Dia)
+df_2022$Semana <- as.numeric(df_2022$Semana)
+df_2022$DiaDeLaSemana <- as.factor(df_2022$DiaDeLaSemana)
+df_2022$Festivo <- as.factor(df_2022$Festivo)
+df_2022$Finde <- as.factor(df_2022$Finde)
+df_2022$MES <- as.factor(df_2022$MES)
+df_2022$Quincena <- as.factor(df_2022$Quincena)
+
+#Procesamiento
+
+#Estandarizacion variables categorica
+variables_cat <- sapply(df_2021, is.factor)
+data_cat <- df_2021[variables_cat]
+data_cat <- subset(data_cat,select = -c(DiaDeLaSemana))
+onehotencoding <- dummyVars(~.,data = data_cat)
+data_cat_dummy <- as.data.frame(predict(onehotencoding,data_cat))
+
+df_2021 <- subset(df_2021, select = -c(DiaDeLaSemana,MES))
+df_2021 <- cbind(df_2021,data_cat_dummy)
+
+X_train_std <- scale(data_num,center = media_X_tr, scale = sd_X_tr)
+X_train_std <- as.data.frame(X_train_std)
+
+```
+
+# 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad
+
+Para poder crear la clasificación de la accidentalidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 34.
+
+```{r}
+calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
+          summarise(cantidad_accidentes = n(),
+                    Choque = length(CLASE_ACCIDENTE[CLASE_ACCIDENTE == "Choque"]),
+                    Atropello = length(CLASE_ACCIDENTE[CLASE_ACCIDENTE == "Atropello"]),
+                    Caida_de_Ocupante = length(CLASE_ACCIDENTE[CLASE_ACCIDENTE == "Caída de Ocupante"]),
+                    Valor = (0.25 * Choque + 0.25 * Atropello + 0.5 * Caida_de_Ocupante)/cantidad_accidentes)
+
+calculo_indice <- calculo_indice[calculo_indice$BARRIO!='""',]
+
+kable(calculo_indice,caption = "Agrupación de los accidentes por barrios y comunas") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 35.** Agrupación de los accidentes por barrios y comunas de la ciudad de Medellín</center>
+
+<br>
+
+En la Tabla 35, podemos observar que se tiene también el conteo de los tipos de accidentes producidos en cada barrio de las diferentes comunas (Choque, Atropello, Caída de ocupante). Esto se hizo ya que se crea un valor que nos permitirá crear la clasificación en la agrupación. Este valor es un promedio de de los diferentes tipos de accidentes multiplicados por un peso. Estos pesos fueron seleccionados por nosotros los cuales son:
+
+-   25% para la variable choque.
+
+-   25% para la variable.
+
+-   50% para la variable caída del ocupante.
+
+```{r}
+aux <- subset(calculo_indice,select = c(Valor))
+agrupamiento <- kmeans(aux, centers = 4)
+calculo_indice$Riesgo <- agrupamiento$cluster
+
+#Se crean los grupos de acuerdo a la clasificación obtenida
+grupo1 <- subset(calculo_indice, calculo_indice$Riesgo==1)
+grupo1_Barrio <- grupo1$BARRIO
+grupo1 <- subset(grupo1, select = -c(BARRIO,COMUNA))
+
+grupo2 <- subset(calculo_indice, calculo_indice$Riesgo==2)
+grupo2_Barrio  <- grupo2$BARRIO
+grupo2 <- subset(grupo2, select = -c(BARRIO,COMUNA))
+
+grupo3 <- subset(calculo_indice, calculo_indice$Riesgo==3)
+grupo3_Barrio  <- grupo3$BARRIO
+grupo3 <- subset(grupo3, select = -c(BARRIO,COMUNA))
+
+grupo4 <- subset(calculo_indice, calculo_indice$Riesgo==4)
+grupo4_Barrio  <- grupo4$BARRIO
+grupo4 <- subset(grupo4, select = -c(BARRIO,COMUNA))
+
+```
+
+Se procedé a crear la clasificación acorde a este valor. Para esto se utiliza un modelo de clustering usando el algoritmo de K-means. El valor K que se va a utilizar es K=4, para obtener las 4 clasificaciones que deseamos (Muy alta, alta, media, baja). Una vez obtenida la clasificación de a que grupo pertenece cada barrio de cada comuna, a continuación en las Tablas 36, 37, 38, 39 se puede observar un resumen estadístico de los diferentes grupos obtenidos.
+
+```{r}
+pander(summary(grupo1))
+```
+
+<center>**Tabla 36.** Resumen de grupo con clasificación = 1</center>
+
+<br>
+
+```{r}
+pander(summary(grupo2))
+```
+
+<center>**Tabla 37.** Resumen de grupo con clasificación = 2</center>
+
+<br>
+
+```{r}
+pander(summary(grupo3))
+```
+
+<center>**Tabla 38.** Resumen de grupo con clasificación = 3</center>
+
+<br>
+
+```{r}
+pander(summary(grupo4))
+```
+
+<center>**Tabla 39.** Resumen de grupo con clasificación = 4</center>
+
+<br>
+
+Analizando los resumenes estadísticos de cada grupo, se decide utilizar el valor de la media de la variable "atropella" como referencia para la clasificación del grupo, siendo la clasificación "Baja" el grupo que posee la menor media de la variable "atropella", y clasificación "Muy Alto" el grupo que posee la mayor media.
+
+```{r}
+calculo_indice <- calculo_indice %>% 
+  mutate(Riesgo = recode(Riesgo,
+                          "1" = "Muy Alto",
+                          "2" = "Alto",
+                          "3" = "Bajo",
+                          "4" = "Medio"))
+```
+
+```{r}
+calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,Atropello,Caida_de_Ocupante,Valor))
+```
+
+El resultado....
+
+# Referencias
+
+-   IBM. (2022). Algoritmo de k vecinos más cercanos. 2022, noviembre 24, de ibm.com. Sitio web: https://www.ibm.com/co-es/topics/knn
+
+-   Alcaldia de Medellín. (2021). Incidentes viales. 2022, noviembre 24, de medata. Sitio web: http://medata.gov.co/dataset/incidentes-viales
+
+

@@ -21,7 +21,15 @@ library(pander)
 
 # 1- Contexto del problema
 
-sskks
+A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad.
+
+Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentalidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.
+
+Este proyecto ayudaría a (), ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.
+
+Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras).
+
+También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentalidad en cada barrio (Muy alta, alta, media, baja).
 
 ```{r}
 #Carga del dataset
@@ -863,6 +871,8 @@ data_corregida$Quincena <- as.factor(data_corregida$Quincena)
 data_corregida$Festivo <- as.factor(data_corregida$Festivo)
 data_corregida$Finde <- as.factor(data_corregida$Finde)
 
+#Se crea un respaldo
+data_corregida_aux <- data_corregida
 ```
 
 En la Tabla 21 se puede observar el tamaño de la base de datos ya con los datos perfilados.
@@ -946,6 +956,7 @@ kable(head(data_modelo,4),caption = "Dataset Nuevo") %>%
 <br>
 
 ```{r}
+
 #Estandarizacion variables categorica
 variables_cat <- sapply(data_modelo, is.factor)
 data_cat <- data_modelo[variables_cat]

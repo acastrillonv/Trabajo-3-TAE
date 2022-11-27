@@ -1800,7 +1800,7 @@ clasif <- function(p){
   }
 }
 
-calculo_indice$Riesgo <- sapply(calculo_indice$porcentaje, clasif)
+calculo_indice$Riesgo <- sapply(calculo_indice$Porcentaje, clasif)
 
 calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,Porcentaje))
 
@@ -1812,7 +1812,7 @@ calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,
 
 ```
 
-# 5-  Links
+# 5- Links
 
 -   Para conocer la aplicación web que creamos, haz click, <a href='https://sebasrendon12.shinyapps.io/myapp2/' target="_blank"> aquí </a> .
 

@@ -1751,7 +1751,14 @@ calculo_indice <- calculo_indice %>%
 calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,Atropello,Caida_de_Ocupante,Valor))
 ```
 
-El resultado....
+A continuación, en el mapa podemos observar la clasificación que se le generó a cada barrio por comuna de la ciudad de Medellín.
+
+```{r}
+#Mapa
+
+```
+
+En el mapa podemos observar cuales barrios poseen gran cantidad de accidente, y cuales no.
 
 # Referencias
 

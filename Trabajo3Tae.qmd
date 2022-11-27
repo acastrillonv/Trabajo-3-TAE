@@ -16,7 +16,7 @@ library(stringr)
 library(lubridate)
 library(tidyverse)
 library(caret)
-library(FSinR)
+library(pander)
 ```
 
 # 1- Contexto del problema
@@ -936,38 +936,6 @@ data_modelo$Quincena <- as.factor(data_modelo$Quincena)
 ```
 
 ```{r}
-X_train <- accFechaAcc[accFechaAcc$AÑOX==2014 | accFechaAcc$AÑOX==2015 | accFechaAcc$AÑOX==2016 | accFechaAcc$AÑOX==2017, -which(names(accFechaAcc) == "ACCIDENTES")] 
-  X_train <- X_train[X_train$CLASE_ACCIDENTE==clase,]
-  y_train <- accFechaAcc[accFechaAcc$AÑOX==2014 | accFechaAcc$AÑOX==2015 | accFechaAcc$AÑOX==2016 | accFechaAcc$AÑOX==2017,]
-    y_train <- y_train[y_train$CLASE_ACCIDENTE==clase,]
-  y_train <- y_train$ACCIDENTES
-    
-  X_test <- accFechaAcc[accFechaAcc$AÑOX==2018 | accFechaAcc$AÑOX==2019 ,-which(names(accFechaAcc) == "ACCIDENTES")]
-  X_test <- X_test[X_test$CLASE_ACCIDENTE==clase,]
-  y_test <- accFechaAcc[accFechaAcc$AÑOX==2018 | accFechaAcc$AÑOX==2019 ,]
-  y_test <- y_test[y_test$CLASE_ACCIDENTE==clase,]
-  y_test <- y_test$ACCIDENTES
-    
-  for (i in 2:13){
-    filter_evaluator <- filterEvaluator('determinationCoefficient')
-    skb_direct_search <- selectKBest(i)
-    
-    
-    mejoresColumnas <- skb_direct_search(accFechaAcc, 'ACCIDENTES', filter_evaluator)
-    
-    X_train_aux <- X_train[c(mejoresColumnas$featuresSelected)]
-    X_train_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_train_aux, as.factor)
-    X_train_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_train_aux, as.numeric)
-    X_train_aux$CLASE_ACCIDENTE <- NULL
-    
-   
-    X_test_aux<-X_test[c(mejoresColumnas$featuresSelected)]
-    X_test_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_test_aux, as.factor)
-    X_test_aux[c(mejoresColumnas$featuresSelected)] <- lapply(X_test_aux, as.numeric)
-    X_test_aux$CLASE_ACCIDENTE <- NULL
-```
-
-```{r}
 kable(head(data_modelo,4),caption = "Dataset Nuevo") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
@@ -1053,39 +1021,44 @@ optimo_K <- function(k,X_t,Y_t,X_v,Y_v){
 
 ### 3.1.1- K óptimo para accidente tipo "Atropello"
 
+Para la selección de las variables que nos ayuden a encontrar el K optimo para este modelo, se realiza un Análisis de Componentes Principales el cual se puede ver en la Tabla 23. Para conservar el 52% de la variabilidad explicada en las variables, se va a trabajar con las primeras 6 componentes principales.
+
 ```{r}
 #Caso para accidente tipo Atropello
 X_tr <- subset(X_train_std, X_train_std$CLASE_ACCIDENTE=="Atropello")
-X_tr <- subset(X_tr, select = c(Festivo.Si, Festivo.No, Semana))
+X_tr <- subset(X_tr, select = -c(CLASE_ACCIDENTE))
 Y_tr <- subset(Y_train, Y_train$CLASE_ACCIDENTE=="Atropello")
 Y_tr <- subset(Y_tr, select = -c(CLASE_ACCIDENTE))
 
 X_vl <- subset(X_val_std, X_val_std$CLASE_ACCIDENTE=="Atropello")
-X_vl <- subset(X_vl, select = c(Festivo.Si, Festivo.No, Semana))
+X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Atropello")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:80
+ACP_c1 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c1)
 
-resultadosC1 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 23.** Análisis de Componentes Principales para los registro de tipo de accidente "Atropello"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c1$x[,1:6])
+ACP_vl <- predict(ACP_c1, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:6])
+
+k <- 2:30
+resultadosC1 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC1 <- t(resultadosC1)
 rownames(resultadosC1) <- 1:nrow(resultadosC1)
 resultadosC1 <- as.data.frame(resultadosC1)
 resultadosC1$K <- k
 ```
 
-```{r}
-ACP <- prcomp(X_tr, center = FALSE)
-summary(ACP)
-```
-
-```{r}
-X_tr_acp <- data.frame(ACP$x[,1:2])
-ACP_vl <- predict(ACP, newdata= X_vl)
-X_vl_acp <- data.frame(ACP_vl[,1:2])
-```
-
-En la Tabla 23, podemos observar que el mejor K
+En la Tabla 24, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=25, el cual tiene una variación en la métrica de error MAE de 20.56%, el mínimo porcentaje encontrado.
 
 ```{r}
 kable(resultadosC1,caption = "Análisis del valor K") %>% 
@@ -1093,23 +1066,13 @@ kable(resultadosC1,caption = "Análisis del valor K") %>%
   kable_minimal()
 ```
 
-<center>**Tabla 23.** Análisis del valor K para la variable "Atropello"</center>
-
-<br>
-
-```{r}
-resultadosC1$Mae_t <- as.numeric(resultadosC1$Mae_t)
-resultadosC1$Mae_v <- as.numeric(resultadosC1$Mae_v)
-resultadosC1$Variacion <- as.numeric(resultadosC1$Variacion)
-
-summary(resultadosC1$Variacion)
-```
-
-<center>**Tabla 24.** Análisis del variación del error MAE para la variable "Atropello"</center>
+<center>**Tabla 24.** Análisis del valor K para la variable "Atropello"</center>
 
 <br>
 
 ### 3.1.2- K óptimo para accidente tipo "Choque"
+
+Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 25. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.
 
 ```{r}
 #Caso para accidente tipo Choque
@@ -1123,16 +1086,44 @@ X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Choque")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:20
+ACP_c2 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c2)
 
-resultadosC2 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 25.** Análisis de Componentes Principales para los registro de tipo de accidente "Choque"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c2$x[,1:2])
+ACP_vl <- predict(ACP_c2, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:2])
+
+k <- 2:30
+resultadosC2 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC2 <- t(resultadosC2)
 rownames(resultadosC2) <- 1:nrow(resultadosC2)
 resultadosC2 <- as.data.frame(resultadosC2)
 resultadosC2$K <- k
 ```
 
+En la Tabla 26, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=29, el cual tiene una variación en la métrica de error MAE de 40.7%, el mínimo porcentaje encontrado.
+
+```{r}
+kable(resultadosC2,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 26.** Análisis del valor K para la variable "Choque"</center>
+
+<br>
+
 ### 3.1.3- K óptimo para accidente tipo "Caída de Ocupante"
+
+Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 27. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.
 
 ```{r}
 #Caso para accidente tipo Caída de Ocupante
@@ -1146,16 +1137,44 @@ X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Caída de Ocupante")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:20
+ACP_c3 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c3)
 
-resultadosC3 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 27.** Análisis de Componentes Principales para los registro de tipo de accidente "Caída de Ocupante"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c3$x[,1:2])
+ACP_vl <- predict(ACP_c3, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:2])
+
+k <- 2:30
+resultadosC3 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC3 <- t(resultadosC3)
 rownames(resultadosC3) <- 1:nrow(resultadosC3)
 resultadosC3 <- as.data.frame(resultadosC3)
 resultadosC3$K <- k
 ```
 
+En la Tabla 28, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 22.29%, el mínimo porcentaje encontrado.
+
+```{r}
+kable(resultadosC3,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 28.** Análisis del valor K para la variable "Caída de Ocupante"</center>
+
+<br>
+
 ### 3.1.4- K óptimo para accidente tipo "Volcamiento"
+
+Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 29. Para conservar el 32.25% de la variabilidad explicada en las variables, se va a trabajar con las primeras 3 componentes principales.
 
 ```{r}
 #Caso para accidente tipo Volcamiento
@@ -1169,16 +1188,44 @@ X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Volcamiento")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:20
+ACP_c4 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c4)
 
-resultadosC4 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 29.** Análisis de Componentes Principales para los registro de tipo de accidente "Volcamiento"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c4$x[,1:3])
+ACP_vl <- predict(ACP_c4, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:3])
+
+k <- 2:30
+resultadosC4 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC4 <- t(resultadosC4)
 rownames(resultadosC4) <- 1:nrow(resultadosC4)
 resultadosC4 <- as.data.frame(resultadosC4)
 resultadosC4$K <- k
 ```
 
+En la Tabla 30, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 23.96%, el mínimo porcentaje encontrado.
+
+```{r}
+kable(resultadosC4,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 30.** Análisis del valor K para la variable "Volcamiento"</center>
+
+<br>
+
 ### 3.1.5- K óptimo para accidente tipo "Incendio"
+
+Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 31. Para conservar el 99.9% de la variabilidad explicada en las variables, se va a trabajar con las primeras 12 componentes principales.
 
 ```{r}
 #Caso para accidente tipo Incendio
@@ -1192,16 +1239,44 @@ X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Incendio")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:20
+ACP_c5 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c5)
 
-resultadosC5 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 31.** Análisis de Componentes Principales para los registro de tipo de accidente "Incendio"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c5$x[,1:12])
+ACP_vl <- predict(ACP_c5, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:12])
+
+k <- 2:30
+resultadosC5 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC5 <- t(resultadosC5)
 rownames(resultadosC5) <- 1:nrow(resultadosC5)
 resultadosC5 <- as.data.frame(resultadosC5)
 resultadosC5$K <- k
 ```
 
+En la Tabla 32, podemos observar que no existe variación del error MAE a medida que aumenta K. Esto se debe a que la cantidad de registro tanto para entrenamiento y para validación son muy pocos. La cantidad de registros para datos de entrenamiento son de 16, y para validación son 8, esto hace que el modelo funcione perfectamente con valor K bajo. Para este modelo se escoge un K=2, el cual tiene una variación en la métrica de error MAE de 0%, el mínimo porcentaje encontrado.
+
+```{r}
+kable(resultadosC5,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
+```
+
+<center>**Tabla 32.** Análisis del valor K para la variable "Incendio"</center>
+
+<br>
+
 ### 3.1.6- K óptimo para accidente tipo "Otro"
+
+Se realiza un Análisis de Componentes Principales para la selección de las variables, el cual se puede ver en la Tabla 33. Para conservar el 22% de la variabilidad explicada en las variables, se va a trabajar con las primeras 2 componentes principales.
 
 ```{r}
 #Caso para accidente tipo Otro
@@ -1215,16 +1290,37 @@ X_vl <- subset(X_vl, select = -c(CLASE_ACCIDENTE))
 Y_vl <- subset(Y_val, Y_val$CLASE_ACCIDENTE=="Otro")
 Y_vl <- subset(Y_vl, select = -c(CLASE_ACCIDENTE))
 
-k <- 2:20
+ACP_c6 <- prcomp(X_tr, center = FALSE)
+p<-summary(ACP_c6)
 
-resultadosC6 <- sapply(k, optimo_K, X_t=X_tr,Y_t=Y_tr,X_v=X_vl,Y_v=Y_vl)
+pander(p[["importance"]])
+```
+
+<center>**Tabla 33.** Análisis de Componentes Principales para los registro de tipo de accidente "Otro"</center>
+
+<br>
+
+```{r}
+X_tr_acp <- data.frame(ACP_c6$x[,1:2])
+ACP_vl <- predict(ACP_c6, newdata= X_vl)
+X_vl_acp <- data.frame(ACP_vl[,1:2])
+
+k <- 2:30
+resultadosC6 <- sapply(k, optimo_K, X_t=X_tr_acp,Y_t=Y_tr,X_v=X_vl_acp,Y_v=Y_vl)
 resultadosC6 <- t(resultadosC6)
 rownames(resultadosC6) <- 1:nrow(resultadosC6)
 resultadosC6 <- as.data.frame(resultadosC6)
 resultadosC6$K <- k
 ```
 
+En la Tabla 34, podemos observar la variación del error MAE a medida que aumenta K, y con eso decide utilizar K=30, el cual tiene una variación en la métrica de error MAE de 20.9%, el mínimo porcentaje encontrado.
+
 ```{r}
-filter_evaluator <- filterEvaluator('determinationCoefficient')
-p <- selectKBest(data=data_modelo, class='Numero_Accidente', filter_evaluator)
+kable(resultadosC6,caption = "Análisis del valor K") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
 ```
+
+<center>**Tabla 34.** Análisis del valor K para la variable "Otro"</center>
+
+<br>

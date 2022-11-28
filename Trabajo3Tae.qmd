@@ -27,7 +27,7 @@ Con la realización de este proyecto, se desea crear una serie de modelos que pe
 
 Este proyecto ayudaría a entidades gubernamentales, la secretaría de movilidad, la alcadía de Medellín, ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.
 
-Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).
+Para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).
 
 También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentabilidad en cada barrio (Muy alta, alta, media, baja).
 

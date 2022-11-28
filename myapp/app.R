@@ -112,6 +112,26 @@ iden_weekend <- function(p) {
   return(valorNuevo)
 }
 
+dummy_f <- function(p) {
+  if (p == "No") {
+    valorNuevo <- 0
+  }
+  else{
+    valorNuevo <- 1
+  }
+  return(valorNuevo)
+}
+
+
+dummy_mes <- function(p,mes) {
+  if (p == mes) {
+    valorNuevo <- 1
+  }
+  else{
+    valorNuevo <- 0
+  }
+  return(valorNuevo)
+}
 
 ui <- fluidPage(navbarPage(
   '',
@@ -453,19 +473,38 @@ server <- function(input, output) {
     df_Pred$MES <- as.factor(df_Pred$MES)
     df_Pred$Quincena <- as.factor(df_Pred$Quincena)
     
-    ##Estandarizacion variables categorica
-    variables_cat <- sapply(df_Pred, is.factor)
-    data_cat <- df_Pred[variables_cat]
-    data_cat <- subset(data_cat, select = -c(DiaDeLaSemana))
-    onehotencoding <- dummyVars( ~ ., data = data_cat)
-    data_cat_dummy <-
-      as.data.frame(predict(onehotencoding, data_cat))
     
-    df_Pred <- subset(df_Pred, select = -c(DiaDeLaSemana, MES))
-    df_Pred <- cbind(df_Pred, data_cat_dummy)
+    #Variables categoricas
+    
+    df_Pred$Quincena.No <- sapply(df_Pred$Quincena, dummy_f)
+    df_Pred$Quincena.Si <- sapply(df_Pred$Quincena, dummy_f)
+    
+    df_Pred$Festivo.No <-  sapply(df_Pred$Festivo, dummy_f)
+    df_Pred$Festivo.Si <-  sapply(df_Pred$Festivo, dummy_f)
+    
+    df_Pred$Finde.No <-  sapply(df_Pred$Finde, dummy_f)
+    df_Pred$Finde.Si <-  sapply(df_Pred$Finde, dummy_f)
+    
+    df_Pred$Finde.No <-  sapply(df_Pred$Finde, dummy_f)
+    df_Pred$Finde.Si <-  sapply(df_Pred$Finde, dummy_f)
+    
+    df_Pred$MES.Abril <- sapply(df_Pred$MES, dummy_mes,mes="Abril")
+    df_Pred$MES.Agosto <- sapply(df_Pred$MES, dummy_mes,mes="Agosto")
+    df_Pred$MES.Diciembre <- sapply(df_Pred$MES, dummy_mes,mes="Diciembre")
+    df_Pred$MES.Enero <- sapply(df_Pred$MES, dummy_mes,mes="Enero")
+    df_Pred$MES.Febrero <- sapply(df_Pred$MES, dummy_mes,mes="Febrero")
+    df_Pred$MES.Julio <- sapply(df_Pred$MES, dummy_mes,mes="Julio")
+    df_Pred$MES.Junio <- sapply(df_Pred$MES, dummy_mes,mes="Junio")
+    df_Pred$MES.Marzo <- sapply(df_Pred$MES, dummy_mes,mes="Marzo")
+    df_Pred$MES.Mayo <- sapply(df_Pred$MES, dummy_mes,mes="Mayo")
+    df_Pred$MES.Noviembre <- sapply(df_Pred$MES, dummy_mes,mes="Noviembre")
+    df_Pred$MES.Octubre <- sapply(df_Pred$MES, dummy_mes,mes="Octubre")
+    df_Pred$MES.Septiembre <- sapply(df_Pred$MES, dummy_mes,mes="Septiembre")
+    
     Fecha_P <- df_Pred$Fecha
     df_Pred <-
-      subset(df_Pred , select = -c(Quincena, Festivo, Finde, Fecha))
+      subset(df_Pred , select = -c(DiaDeLaSemana, MES,Quincena, Festivo, Finde, Fecha))
+    
     
     ##Se centra la información usando la media y la desviacion de los datos con los que fue entrenado el modelo.
     df_Pred_std <-

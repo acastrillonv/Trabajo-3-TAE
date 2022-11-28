@@ -131,134 +131,167 @@ iden_weekend <- function(p) {
 #    ),
 #  )
 
-ui <- fluidPage(
-  navbarPage(
-    "Predicción de incidentes viales en Medellín",
-    tabPanel("Agrupamiento",
-             fluidRow(
-               id = 'header1',
-               column(12,),
-               mainPanel(
-                 leafletOutput(
-                   outputId = "mapaBarrios",
-                   width = 1000,
-                   height = 700
-                 ),
-               )
-               
-             )),
-    tabPanel(
-      "Historico de datos",
-      fluidRow(
-        id = 'header1',
-        column(12,),
-        sidebarPanel(fluidRow(
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            selectInput(
-              inputId = "clase",
-              label = "Clase",
-              choices = c(
-                "Todas",
-                "Atropello",
-                "Caída de Ocupante",
-                "Choque",
-                "Incendio",
-                "Volcamiento",
-                "Otro"
-              )
-            )
-          ),
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            dateInput(
-              inputId = "fecha_ini",
-              label = "Fecha inicial",
-              value = "2014-07-04",
-              min = "2014-07-04",
-              max = "2020-08-31",
-              format = "yyyy-mm-dd"
-            ),
-          ),
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            dateInput(
-              inputId = "fecha_fin",
-              label = "Fecha final",
-              value = "2020-08-31",
-              min = "2014-07-04",
-              max = "2020-08-31",
-              format = "yyyy-mm-dd"
-            ),
-          ),
-          
-        ), ),
-        fluidRow(id = 'modelos',
-                 column(
-                   3,
-                   dataTableOutput("tablaData") %>% withSpinner(color = "#0dc5c1")
-                 ),)
-      )
+ui <- fluidPage(navbarPage(
+  '',
+  tabPanel(
+    "Inicio",
+    div(
+      h1("Predicción de accidentibilidad en Medellín", style = "text-align:center;")
     ),
-    tabPanel(
-      "Predicción de la accidentalidad",
-      fluidRow(
-        id = 'header1',
-        column(12,),
-        sidebarPanel(fluidRow(
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            selectInput(
-              inputId = "clase2",
-              label = "Clase",
-              choices = c(
-                "Atropello",
-                "Caída de Ocupante",
-                "Choque",
-                "Volcamiento",
-                "Otro"
-              )
+    h2("En esta página se podrá: "),
+    h3(
+      "- Visualizar el historial de accidentes registrado en la ciudad de Medellín."
+    ),
+    h3(
+      "- Conocer la el nivel de accidentabilidad en los barrios de Medellín."
+    ),
+    h3("- Predecir la accidentabilidad en fechas futuras."),
+    br(),
+    h3("Para realizar la prediccion, se crearon diferentes modelos predictivos utilizando el algoritmo K-meanse, estos permiten predecir la accidentabilidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Otro) a nivel diario, semana y mensual."),
+    h3("Para crear los diferentes modelos de predicción, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021)."),
+    br(),
+    h2("Autores:"),
+    h3("- Valentina Vanegas Castaño"),
+    h3("- Edwar Jose Londoño Correa"),
+    h3("- Andres Castrillón Velasquez"),
+    h3("- Diego Andres Chavarria Riaño"),
+    h3("- Sebastian Rendon Arteaga"),
+  ),
+  tabPanel("Agrupamiento",
+           fluidRow(
+             id = 'header1',
+             column(12, ),
+             mainPanel(
+               leafletOutput(
+                 outputId = "mapaBarrios",
+                 width = 1000,
+                 height = 700
+               ),
+             )
+             
+           )),
+  tabPanel(
+    "Historico de datos",
+    fluidRow(
+      id = 'header1',
+      column(12, ),
+      sidebarPanel(fluidRow(
+        column(
+          4,
+          style = "background-color: #f5f5f5;",
+          selectInput(
+            inputId = "clase",
+            label = "Clase",
+            choices = c(
+              "Todas",
+              "Atropello",
+              "Caída de Ocupante",
+              "Choque",
+              "Incendio",
+              "Volcamiento",
+              "Otro"
             )
+          )
+        ),
+        column(
+          4,
+          style = "background-color: #f5f5f5;",
+          dateInput(
+            inputId = "fecha_ini",
+            label = "Fecha inicial",
+            value = "2014-07-04",
+            min = "2014-07-04",
+            max = "2020-08-31",
+            format = "yyyy-mm-dd"
           ),
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            dateInput(
-              inputId = "fecha_ini2",
-              label = "Fecha inicial",
-              value = "2021-01-01",
-              min = "2021-01-01",
-              max = "2022-12-31",
-              format = "yyyy-mm-dd"
-            ),
+        ),
+        column(
+          4,
+          style = "background-color: #f5f5f5;",
+          dateInput(
+            inputId = "fecha_fin",
+            label = "Fecha final",
+            value = "2020-08-31",
+            min = "2014-07-04",
+            max = "2020-08-31",
+            format = "yyyy-mm-dd"
           ),
-          column(
-            3,
-            style = "background-color: #e3e3e3;",
-            dateInput(
-              inputId = "fecha_fin2",
-              label = "Fecha final",
-              value = "2022-12-31",
-              min = "2021-01-01",
-              max = "2022-12-31",
-              format = "yyyy-mm-dd"
-            ),
+        ),
+        
+      ),),
+      fluidRow(id = 'modelos',
+               column(
+                 3,
+                 dataTableOutput("tablaData") %>% withSpinner(color = "#0dc5c1")
+               ), )
+    )
+  ),
+  tabPanel(
+    "Predicción de la accidentalidad",
+    fluidRow(
+      id = 'header1',
+      column(12, ),
+      fluidRow(
+        column(
+          3,
+          style = "background-color: #f5f5f5;",
+          selectInput(
+            inputId = "clase2",
+            label = "Clase",
+            choices = c(
+              "Atropello",
+              "Caída de Ocupante",
+              "Choque",
+              "Volcamiento",
+              "Otro"
+            )
+          )
+        ),
+        column(
+          3,
+          style = "background-color: #f5f5f5;",
+          dateInput(
+            inputId = "fecha_ini2",
+            label = "Fecha inicial",
+            value = "2021-01-01",
+            min = "2021-01-01",
+            max = "2022-12-31",
+            format = "yyyy-mm-dd"
           ),
-          
-        ), ),
-        fluidRow(id = 'modelos',
-                 column(
-                   3,
-                   dataTableOutput("tablaPrediccion") %>% withSpinner(color = "#0dc5c1")
-                 ),)
-      )
+        ),
+        column(
+          3,
+          style = "background-color: #f5f5f5;",
+          dateInput(
+            inputId = "fecha_fin2",
+            label = "Fecha final",
+            value = "2022-12-31",
+            min = "2021-01-01",
+            max = "2022-12-31",
+            format = "yyyy-mm-dd"
+          ),
+        ),
+        
+        column(
+          3,
+          style = "background-color: #f5f5f5;",
+          selectInput(
+            inputId = "rango",
+            label = "Rango",
+            choices = c("Diario",
+                        "Semanal",
+                        "Mensual")
+          )
+        ),
+      ),
+      fluidRow(id = 'plot_p',
+               column(
+                 12,
+                 plotOutput("plotPredict") %>% withSpinner(color = "#0dc5c1")
+               ))
     ),
   ),
-)
+), )
 
 
 server <- function(input, output) {
@@ -304,56 +337,56 @@ server <- function(input, output) {
       data <- data_corregida
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     else if (input$clase == "Atropello") {
       data <-
-        data_corregida[data_corregida$CLASE_ACCIDENTE == "Atropello",]
+        data_corregida[data_corregida$CLASE_ACCIDENTE == "Atropello", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     
     else if (input$clase == "Caída de Ocupante") {
       data <-
-        data_corregida[data_corregida$CLASE_ACCIDENTE == "Caída de Ocupante",]
+        data_corregida[data_corregida$CLASE_ACCIDENTE == "Caída de Ocupante", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     
     else if (input$clase == "Choque") {
-      data <- data_corregida[data_corregida$CLASE_ACCIDENTE == "Choque",]
+      data <- data_corregida[data_corregida$CLASE_ACCIDENTE == "Choque", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     
     else if (input$clase == "Volcamiento") {
       data <-
-        data_corregida[data_corregida$CLASE_ACCIDENTE == "Volcamiento",]
+        data_corregida[data_corregida$CLASE_ACCIDENTE == "Volcamiento", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     
     else if (input$clase == "Otro") {
-      data <- data_corregida[data_corregida$CLASE_ACCIDENTE == "Otro",]
+      data <- data_corregida[data_corregida$CLASE_ACCIDENTE == "Otro", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
     
     else if (input$clase == "Incendio") {
       data <-
-        data_corregida[data_corregida$CLASE_ACCIDENTE == "Incendio",]
+        data_corregida[data_corregida$CLASE_ACCIDENTE == "Incendio", ]
       data <-
         data[data$FECHA_ACCIDENTE >= as.Date(input$fecha_ini, format = "%d/%m/%Y") &
-               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"),]
+               data$FECHA_ACCIDENTE <= as.Date(input$fecha_fin, format = "%d/%m/%Y"), ]
     }
   })
   
-  output$tablaPrediccion <- renderDataTable({
+  output$plotPredict <- renderPlot({
     df_Pred <-
       as.data.frame(seq(
         from = as.Date(input$fecha_ini2, format = "%d/%m/%Y"),
@@ -401,20 +434,22 @@ server <- function(input, output) {
     variables_cat <- sapply(df_Pred, is.factor)
     data_cat <- df_Pred[variables_cat]
     data_cat <- subset(data_cat, select = -c(DiaDeLaSemana))
-    onehotencoding <- dummyVars(~ ., data = data_cat)
-    data_cat_dummy <- as.data.frame(predict(onehotencoding, data_cat))
+    onehotencoding <- dummyVars( ~ ., data = data_cat)
+    data_cat_dummy <-
+      as.data.frame(predict(onehotencoding, data_cat))
     
     df_Pred <- subset(df_Pred, select = -c(DiaDeLaSemana, MES))
     df_Pred <- cbind(df_Pred, data_cat_dummy)
     Fecha_P <- df_Pred$Fecha
-    df_Pred <- subset(df_Pred , select = -c(Quincena, Festivo, Finde, Fecha))
+    df_Pred <-
+      subset(df_Pred , select = -c(Quincena, Festivo, Finde, Fecha))
     
     ##Se centra la información usando la media y la desviacion de los datos con los que fue entrenado el modelo.
-    df_Pred_std <- scale(df_Pred, center = media_X_tr, scale = sd_X_tr)
+    df_Pred_std <-
+      scale(df_Pred, center = media_X_tr, scale = sd_X_tr)
     df_Pred_std <- as.data.frame(df_Pred_std)
     
     if (input$clase2 == "Atropello") {
-      
       ACP <- predict(ACP_c1, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:6])
       predicciones <- predict(modelo_atropello, newdata = df_P_acp)
@@ -422,13 +457,19 @@ server <- function(input, output) {
       predicciones$Fecha <- Fecha_P
       predicciones$Mes <- month(predicciones$Fecha)
       predicciones$Semana <- week(predicciones$Fecha)
-      
-      
-      predicciones
+      if (input$rango == "Semanal") {
+        predicciones <- predicciones %>% group_by(Semana) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
+      else if (input$rango == "Mensual") {
+        predicciones <- predicciones %>% group_by(Mes) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
     }
     
     else if (input$clase2 == "Caída de Ocupante") {
-      
       ACP <- predict(ACP_c3, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_ca, newdata = df_P_acp)
@@ -436,11 +477,19 @@ server <- function(input, output) {
       predicciones$Fecha <- Fecha_P
       predicciones$Mes <- month(predicciones$Fecha)
       predicciones$Semana <- week(predicciones$Fecha)
-      predicciones
+      if (input$rango == "Semanal") {
+        predicciones <- predicciones %>% group_by(Semana) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
+      else if (input$rango == "Mensual") {
+        predicciones <- predicciones %>% group_by(Mes) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
     }
     
     else if (input$clase2 == "Choque") {
-      
       ACP <- predict(ACP_c2, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_choque, newdata = df_P_acp)
@@ -448,23 +497,40 @@ server <- function(input, output) {
       predicciones$Fecha <- Fecha_P
       predicciones$Mes <- month(predicciones$Fecha)
       predicciones$Semana <- week(predicciones$Fecha)
-      predicciones
+      if (input$rango == "Semanal") {
+        predicciones <- predicciones %>% group_by(Semana) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
+      else if (input$rango == "Mensual") {
+        predicciones <- predicciones %>% group_by(Mes) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
     }
     
     else if (input$clase2 == "Volcamiento") {
-      
       ACP <- predict(ACP_c4, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:3])
-      predicciones <- predict(modelo_volcamiento, newdata = df_P_acp)
+      predicciones <-
+        predict(modelo_volcamiento, newdata = df_P_acp)
       predicciones <- as.data.frame(predicciones)
       predicciones$Fecha <- Fecha_P
       predicciones$Mes <- month(predicciones$Fecha)
       predicciones$Semana <- week(predicciones$Fecha)
-      predicciones
+      if (input$rango == "Semanal") {
+        predicciones <- predicciones %>% group_by(Semana) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
+      else if (input$rango == "Mensual") {
+        predicciones <- predicciones %>% group_by(Mes) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
     }
     
     else if (input$clase2 == "Otro") {
-      
       ACP <- predict(ACP_c6, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_otro, newdata = df_P_acp)
@@ -472,8 +538,26 @@ server <- function(input, output) {
       predicciones$Fecha <- Fecha_P
       predicciones$Mes <- month(predicciones$Fecha)
       predicciones$Semana <- week(predicciones$Fecha)
-      predicciones
+      if (input$rango == "Semanal") {
+        predicciones <- predicciones %>% group_by(Semana) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
+      else if (input$rango == "Mensual") {
+        predicciones <- predicciones %>% group_by(Mes) %>%
+          summarise(total = sum(predicciones))
+        names(predicciones) <- c("Fecha", "predicciones")
+      }
     }
+    plot(
+      predicciones$Fecha,
+      predicciones$predicciones,
+      type = "l",
+      main = paste("Predicción de accidentes tipo ", input$clase2),
+      xlab = input$rango,
+      ylab = "Número de accidentes",
+      col = "red"
+    )
   })
 }
 

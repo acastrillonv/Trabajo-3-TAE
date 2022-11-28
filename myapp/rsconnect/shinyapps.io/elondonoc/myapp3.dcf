@@ -1,0 +1,13 @@
+name: myapp3
+title: myapp3
+username:
+account: elondonoc
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7745239
+bundleId: 6561275
+url: https://elondonoc.shinyapps.io/myapp3/
+when: 1669616049.13467
+lastSyncTime: 1669616049.13469
+asMultiple: FALSE
+asStatic: FALSE

@@ -1764,9 +1764,9 @@ Algunas de las medidas que se podrían implementar son
 
 # 5- Links
 
--   Para conocer la aplicación web que creamos, haz click, <a href='https://sebasrendon12.shinyapps.io/myapp2/' target="_blank"> aquí </a> .
+-   Para conocer la aplicación web que creamos, haz click, <a href='https://sebasrendon12.shinyapps.io/my3app/' target="_blank"> aquí </a> .
 
--   Para conocer el video donde explicamos acerca del funcionamiento de la aplicación, haz click, <a href='https://youtu.be/zIcxs7rd_9g' target="_blank"> aquí </a> .
+-   Para conocer el video donde explicamos acerca del funcionamiento de la aplicación, haz click, <a href='https://youtu.be/oE-yhAHgkrA' target="_blank"> aquí </a> .
 
 # 6- Referencias
 

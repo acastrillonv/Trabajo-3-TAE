@@ -23,13 +23,13 @@ library(pander)
 
 A nivel mundial, se registran diariamente accidentes de transito de diferentes tipos en todas las ciudades del mundo, y la ciudad de Medellín, Antioquia no es la excepción a esto. En el caso de la ciudad de Medellín, la alcaldía registra cada uno de los accidentes producidos en la ciudad. En una noticia, la Secretaría de Movilidad (2021) menciona que "Durante 2020, el Cuerpo Oficial de Bomberos Medellín atendió 3.188 accidentes de tránsito, un año en el que se redujo la siniestralidad por el confinamiento estricto derivado de la pandemia. En 2019 habían sido 7.398 y en 2018 fueron 10.110 accidentes asistidos".
 
-Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentalidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.
+Con la realización de este proyecto, se desea crear una serie de modelos que permita predecir la accidentabilidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) a nivel diario, semana y mensual.
 
-Este proyecto ayudaría a (), ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.
+Este proyecto ayudaría a entidades gubernamentales, la secretaría de movilidad, la alcadía de Medellín, ya que permitiría conocer un posible comportamiento de la cantidad de accidentes que se podrian tener en un intervalo de tiempo.
 
 Para para crear los diferentes modelos, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021).
 
-También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentalidad en cada barrio (Muy alta, alta, media, baja).
+También con este trabajo, se creará un agrupamiento de los accidentes originados en los diferentes barrios de Medellín, y de acuerdo a una función propuesta, se podrá conocer una clasificación de accidentabilidad en cada barrio (Muy alta, alta, media, baja).
 
 ```{r}
 #Carga del dataset
@@ -897,7 +897,7 @@ Ya con la limpieza realizada a los datos, se procede con la creación del modelo
 
 Como primer paso, se va a crear un nuevo dataset, en el que podemos observar la cantidad de cada tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Incendio, Otro) por fecha registrada. El dataset nuevo se puede observar en la Tabla 22.
 
-Ya con el dataset anteriormente construido, se van a crear una serie de modelos por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentalidad dependiendo del tipo de accidente.
+Ya con el dataset anteriormente construido, se van a crear una serie de modelos por cada tipo de accidente, esto nos permitirá conocer el nivel de accidentabilidad dependiendo del tipo de accidente.
 
 Estos modelo se va construir haciendo uso de los registros de los accidentes registrados en los años 2014, 2015, 2016 y 2018. Para la validación de los modelos se van a utilizar los registros de los accidentes registrados en los años 2019 y 2020.
 
@@ -1366,7 +1366,7 @@ kable(resultadosC6,caption = "Análisis del valor K") %>%
 modelo_otro <- knnreg(x=X_tr_acp, y = Y_tr$Numero_Accidente, k = 30)
 ```
 
-## 3.2 - Comportamiento de la accidentalidad en los años 2021 y 2022
+## 3.2 - Comportamiento de la accidentabilidad en los años 2021 y 2022
 
 ```{r}
 #fecha festivos
@@ -1482,7 +1482,7 @@ df_2022_std <- scale(df_2022,center = media_X_tr, scale = sd_X_tr)
 df_2022_std <- as.data.frame(df_2022_std)
 ```
 
-### 3.2.1- Predicción de la accidentalidad para tipo de accidente "Atropello"
+### 3.2.1- Predicción de la accidentabilidad para tipo de accidente "Atropello"
 
 ```{r}
 #Se calculan las predicciones
@@ -1517,7 +1517,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 Para los accidente tipo Atropello podemos evidenciar que el punto más bajo de accidentes en el año 2021 (Gráfica 1) se alcanza a finales del mes de Julio, sin embargo, en el año 2022 (Gráfica 2), el punto mas bajo es alcanzado aproximadamente en los primeros días del mes de Junio. Por otro lado, los puntos más altos se alcanzan aproximadamente en la misma época en ambos años. y por último, podemos evidenciar que, en promedio, en el año 2022, se tienen mayor cantidad de picos bajos que en el año 2021.
 
-### 3.2.2- Predicción de la accidentalidad para tipo de accidente "Choque"
+### 3.2.2- Predicción de la accidentabilidad para tipo de accidente "Choque"
 
 ```{r}
 #Se calculan las predicciones
@@ -1552,7 +1552,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 Entre las Gráficas 3 y 4 podemos evidenciar una mayor cantidad de picos bajos en los meses de mitad del año, de resto, las gráficas tienen aproximadamente el mismo comportamiento en ambos años tanto en los picos bajos como en los picos altos. Esto significa que el comportamiento de las accidentes de tipo Choque va a ser muy similar en ambos años.
 
-### 3.2.3- Predicción de la accidentalidad para tipo de accidente "Caída de Ocupante"
+### 3.2.3- Predicción de la accidentabilidad para tipo de accidente "Caída de Ocupante"
 
 ```{r}
 #Se calculan las predicciones
@@ -1587,7 +1587,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 Luego de observar las Gráficas 5 y 6 podemos observar que, en la Gráfica 6, hay picos más profundos que en la Gráfica 5. Además, en los finales del mes de Junio hay una mayor cantidad de picos bajos en la Gráfica 6. También podemos ver que los picos bajos en la gráfica 6 son más extremos que los picos bajos que a los que llegan en la Gráfica 5.
 
-### 3.2.4- Predicción de la accidentalidad para tipo de accidente "Volcamiento"
+### 3.2.4- Predicción de la accidentabilidad para tipo de accidente "Volcamiento"
 
 ```{r}
 #Se calculan las predicciones
@@ -1622,7 +1622,7 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 La variación más notoria es en los primeros 3 meses en donde hay mayor cantidad de picos altos en la Gráfica 8. Por otro lado, vemos en la Gráfica 7, en el mes de agosto, el pico mas alto de los 2 años de predicción. En el mes de noviembre se ve un comportamiento un poco diferente, siendo mas variable en la gráfica del año 2022 (Gráfica 8).
 
-### 3.2.5- Predicción de la accidentalidad para tipo de accidente "Otro"
+### 3.2.5- Predicción de la accidentabilidad para tipo de accidente "Otro"
 
 ```{r}
 #Se calculan las predicciones
@@ -1657,9 +1657,9 @@ plot(predicciones_2022$Fecha,predicciones_2022$predicciones_2022, type = "l", ma
 
 En las Gráficas 9 y 10 podemos encontrar un comportamiento muy similar a lo largo del año, lo que significa que el modelo predijo muy pocas variaciones entre el año 2021 y 2022 en relación a las accidentes de tipo diferente a choque, volcamiento, caída de ocupante o atropello, a excepción del mes septiembre donde podemos ver un pico más alto en la Gráfica 10.
 
-# 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentalidad
+# 4- Agrupamiento de los barrios de Medellín de acuerdo a su accidentabilidad
 
-Para poder crear la clasificación de la accidentalidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 35.
+Para poder crear la clasificación de la accidentabilidad en los barrios de la ciudad de Medellín, se crea una base de datos en la que se agrupan todos los registros de accidentes por los diferentes barrios y las comunas, esto se puede ver en la Tabla 35.
 
 ```{r}
 calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
@@ -1750,7 +1750,17 @@ mapa
 
 <br>
 
-Con esto.
+En el Mapa 1, podemos indentificar de manera visual que barrios de la ciudad de Medellín poseen una clasificación Alta, Media o Leve de acuerdo al porcentaje de choques ocurrido cada uno de ellos.
+
+Con el Mapa 1, usuarios como la secretaría de movilidad o la alcadía de Medellín, podrian implementar estrategias que permitan reducir los niveles de accidentes tipo choque en los barrios identificados con riesgo alto.
+
+Algunas de las medidas que se podrían implementar son
+
+-   Mejorar las vías, esto ayudaría a disminuir choques entre vehículos por problemas en las vías.
+
+-   Monitoreo de la velocidad de conducción.
+
+-   Aumentar las señales de tránsitos en las vías o semáforos, que permitan estructurá un correcto flujo vial.
 
 # 5- Links
 

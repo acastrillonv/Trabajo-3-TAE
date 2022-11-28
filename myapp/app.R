@@ -398,32 +398,35 @@ server <- function(input, output) {
     df_Pred$Quincena <- as.factor(df_Pred$Quincena)
     
     ##Estandarizacion variables categorica
-    variables_cat <- sapply(df_Pred, is.factor)
-    data_cat <- df_Pred[variables_cat]
-    data_cat <- subset(data_cat, select = -c(DiaDeLaSemana))
-    onehotencoding <- dummyVars(~ ., data = data_cat)
-    data_cat_dummy <-
-      as.data.frame(predict(onehotencoding, data_cat))
+    #variables_cat <- sapply(df_Pred, is.factor)
+    #data_cat <- df_Pred[variables_cat]
+    #data_cat <- subset(data_cat, select = -c(DiaDeLaSemana))
+    #onehotencoding <- dummyVars(~ ., data = data_cat)
+    #data_cat_dummy <- as.data.frame(predict(onehotencoding, data_cat))
     
-    df_Pred <- subset(df_Pred, select = -c(DiaDeLaSemana, MES))
-    df_Pred <- cbind(df_Pred, data_cat_dummy)
-    Fecha_P <- df_Pred$Fecha
-    df_Pred <-
-      subset(df_Pred , select = -c(Quincena, Festivo, Finde, Fecha))
+    #df_Pred <- subset(df_Pred, select = -c(DiaDeLaSemana, MES))
+    #df_Pred <- cbind(df_Pred, data_cat_dummy)
+    #Fecha_P <- df_Pred$Fecha
+    #df_Pred <- subset(df_Pred , select = -c(Quincena, Festivo, Finde, Fecha))
+    
     ##Se centra la información usando la media y la desviacion de los datos con los que fue entrenado el modelo.
-    df_Pred_std <-
-      scale(df_Pred, center = media_X_tr, scale = sd_X_tr)
-    df_Pred_std <- as.data.frame(df_Pred_std)
+    #df_Pred_std <- scale(df_Pred, center = media_X_tr, scale = sd_X_tr)
+    #df_Pred_std <- as.data.frame(df_Pred_std)
     
     if (input$clase == "Atropello") {
-      ACP <- predict(ACP_c1, newdata = df_Pred_std)
-      df_P_acp <- data.frame(ACP[, 1:6])
-      predicciones <- predict(modelo_atropello, newdata = df_P_acp)
-      predicciones <- as.data.frame(predicciones)
-      predicciones$Fecha <- Fecha_P
+      
+      #ACP <- predict(ACP_c1, newdata = df_Pred_std)
+      #df_P_acp <- data.frame(ACP[, 1:6])
+      #predicciones <- predict(modelo_atropello, newdata = df_P_acp)
+      #predicciones <- as.data.frame(predicciones)
+      #predicciones$Fecha <- Fecha_P
+      
+      df_Pred$MES
+      0
     }
     
     else if (input$clase == "Caída de Ocupante") {
+      
       ACP <- predict(ACP_c3, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_ca, newdata = df_P_acp)
@@ -432,6 +435,7 @@ server <- function(input, output) {
     }
     
     else if (input$clase == "Choque") {
+      
       ACP <- predict(ACP_c2, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_choque, newdata = df_P_acp)
@@ -440,15 +444,16 @@ server <- function(input, output) {
     }
     
     else if (input$clase == "Volcamiento") {
+      
       ACP <- predict(ACP_c4, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:3])
-      predicciones <-
-        predict(modelo_volcamiento, newdata = df_P_acp)
+      predicciones <- predict(modelo_volcamiento, newdata = df_P_acp)
       predicciones <- as.data.frame(predicciones)
       predicciones$Fecha <- Fecha_P
     }
     
     else if (input$clase == "Otro") {
+      
       ACP <- predict(ACP_c6, newdata = df_Pred_std)
       df_P_acp <- data.frame(ACP[, 1:2])
       predicciones <- predict(modelo_otro, newdata = df_P_acp)

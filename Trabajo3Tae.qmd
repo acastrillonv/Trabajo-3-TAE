@@ -1685,22 +1685,6 @@ calculo_indice$Riesgo <- sapply(calculo_indice$Porcentaje, clasif)
 
 calculo_indice <- subset(calculo_indice, select = -c(cantidad_accidentes,Choque,Porcentaje))
 
-colores <- function(p){
-  if (p=="Leve"){
-    pn <- "#006400"
-  }
-  else if (p=="Media"){
-    pn <- "#ffa333"
-  }
-  else{
-    pn <- "#d90000"
-  }
-}
-
-calculo_indice$Color <- sapply(calculo_indice$Riesgo, colores)
-
-
-
 kable(head(calculo_indice),caption = "Agrupación de los accidentes por barrios y comunas") %>% 
   kable_styling(full_width = F,position = "center") %>% 
   kable_minimal()
@@ -1748,12 +1732,10 @@ mapa = leaflet() %>% addPolygons(data=barrios,
                   fillColor =color(calculo_indice$Riesgo),
                   fillOpacity = 0.8,
                   
-                  label=paste0("<p style='font-size:20px'> <strong>Barrio: </strong>",calculo_indice$BARRIO,
+                  label=paste0("<p style='font-size:20px'> <strong>Barrio: </strong>",barrios$NOMBRE_BAR,
                                "<br><strong>Riesgo: </strong>",calculo_indice$Riesgo,
-                               "<br><strong>Comuna: </strong>",calculo_indice$COMUNA
+                               "<br><strong>Comuna: </strong>",barrios$NOMBRE_COM
                   )%>% lapply(htmltools::HTML),
-                  
-                  
       )%>%
       addTiles() %>%
   addLegend("bottomright",
@@ -1764,7 +1746,7 @@ mapa = leaflet() %>% addPolygons(data=barrios,
 mapa
 ```
 
-<center>**Mapa 1.** Nivel de riesgo de accidente tipo "Choque" en los barrios y comunas de la ciudad de Medellín </center>
+<center>**Mapa 1.** Nivel de riesgo de accidente tipo "Choque" en los barrios y comunas de la ciudad de Medellín</center>
 
 <br>
 

@@ -112,31 +112,13 @@ iden_weekend <- function(p) {
   return(valorNuevo)
 }
 
-# sidebarLayout(
-#  sidebarPanel(
-#    selectInput(
-#      inputId = "TipoAccidente",
-#      label = "Tipo de Accidente",
-#      choices = c("Choque","Atropello","Caida de Ocupante","Volcamiento","Incendio","Otro")
-#    ),
-#    selectInput(
-#      inputId = "Mes",
-#      label = "Mes",
-#      choices = c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
-#    ),
-#    selectInput(
-#      inputId = "Ano",
-#      label = "Ano",
-#      choices = 2014:2022
-#    ),
-#  )
 
 ui <- fluidPage(navbarPage(
   '',
   tabPanel(
     "Inicio",
     div(
-      h1("Predicción de accidentibilidad en Medellín", style = "text-align:center;")
+      h1("Predicción de accidentabilidad en Medellín", style = "text-align:center;")
     ),
     h2("En esta página se podrá: "),
     h3(
@@ -147,34 +129,73 @@ ui <- fluidPage(navbarPage(
     ),
     h3("- Predecir la accidentabilidad en fechas futuras."),
     br(),
-    h3("Para realizar la prediccion, se crearon diferentes modelos predictivos utilizando el algoritmo K-meanse, estos permiten predecir la accidentabilidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Otro) a nivel diario, semana y mensual."),
-    h3("Para crear los diferentes modelos de predicción, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021)."),
+    h3(
+      "Para realizar la predicción, se crearon diferentes modelos predictivos utilizando el algoritmo K-means, estos permiten predecir la accidentabilidad por tipo de accidente (Atropello, Choque, Caída de Ocupante, Volcamiento, Otro) a nivel diario, semana y mensual."
+    ),
+    h3(
+      "Para crear los diferentes modelos de predicción, se hace uso de una base de información publicada por la Alcaldía de Medellín, la cual posee un registro de los accidentes producidos entre los años 2014 y 2020, y las características de estos (Coordenadas de la ubicación donde fue producido, el tipo de accidente, la fecha, la gravedad, entre otras) (Alcaldía de Medellín, 2021)."
+    ),
+    h3(
+      "Esta aplicación va dirigida a usuarios como lo son las entidades gubernamentales, la secretaría de movilidad y la alcaldía de Medellín."
+    ),
     br(),
     h2("Autores:"),
     h3("- Valentina Vanegas Castaño"),
     h3("- Edwar Jose Londoño Correa"),
     h3("- Andres Castrillón Velasquez"),
     h3("- Diego Andres Chavarria Riaño"),
-    h3("- Sebastian Rendon Arteaga"),
+    h3("- Sebastián Rendón Arteaga"),
+    br(),
+    h2("Links:"),
+    h3(
+      'Para saber más del funcionamiento mira el siguiente ',
+      a('video', href = 'https://youtu.be/zIcxs7rd_9g', target = "_blank")
+    ),
+    h3(
+      'Para conocer el desarrollo de este trabajo ingresa ',
+      a('aquí', href = 'https://acastrillonv.github.io/Trabajo-3-TAE/', target =
+          "_blank")
+    )
   ),
-  tabPanel("Agrupamiento",
-           fluidRow(
-             id = 'header1',
-             column(12, ),
-             mainPanel(
-               leafletOutput(
-                 outputId = "mapaBarrios",
-                 width = 1000,
-                 height = 700
-               ),
-             )
-             
-           )),
   tabPanel(
-    "Historico de datos",
+    "Agrupamiento",
     fluidRow(
       id = 'header1',
       column(12, ),
+      h2(
+        "Agrupamiento de los barrios de Medellín de acuerdo a su accidentabilidad",
+        style = "text-align:center;"
+      ),
+      br(),
+      h3(
+        "En el mapa a continuación podemos identificar de manera visual que barrios de la ciudad de Medellín poseen una clasificación Alta, Media o Leve de acuerdo al porcentaje de choques ocurrido en cada uno de ellos."
+      ),
+      h3(
+        "El color verde indica que el barrio posee un nivel Leve de porcentaje de choques ocurridos. El color naranja indica que el barrio posee un nivel Medio de porcentaje de choques ocurridos. Y el color rojo indica que el barrio posee un nivel Alto de porcentaje de choques ocurridos."
+      ),
+      h3(
+        "Con este mapa, usuarios como la secretaría de movilidad o la alcaldía de Medellín, podrían implementar estrategias que permitan reducir los choques en los barrios identificados con un porcentaje Alto de choques."
+      ),
+      mainPanel(
+        leafletOutput(
+          outputId = "mapaBarrios",
+          width = 1500,
+          height = 900
+        ),
+      )
+      
+    )
+  ),
+  tabPanel(
+    "Histórico de datos",
+    fluidRow(
+      id = 'header1',
+      column(12, ),
+      h2(
+        "Histórico de accidentes en la ciudad de Medellín entre los años 2014 y 2020",
+        style = "text-align:center;"
+      ),
+      br(),
       sidebarPanel(fluidRow(
         column(
           4,
@@ -231,6 +252,8 @@ ui <- fluidPage(navbarPage(
     fluidRow(
       id = 'header1',
       column(12, ),
+      h2("Predictor de accidentes para los años 2020 y 2021", style = "text-align:center;"),
+      br(),
       fluidRow(
         column(
           3,

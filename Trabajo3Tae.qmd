@@ -1669,48 +1669,6 @@ calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
 calculo_indice <- calculo_indice[calculo_indice$BARRIO!= '""',]
 calculo_indice <- calculo_indice[calculo_indice$COMUNA!= '""',]
 
-kable(head(calculo_indice),caption = "Agrupación de los accidentes por barrios y comunas") %>% 
-  kable_styling(full_width = F,position = "center") %>% 
-  kable_minimal()
-```
-
-<center>**Tabla 35.** Agrupación de los accidentes por barrios y comunas de la ciudad de Medellín</center>
-
-<br>
-
-En la Tabla 35, podemos observar que se tiene también el conteo de los accidentes tipo "Choque" producidos en cada barrio de las diferentes comunas . Esto se hizo ya que también se crea una columna llamada Porcentaje en la cual se hizo calculó el porcentaje que representan los accidentes tipo Choque con respecto a la cantidad total de accidentes por barrios.
-
-Con los porcentajes, se realizó una clasificación del riesgo de choque en tres niveles (Alta, Media,Leve) de la siguiente forma:
-
--   Porcentajes menores a 34%, son clasificados riesgo Leve.
-
--   Porcentajes entre 34% y 67%, son clasificados riesgo Medio.
-
--   Porcentajes mayores a 67%, son clasificados riesgo Alto.
-
-A continuación, en el mapa podemos observar la clasificación que se le generó a cada barrio por comuna de la ciudad de Medellín.
-
-```{r}
-#Mapa
-
-```
-
-En el mapa podemos observar cuales barrios poseen gran cantidad de accidente, y cuales no. Se tienen cuatro clasificaciones: Muy alta, Alta, Media, Baja.
-
-Con este agrupamiento,
-
-```{r}
-calculo_indice <- data_corregida %>% group_by(BARRIO,COMUNA) %>%
-          summarise(cantidad_accidentes = n(),
-                    Choque = length(CLASE_ACCIDENTE[CLASE_ACCIDENTE == "Choque"]),
-                    Porcentaje = Choque/cantidad_accidentes)
-calculo_indice <- calculo_indice[calculo_indice$BARRIO!= '""',]
-calculo_indice <- calculo_indice[calculo_indice$COMUNA!= '""',]
-
-
-```
-
-```{r}
 clasif <- function(p){
   if (p<0.34){
     pn <- "Leve"
@@ -1740,7 +1698,29 @@ colores <- function(p){
 }
 
 calculo_indice$Color <- sapply(calculo_indice$Riesgo, colores)
+
+
+
+kable(head(calculo_indice),caption = "Agrupación de los accidentes por barrios y comunas") %>% 
+  kable_styling(full_width = F,position = "center") %>% 
+  kable_minimal()
 ```
+
+<center>**Tabla 35.** Agrupación de los accidentes por barrios y comunas de la ciudad de Medellín</center>
+
+<br>
+
+En la Tabla 35, podemos observar que se tiene también el conteo de los accidentes tipo "Choque" producidos en cada barrio de las diferentes comunas . Esto se hizo ya que también se crea una columna llamada Porcentaje en la cual se hizo calculó el porcentaje que representan los accidentes tipo Choque con respecto a la cantidad total de accidentes por barrios.
+
+Con los porcentajes, se realizó una clasificación del riesgo de choque en tres niveles (Alta, Media,Leve) de la siguiente forma:
+
+-   Porcentajes menores a 34%, son clasificados riesgo Leve.
+
+-   Porcentajes entre 34% y 67%, son clasificados riesgo Medio.
+
+-   Porcentajes mayores a 67%, son clasificados riesgo Alto.
+
+Para la construcción del mapa, se utilizaron unos archivos encontrados en medata.gov.co, en los cuales se encuentra la información de las divisiones de los barrios y comunas de la ciudad de Medellín en forma de polígonos. Con esta información, se crea un mapa utilizando la librería "leaflet".
 
 ```{r}
 #Mapa
@@ -1779,10 +1759,16 @@ mapa = leaflet() %>% addPolygons(data=barrios,
   addLegend("bottomright",
     colors = c("#d90000",  "#ffa333", "#006400"),
     labels = c("Alta", "Media","Leve"),
-    title = "Nivel de riesgo",
+    title = "Niveles",
     opacity = 1)
 mapa
 ```
+
+<center>**Mapa 1.** Nivel de riesgo de accidente tipo "Choque" en los barrios y comunas de la ciudad de Medellín </center>
+
+<br>
+
+Con esto.
 
 # 5- Links
 

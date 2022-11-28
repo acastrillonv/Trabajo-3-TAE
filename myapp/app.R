@@ -248,7 +248,7 @@ ui <- fluidPage(navbarPage(
     )
   ),
   tabPanel(
-    "Predicción de la accidentalidad",
+    "Predicción de la accidentabilidad",
     fluidRow(
       id = 'header1',
       column(12, ),

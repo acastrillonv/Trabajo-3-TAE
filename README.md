@@ -9,6 +9,6 @@
 
 # Trabajo-3-TAE
 
-## Link del video en Youtube: https://
+## Link del video en Youtube: https://youtu.be/oE-yhAHgkrA
 ## Link de aplicación: https://sebasrendon12.shinyapps.io/my3app/
 ## Link del Blog: https://acastrillonv.github.io/Trabajo-3-TAE/
